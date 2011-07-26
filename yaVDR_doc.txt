@@ -1,0 +1,60 @@
+Dokumentation für yaVDR
+=======================
+:Author:   seahawk1986
+:Email:    seahawk986@hotmail.com
+:Revision: v0.1
+:Date:     Juli 2011
+:encoding: UTF-8
+:version: yaVDR 0.4
+:doctype: book
+
+////
+Hoplo schlägt vor:
+* Installation
+* Erste Schritte nach der Installation (WFE)
+* Kanalsuche / Channelpedia
+* VDR-Bedienung im Allgemeinen ?!
+* FAQ
+* Hintergrund-Wissen
+* yaVDR-Spezialitäten dynamite, eventlircd
+* Troubleshooting
+////
+
+include::00_Widmung.txt[]
+
+include::00_Vorwort.txt[]
+
+[[yavdr]]
+== yaVDR ==
+
+include::01_Einleitung.txt[]
+
+include::10_Requirements.txt[]
+
+include::10_Installation.txt[]
+
+include::20_Erste_Schritte.txt[]
+
+[[admin-book]]
+== Systembeschreibung ==
+
+include::50_Remote.txt[]
+
+
+include::60_Templates.txt[]
+
+include::70_Dienste.txt[]
+
+:leveloffset: -1
+
+include::101_Linux.txt[]
+
+:leveloffset: 0
+
+
+include::99_FAQ.txt[]
+
+include::100_Troubleshooting.txt[]
+
+//include::50_Callouts.txt[]
+
