@@ -1,0 +1,83 @@
+=== Dienste des VDR ===
+
+Damit yaVDR funktionieren kann, müssen einige Programme als Dienste im Hintergrund laufen, andere werden nur vorrübergehend benötigt, z.B. um Programme mit bestimmten Rechten aufzurufen.
+****
+.TODO:
+Samba
+NFS
+Avahi
+Wenfrontend
+****
+
+==== Upstart ====
+
+http://upstart.ubuntu.com/[Upstart] wird von yaVDR für alle wichtigen Systemdienste und zum Start von Programmen verwendet. Dazu gehören vor allem der VDR selbst, aber auch der Dienst für die Fernbedienung, der Openbox und viele andere.
+
+.Eine Übersicht der von Upstart verwalteten Einträge kann man sich mit folgendem Kommando anzeigen lassen:
+----
+initctl list
+----
+
+[[Dienste]]
+.Um Dienste zu steuern gibt es unter anderen folgende Kommandos, die wichtig sein können, wenn man von Hand Änderungen am System vornehmen möchte:
+--------------------------------------------------------------------------------------------------------------------------------------------------
+sudo start <Dienst>   <1>
+sudo stop <Dienst>    <2>
+sudo restart <Dienst> <3>
+sudo status <Dienst>  <4>
+--------------------------------------------------------------------------------------------------------------------------------------------------
+<1> Startet einen Dienst
+<2> Stoppt einen Dienst
+<3> Startet einen Dienst neu
+<4> Zeigt den Status des Dienstes an (also ob er gerade aktiv ist oder nicht)
+
+
+
+===== Beispiele =====
+
+Im folgenden sind einige Beispiele für die Steuerung von Diensten aufgeführt. Sie lassen sich problemlos auf andere Dienste wie z.B. *openbox*, *vdr-frontend* oder *lircd* übertragen.
+
+.VDR
+[[start-vdr]]
+.VDR starten
+----
+sudo start vdr
+----
+[[stop-vdr]]
+.VDR stoppen
+----
+sudo stop vdr
+----
+[[restart-vdr]]
+.VDR neu starten
+----
+sudo restart vdr
+----
+[[status-vdr]]
+.Status des VDR anzeigen
+----
+sudo status vdr
+----
+
+.remoted
+[[start-remoted]]
+.remoted starten
+----
+sudo start remoted
+----
+[[stop-remoted]]
+.remoted stoppen
+----
+sudo stop remoted
+----
+
+[[restart-remoted]]
+.remoted neu starten
+----
+sudo restart remoted
+----
+[[status-remoted]]
+.Status von remoted anzeigen
+----
+sudo status remoted
+----

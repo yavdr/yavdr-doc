@@ -1,0 +1,36 @@
+=== Hardware-Voraussetzungen ===
+
+yaVDR unterstützt ein breites Spektrum von TV-Karten, Fernbedienungen und http://de.wikipedia.org/wiki/Video_Decode_and_Presentation_API_for_Unix[VDPAU]-fähigen nVidia-Grafikkarten.
+
+Seit Version 0.4 wird yaVDR nur noch als 64-Bit Version angeboten, so dass ein entsprechender Prozessor footnote:[AMD Athlon64 oder höher, Intel-Prozessoren mit Intel64-Unterstützung] verwendet werden muss.
+
+Genaue Systemvoraussetzungen sind aufgrund der vielen möglichen Konfigurationen schwer anzugeben, daher wird hier nur eine Liste von Beispielkonfigurationen angegeben, die praktisch komplett vom yaVDR unterstützt werden:
+
+.Systemempfehlungen - Sinnvoll?
+****
+Macht es Sinn noch alte FF-Karten aufzulisten?
+
+Im Prinzip wäre ja jeweils eine stromsparende Kombinationfür ein Szenario sinnvoll...
+
+Gibt es gute Quellen (außer den Nutzer-Signaturen)?
+****
+
+Die empfohlene Festplattengröße hängt von der gewünschten Aufnahmekapazität ab. Eine Standard-Installation von yaVDR belegt in etwa 2GB, für die Größe der SWAP-Partition entspricht normalerweise der Größe des Arbeitsspeichers.
+Für SD-TV werden fallen in abhängig von der Bitrate des Senders bis zu 2,7 GB pro Stunde Aufnahme an, für HD-TV bis zu 9 GB pro Stunde.
+Im normalen Betrieb hat sich eine Festplattengröße von mindestens 160 GB bewährt, 2 TB sind empfohlen.
+
+
+Weitergehende Fragen versucht die Seite http://vdr-wiki.de/wiki/index.php/YaVDR/Hardware-Voraussetzungen[Hardware-Voraussetzungen] zu beantworten.
+
+////
+[[updates]]
+=== Updaten des Systems ===
+
+Die Pakete für yaVDR werden regelmäßig aktualisiert. Dadurch werden Fehler behoben, die Hardwareunterstützung verbessert oder neue Programmversionen eingespielt. Näheres zur Paketverwaltung finden sie im Abschnitt zu \{<<apt-get,apt-get>>}.
+Sie können ihr System über das Terminal aktualisieren:
+
+.Systemaktualisierung von yaVDR
+------------------------------------------------------------
+user@yavdr:$ sudo apt-get update && sudo apt-get dist-upgrade
+------------------------------------------------------------
+////

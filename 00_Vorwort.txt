@@ -1,0 +1,81 @@
+[preface]
+== Vorwort ==
+
+image:logo-yavdr.png["yaVDR-Logo"]
+
+Diese Dokumentation soll die Bedienung und Interna eines yaVDR-Systems erklären und dem Nutzer dabei helfen, sich mit den Besonderheiten, die yaVDR von einem normalen Ubuntu unterscheiden, vertraut zu machen. Es ist bewusst keine Einführung in die Grundlagen der Bedienung von (Ubuntu) Linux. Daher wird dem Neueinsteiger empfohlen sich mit Hilfe von entsprechender Literatur oder Online-Quellen wie dem sehr umfangreichen http://wiki.ubuntuusers.de/Startseite[Ubuntu Users Wiki] einzulesen. Auch für den VDR kann an dieser Stelle nicht jedes Detail erklärt werden - eine gute Anlaufstelle zu weiterführenden Informationen ist das http://vdr-wiki.de[VDR-Wiki].
+
+Wann immer die Beschreibung von Befehlen, Funktionen oder Abläufen den Rahmen dieser Dokumentation sprengen würde, wird daher auf entsprechende Artikel verlinkt. Auch doppelte Ausführungen zum selben Themas werden wo immer es geht vermieden und stattdessen auf die entsprechende Stelle in der Dokumentation verlinkt.
+
+=== Lizenz ===
+
+Diese Dokumentation steht unter der http://www.gnu.org/licenses/fdl-1.3.txt[GNU FDL] footnote:[Free DOC LICENCE, siehe http://www.gnu.org/copyleft/fdl.html] 
+
+
+=== Konventionen ===
+
+Befehle, die man in der Shell oder in xterm ausführen kann, sehen so aus:
+
+.Ein Beispiel-Befehl
+----
+<1>user@yavdr:~$ <2> sudo make me a sandwich 
+----
+<1> Der Shell-Prompt zeigt, dass man als Benutzer *user* am Rechner *yavdr* angemeldet ist und sich im $HOME Verzeichnis footnote:[Das $HOME-Verzeichnis ist das individuelle Benutzerverzeichnis auf Linux-Systemen. Es befindet sich normalerweise unter '/home/Benutzername/' und wird durch das Tilde-Zeichen *~* abgekürzt.] befindet.
+<2> dahinter steht der Befehl, der Ausgeführt werden soll footnote:[das Beispiel orientiert sich an http://xkcd.com/149/ und soll das Konzept des Superusers (siehe http://wiki.ubuntuusers.de/sudo) verdeutlichen.]
+
+Anmerkungen zu bestimmten Punkten werden als mit Nummern versehene kleine schwarze Kreise kenntlich gemacht.
+
+Konfigurationsdateien werden mit Source-Code-Highlighting dargestellt:
+
+.Beispiel für die Konfigurationsdatei '/etc/fstab' footnote:[Über diese Datei kann man Linux anweisen Speichergeräte fest in das Root-Dateisystem einzuhängen]
+----
+# /etc/fstab: static file system information.
+#
+# Use 'blkid -o value -s UUID' to print the universally unique identifier
+# for a device; this may be used with UUID= as a more robust way to name
+# devices that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+proc            /proc           proc    nodev,noexec,nosuid 0       0
+# / was on /dev/sdb1 during installation
+UUID=83a8163c-195b-4e85-a9ed-18478339dc3f /               ext4    errors=remount-ro 0       1
+# swap was on /dev/sdb5 during installation
+UUID=32fc4d86-ab86-4ed8-bf24-68aa98ec6d0c none            swap    sw              0       0
+----
+
+[TIP]
+.Tipps
+=====================================================================
+Tips werden durch dieses Symbol gekennzeichnet
+=====================================================================
+
+[NOTE]
+.Notizen
+=====================================================================
+Notizen werden durch dieses Symbol gekennzeichnet
+=====================================================================
+
+[CAUTION]
+.Achtung!
+=====================================================================
+Hinweise werden durch dieses Symbol gekennzeichnet
+=====================================================================
+
+[IMPORTANT]
+.Wichtig!
+=====================================================================
+Wichtiges wird durch dieses Symbol gekennzeichnet
+=====================================================================
+
+[WARNING]
+.Warnung!
+=====================================================================
+Warnungen werden durch dieses Symbol gekennzeichnet
+===================================================================== 
+
+.Anmerkung
+****
+Anmerkungen erscheinen auf gelbem Hintergrund.
+**** 
+
+

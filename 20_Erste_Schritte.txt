@@ -1,0 +1,17 @@
+[[first-steps]]
+=== Erste Schritte ===
+
+Nach der Installation startet yaVDR mit drei vorkonfigurierten Internet-TV Kanälen. Ist eine Internetanbindung vorhanden sieht man also zunächst den WebTV-Stream von 3sat.
+
+.Drei Dinge die man braucht um yaVDR sinnvoll nutzen zu können:
+- Sendersuche
+- Fernbedienung
+- Inhalte
+
+include::21_WFE.txt[]
+
+****
+.TODO
+Tastenbelegung Tastatur
+Grundlegende Bedienung des OSD
+****

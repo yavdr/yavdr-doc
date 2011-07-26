@@ -1,0 +1,117 @@
+=== Das kleine Linux 1x1 ===
+
+yaVDR basiert auf http://www.ubuntu.com/[Ubuntu Linux]. Einen Großteil der Konfiguration kann man über das *webinterface,Webinterface* vornehmen. Für komplexere Konfigurationen oder zur Fehlerbehebung ist es aber oft notwendig von Hand Änderungen vorzunehmen. Daher ist es ratsam sich mit der grundlegenden Bedienung eines Ubuntu-Systems über die http://wiki.ubuntuusers.de/Shell[Shell] vertraut zu machen.
+
+[[rights]]
+==== Rechteverwaltung unter Linux ====
+
+****
+.TODO
+sudo
+Benutzer und Gruppen
+chown
+chmod
+****
+
+[[sudo]]
+===== sudo der Super User ====
+
+Unter Ubuntu ist standardmäßig kein Passwort für den root-Account vergeben. Um dennoch als root Befehle ausführen zu können gibt es das Kommando *sudo*, das Mitgliedern der Gruppe *admin* erlaubt Befehle mit erhöhten Rechten auszuführen.
+
+[[manpages]]
+==== Manpages ====
+Möchte man mehr über einen Befehl oder ein Programm erfahren, hilft es zunächst die dazugehörige http://wiki.ubuntuusers.de/man[Manpage] footnote:[also das Handbuch] dazu zu lesen. In ihr werden die Informationen zur Befehlssyntax, den Funktionen und Fähigkeiten eines Programms zusammengefasst. Standardmäßig werden die Manpages mit dem Programm *less* dargestellt. Innerhalb von *less* kann man mit den Pfeiltasten, PageUp & PageDown, der Leertaste usw. navigieren. footnote:[näheres dazu steht in der Manpage von less, siehe folgendes Beispiel ;)]
+
+Die Taste *q* beendet die Anzeige der Manpage.
+
+.Manpage von less
+----
+user@yavdr:$ man less
+----
+
+[[packets]]
+==== Paketverwaltung ====
+Ubuntu Linux verwendet das http://wiki.ubuntuusers.de/Paketverwaltung[Paketverwaltungssystem] http://de.wikipedia.org/wiki/Advanced_Packaging_Tool[APT], das es erlaubt Software-Pakete, die in den Repositories enthalten sind, zu verwalten, zu installieren und zu aktualisieren. Es gibt verschiedene Frontends für APT, im folgenden beschränkt sich diese Anleitung auf <<apt-get, apt-get>>, ein weiteres Frontend, das sich für die Arbeit in der Shell eignet ist http://wiki.ubuntuusers.de/aptitude[aptitude].
+
+[[apt-get]]
+===== apt-get =====
+http://wiki.ubuntuusers.de/apt-get[apt-get] ist das für yaVDR empfohlene Tool zur Paketverwaltung. Bevor man neue Pakete installiert, sollte man dafür sorgen, dass die Paketlisten auf dem aktuellen Stand und alle Update installiert sind, da es sonst zu Konflikten von Paketversionen oder nicht auflösbaren Abhängigkeiten kommen kann.
+
+[[update-packages]]
+.Paketlisten aktualisieren
+----
+sudo apt-get update
+----
+
+[[upgrade-packages]]
+.Alle Pakete auf den aktuellen Stand bringen
+----
+sudo apt-get dist-upgrade
+----
+
+[[install-packages]]
+.Pakete installieren
+----
+sudo apt-get install Paketname                	<1>
+sudo apt-get install Paket1 Paket2 Paket3	<2>
+sudo apt-get install vim			<3>
+----
+<1> Installation von einem Paket
+<2> Installation von mehren Paketen
+<3> Beispiel für die Installation des Editors *vim*
+
+[[search-packages]]
+.Pakete suchen
+----
+sudo apt-cache search paketname
+----
+
+[[info-packages]]
+.Informationen über ein Paket anzeigen
+----
+sudo apt-cache showpkg paketname
+----
+
+[[reinstall-packages]]
+.Pakete neu installieren
+----
+sudo apt-get install --reinstall Paketname1
+----
+
+[[remove-packages]]
+.Pakete entfernen
+----
+sudo apt-get remove Paketname	<1>
+sudo apt-get purge Paketname	<2>
+----
+<1> Paket entfernen, Konfigurationsdateien bleiben erhalten
+<2> Paket inklusive der Konfigurationsdateien entfernen
+
+[[packet-sources]]
+===== Paketquellen ===== 
+yaVDR nutzt im Auslieferungszustand die Ubuntu-Quellen sowie die https://launchpad.net/~yavdr[stable-PPAs] des yaVDR-Teams.
+Die aktuell eingetragenen Paketquellen finden sich unter '/etc/apt/sources.list' und 'etc/apt/sources.list.d/'.
+
+[[add-repo]]
+.Neue Paketquellen hinzufügen
+Ausführliche Informationen zum Thema http://wiki.ubuntuusers.de/Paketverwaltung[Paketquellen] und http://wiki.ubuntuusers.de/Paketquellen_freischalten/PPA[PPA]  footnote:[Personal Package Archive] findet man im Ubuntu-User Wiki.
+Möchte man neue Paketquellen hinzufügen, kann man diese entweder von Hand in die oben genannten Dateien eintragen (und den Schlüssel importieren) oder man benutzt für PPAs auf Launchpad den Befehl *add-apt-repository*:
+
+.PPAs hinzufügen
+----
+user@yavdr:~$ sudo add-apt-repository ppa:<Launchpad-Benutzer>/<Name des PPA>
+----
+
+[[control-c]]
+==== Shell-Befehle vorzeitig beenden ====
+Möchte man Befehle in der Shell vorzeitig beenden, kann man sie mit *STRG + c* abbrechen. Dies ist unter anderem bei Befehlen wie *irw* oder *tail -f* nützlich, da diese von sich aus unbegrenz lange laufen.
+
+
+
+
+
+
+
+
+
+

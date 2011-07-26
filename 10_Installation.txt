@@ -1,0 +1,122 @@
+[[installation]]
+=== Installation von yaVDR ===
+
+[[download]]
+==== Download ====
+
+Die aktuelle stabile Version von yaVDR steht im Download-Bereich der http://www.yavdr.org/download[offiziellen Website] bereit.
+
+[[installation]]
+==== Installation ====
+
+Je nach verwendetem Prozessor, Arbeitsspeicher und Festplatten nimmt eine yaVDR-Installation zwischen 20 bis 70 Minuten in Anspruch. Der PC, auf dem yaVDR Installiert werden soll, muss nun so eingestellt werden, dass er von der eingelegten Installations-CD startet. Wie das geht steht normalerweise im Handbuch des Herstellers des Systems bzw. des Mainboards.
+
+[TIP]
+.Bootmenü
+=====================================================================
+Bei vielen aktuellen Mainboards kann man mit den Tasten F8 oder F12 ein Menü aus der POST-Anzeige footnote:[Power On Self-Test] heraus aufrufen, das es erlaubt das Bootgerät für den Start zu wählen.
+=====================================================================
+
+Sobald das System von der Installations-CD bootet, erscheint ein Auswahlmenü in dem man die Sprache für die Installation auswählen kann:
+
+image:./installation/00_sprachwahl.png[]
+
+Nun kann man die yaVDR-Installation starten, die CD auf Fehler überprüfen, den Arbeitsspeicher testen, von der ersten Festplatte in der Bootreihenfolge starten oder ein Rettungssystem starten lassen.
+Um yaVDR zu installieren wählt man also den ersten Punkt in der Liste aus:
+
+image:./installation/01_bootscreen.png[]
+
+Um Sprache und Zeit auszuwählen wird der Standort des Systems abgefragt:
+
+image:./installation/02_standortwahl.png[]
+
+Aufgrund eines Bugs im Installer von Ubuntu 11.04 Natty Nahrwal ist es empfehlenswert die Tastenbelegung selbst zu wählen anstatt sie automatisch bestimmen zu lassen:
+
+image:./installation/03_tastenerkennung.png[]
+
+Als erstes wählt man das Land...
+
+image:./installation/04_keyboard_konfig.png[]
+
+\... und danach die Tastenbelegung. Da auf dem yaVDR-System i.d.R. keine literarischen Meisterwerke entstehen sollen, aber ggf. Einstellungen in der Shell vorgenommen werden sollen, bietet es sich an die Akzenttasten zu deaktivieren, so dass die Eingabe von häufig verwendeten Zeichen wie z.B. der Tilde "~" erleichtert wird:
+
+image:./installation/05_keyboard_konfig-2.png[]
+
+Vor Beginn der weiteren Konfiguration werden einige Dateien nachgeladen:
+
+image:./installation/06_vorbereitung.png[]
+
+Dann wird versucht das Netzwerk automatisch zu konfigurieren und es kann der Hostname footnote:[Das ist der Name unter dem der Rechner im Netzwerk ansprechbar ist] eingestellt werden:
+
+image:./installation/07_network_name.png[]
+
+Nun kann die Zeitzone eingestellt werden:
+
+image:./installation/08_zeitzonenvorschlag.png[]
+
+Im nächsten Schritt kann man konfigurieren, wie die verbaute(n) Festplatten genutzt werden sollen. Die Root-Partition sollte mindestens 3 GB groß sein, damit genug Platz für die Installation weiterer Pakete bleibt ist eine Größe von 8 - 20 GB empfehlenswert. Alle lokalen Mediendateien sollten später unter /srv/vdr liegen. Dies ist der bei yaVDR voreingestellte Ort, an dem später Aufnahmen abgelegt werden und an dem XBMC Medien in den entsprechenden Unterverzeichnissen erwartet. Näheres zu dem Thema findet sich im Kapitel
+****
+.TODO:
+ *Verzeichnisse von yaVDR*.
+****
+
+Daher kann man entweder den Installer automatisch die Festplatte aufteilen lassen ("*Geführt - verwende vollständige Festplatte*"), wodurch neben der SWAP-Partition der restliche Platz für Root verwendet wird (siehe folgender Screenshot) oder manuell eine kleine Partition für */* erstellen und den Verbleibenen Platz (oder auch eine zweite Festplatte mit hoher Kapazität) unter /srv einhängen. Als Dateisystem eignet sich z.B. ext4.
+
+image:./installation/09_festplatten_partitionieren.png[]
+
+Nun kann die Festplatte ausgewählt werden, auf der das System installiert werden soll:
+
+image:./installation/10_festplatte_wählen.png[]
+
+Und man bestätigt, dass man die Vorgeschlagene Partitionierung übernehmen möchte:
+
+image:./installation/12_partitionierung_uebernehmen.png[]
+
+Nun wird die Partitionierung übernommen und damit begonnen das System einzurichten:
+
+image:./installation/13_installation_des_grundsystems.png[]
+
+Zum Abschluss der Konfiguration wird noch der Benutzer erstellt, mit dem man sich später zu Wartungs- und Administrationszwecken am yaVDR-System anmelden kann. Dazu gibt man seinen Namen ein:
+
+image:./installation/14_username.png[]
+
+Darauf basierend wird ein Benutzername vorgeschlagen, den man aber nach Belieben ändern kann:
+
+image:./installation/15_systemusername.png[]
+
+Als vorläufig letzten Schritt muss man noch angeben, ob ein HTTP-Proxy verwendet wird. Ist das (wie in den meisten Heimnetzwerken üblich) nicht der Fall, kann man das Feld einfach leer lassen:
+
+image:./installation/16_http_proxy.png[]
+
+Die Installation des Systems nimmt nun etwas Zeit in Anspruch:
+
+image:./installation/17_installation_der_pakete.png[]
+
+Bevor das System für den ersten Start vorbereitet werden kann, muss noch der Ort für die Installation des Bootloaders gewählt werden. Hat man keine besonderen Wünsche kann man die Standard-Auswahl einfach übernehmen und Grub in den MBR footnote:[Master Boot Record] der Systemplatte installieren.
+
+image:./installation/18_grub_installation.png[]
+
+Nun erfolgt noch die automatische Konfiguration von yaVDR anhand der bei der Installation gefundenen Hardware.
+
+image:./installation/19_preseed.png[]
+
+Ist dieser Prozess abgeschlossen kann man die Installations-CD entnehmen und den PC neu starten.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

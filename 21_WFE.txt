@@ -1,0 +1,41 @@
+[[wfe]]
+==== Das Webfrontend ====
+
+Das Webfrontend ist via Browser unter der IP-Adresse oder dem Hostnamen des VDR aus dem Netzwerk erreichbar. Am yaVDR selbst ist es als Startseite im vorinstallieren Mozilla Firefox eingerichtet. Diesen kann man entweder über das VDR-OSD (Taste "M" auf der Tastatur, Menütaste auf der Fernbedienung: *Hauptmenü => "Applikationen" => "Web"*) aufrufen oder indem man die Maus mittig an den linken Bildschirmrand bewegt und aus dem nun erscheinenden Panel den Starter unter *http:// => Firefox* wählt.
+
+image:wfe/wfe_start.png["Startseite des yaVDR-Webfrontend"]
+
+.Die drei Einträge auf der Startseite verlinken auf:
+. <<wfe-config,*Das yaVDR-Webfrontend zu Konfiguration*>>
+. <<vdr-live,*VDR LIVE!*>>
+. <<streamdev-server-http,*Das HTTP-Interface des Streamdev-Servers*>>
+
+[[wfe-config]]
+===== Konfiguration über das Webfrontend =====
+
+.Das Webfrontend startet mit dem Dashboard, das eine Übersicht über das System gibt. Unter anderem wird angezeigt ob
+* der VDR läuft
+* freier und belegter Festplattenplatz
+* das gewählte Frontend
+* die Bildschirmauflösung
+* Informationen zur Ausschaltmethode, CPU, RAM und Systemauslastung
+* die gewählte Audioausgabeoption
+* Aufnahmen und anstehende Timer
+
+image:wfe/dashboard.png["Dashboard"]
+
+Ein Großteil der Einstellungen kann bei yaVDR über das Webfrontend vorgenommen werden. 
+
+.Dazu gehören
+* <<wfe-frontend,Wahl des VDR-Frontends>>
+* <<lifeguard-addon, Lifeguard-Addon>>
+* EPG-Zeichenkorrektur
+* <<wfe-channels,Kanalverwaltung>>
+* <<wfe-remote,Fernbedienung(en)>>
+* <<wfe-audio,Tonausgabe>>
+* <<wfe-video,Anzeigeneinstellungen>>
+* <<wfe-system,Systemeinstellungen>> wie Sprache, Ausschalt- und Aufweckmethode
+* <<wfe-network,Netzwerkeinstellungen>> zum Einbinden von NFS-Freigaben und dem Aufwecken anderer Rechner
+* <<wfe-packages,Paketverwaltung>>
+* <<wfe-config-editor,Editor für Konfigurationsdateien>>
+

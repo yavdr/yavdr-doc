@@ -1,0 +1,517 @@
+=== Fernbedienung ===
+
+Kein VDR wäre komplett ohne die Möglichkeit ihn bequem per Fernbedienung zu steuern.
+yaVDR 0.4 unterstützt ein breites Spektrum von Eingabegeräten, sowohl Infrarot- als auch Funk-Fernbedienungen.
+Ob deine Fernbedienung unterstützt wird, kannst du 
+****
+hoffentlich bald hier lesen - Liste im yaVDR-Wiki sinnvoll?
+****
+
+[TIP]
+.Das yaVDR-Projekt lebt von deiner Mithilfe.
+=====================================================================================
+Bitte schicke den Entwicklern die Konfigurationsdateien für deine noch nicht OOTB footnote:[Out of the box, d.h. direkt nach der Installation von yaVDR funktionierend] funktionsfähige Fernbedienung,
+damit die Hardware-Unterstützung für die kommenden Versionen verbessert werden kann.
+======================================================================================
+
+==== Eventlirc ====
+
+yaVDR 0.4 benutzt standardmäßig eventlircd, ein Dienst der dabei hilft die unterschiedlichen Treiber und Eingabegeräte unter einen Hut zu bringen. Es dient sozusagen als Filter, der die Tastendrücke aller konfigurierten Fernbedienungen auswertet, auf Wunsch die Tastencodes vereinheitlicht und an den VDR weiterreicht.
+
+===== Die Theorie footnote:[http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/p1009867-yavdr-0-4-eventlircd-und-fernbedienungen-die-grundlagen/#post1009867] =====
+
+http://code.google.com/p/eventlircd[*Eventlircd*] übersetzt Tastendrücke von Eingabegeräten footnote:[bzw. "Eventgeräten", also Eingabegeräte, für die durch den Treiber ein Eintrag unter '/dev/input/' erstellt wird] in Lirc-Tastendrücke. Im Prinzip ähnelt die Funktion dem remote-plugin mit dem Unterschied, dass nur Tasten ausgewertet werden, denen über eine Keymap footnote:[Konfigurationsdatei, die für die Übersetzung des Tastendrucks auf der Fernbedienung in eine Taste am Computer herangezogen wird] eine Funktion zugewiesen wurde.
+
+Solche Eingabegeräte sind zum Beispiel normale Tastaturen oder auch Fernbedienungen die über ihre Treiber als Tastaturen eingebunden werden. Fernbedienungen welche an DVB Karten angeschlossen sind, melden sich teilweise ebenfalls als Tastaturen, außerdem existiert eine neue Schnittstelle für Fernbedienungen namens rc-core, auf welche Jarod Wilson footnote:[Neuer Maintainer des Lirc Projektes] schon einige der bestehenden Lirc Treiber und auch einige Konfigurationen der mit DVB Geräten ausgelieferten Fernbedienungen portiert hat.
+Auch diese Schnittstelle - auch wenn sie kein normaler Tastaturtreiber ist - stellt ihre Geräte als Eingabegeräte zur Verfügung.
+
+Eingaben von Zeigegeräten (wie Maus, Touchpad, Grafiktablett), die ebenfalls über die Input-Schnittstelle arbeiten, versucht eventlircd unverändert durchzuleiten.
+
+Eventlircd erkennt Eingabegeräte über <<udev,udev>>, auch wenn sie erst nach dem Start des Dämon eingebunden oder angeschlossen werden. Hier liegt einer der Vorteile dieser Lösung, da eventlircd ab seinem Start einen Lirc Socket für den VDR bereitstellt, und nach und nach die ihm zugeordneten Geräte als Eingabegeräte einbinden kann. 
+
+Um welche Geräte es sich kümmern soll, erkennt eventlircd anhand von Attributen, welche man den Geräten bei der Initialisierung über <<udev-rules,udev-Regeln>> mitgeben kann. Für manche Geräte funktioniert das schon in der Standardkonfiguration (rc-core, Eingabegeräte die das yaVDR-Team selber besitzt, Konfigurationen die an das yaVDR-Team weitergegeben wurden). 
+
+Lircd footnote:[Der LIRC-Daemon] kann man über den Switch footnote:[Das Startargument] --uinput anweisen seine Tastendrücke an '/etc/input/uinput' footnote:[User Level Input Subsystem - eine Schnittstelle, um Eingaben aus dem Userland an den Kernel zu übermitteln] zu übergeben. Damit kann dann lircd parallel zu anderen Eingabegeräten gestartet werden und es ist so auch möglich mehrere Instanzen von lircd für verschiedene Geräte mit unterschiedlicher Konfiguration gleichzeitig starten. Die Ausgabe erfolgt nach Verarbeitung durch Eventlircd für die Anwendungen dann so, als würde sie von einem einzigen Gerät stammen.
+
+Da manche Geräte eindeutig erkannt werden können (zum Beispiel USB Geräte), kann man diese über <<udev-rules,udev-Regeln>> mit der für das jeweilige Geräte richtigen Konfiguration automatisch einbinden. Die Konfigurationen für all diese Geräte kann man alle gleichzeitig auf dem System haben, da durch udev nur die Konfiguration für angeschlossene Geräte aktiviert wird.
+
+Eventlircd kann geräte- oder treiberabhängig eine Übersetzungstabelle mitgegeben werden, um die Tastenbelegung anzupassen. (sogenannte <<evmaps,evmaps>>)
+
+image:EventlircdOrganigrammconfigfiles.png["Eventlircd",align="center"]
+
+[TIP]
+.Alle Wege führen zu Eventlircd
+=====================================================================
+Je nachdem welchen Anschluss und welche Treiber die eigenen Empfänger bzw. TV-Karten verwenden kann der Weg eines Tastendrucks also sehr unterschiedlich sein, bis er von eventlircd ausgewertet wird. Dieses Hintergrundwissen ist dann von Vorteil, wenn die Tastenbelegung die Eventlircd ausgibt nicht zur *remote.conf* von yaVDR passt.
+=====================================================================
+
+****
+[qanda]
+Ich: Gibt es TV-Karten, die direkt ein event-Gerät unter /dev/input/ anlegen ohne rc-core zu benutzen?::
+steffenbpunkt: Ja gibt es
+das war die vorgehensweise vor rc-core
+das ganze ist ja noch sehr neu
+das heisst nur neuere DVB Treiber benutzen rc-core
+****
+
+
+<<<<
+
+.Die Vorteile sind also:
+* frühe Verfügbarkeit des Lircsocket (und damit schnellerer Start des VDR)
+* Vorkonfiguration für verschiedenste Eingabegeräte möglich
+* Tastatur- , rc-core- und Lirc-Geräte können angesprochen werden.
+* Die Konfiguration durch den Nutzer entfällt, wenn die Fernbedieung und der Empfänger den yaVDR-Entwicklern bereits bekannt sind und schon unterstützt werden.
+
+.Wie bei jedem anderen Konzept gibt es natürlich auch "Nachteile": 
+* Um die Vorteile der Lösung mit Eventlircd zu nutzen, braucht man eine Standardbelegung auf die man die Tasten normalisieren kann, dadurch kommt dann die Anlernfunktion des VDR nicht mehr zum tragen. Wenn das Gerät noch nicht unterstützt wird, bedeuteutet dies unter Umständen ein etwas mühsames manuelles Anpassen bis die Tasten der eigenen Fernbedienung auf die yaVDR-Team mitgelieferte Belegung für Lirc in der '/var/lib/vdr/remote.conf' passt. 
+* Um in den Genuß zu kommen Lirc wie oben beschrieben nutzen zu können, müssen die Tasten in der lircd.conf entsprechend der Regeln der Inputgeräte benannt werden. Bei Lirc heisst das Namespace-konform benannt sein. Sinnvoll wäre hier natürlich eine Benennung entsprechend unserer Standardbelegung. 
+
+Bei der yaVDR-Standardbelegung haben sich die Entwickler an der http://www.linuxtv.org/wiki/index.php/Remote_Controllers[Dokumentation von linux-media] (Tabelle am Ende der Seite) orientiert und benutzen diese als Referenz.
+[CAUTION]
+.Abweichende Belegung vom Desktop-Standard
+=====================================================================
+Die unter yaVDR verwendeten Tasten-Namen weichen von den z.B. für GNOME-Anwendungen verwendeten Tasten ab, so dass diese nicht ohne weiteres mit allen Tasten über die Fernbedienungn steuerbar sind. Ob sich das im Laufe der Entwicklung von yaVDR ändern wird, ist noch unklar.
+=====================================================================
+
+[[evmaps]]
+===== evmaps =====
+
+Alle Tastendrücke, die an Eventlirc weitergereicht werden, können durch Übersetzungstabellen, die sogenannten https://bugs.yavdr.com/projects/yavdr-remote/repository/revisions/master/show/evmaps[evmaps] footnote:[Eventmaps] noch verändert werden, bevor sie an den VDR übergeben werden. Sie befinden sich unter '/etc/eventlirc.d/' und sind entweder nach dem Gerätenamen, dem Treiber (z.B. 'ircore.evmap' für Geräte, die mit *rc-core* als Treiber arbeiten) oder nach der Produkt- und Hersteller-ID aus ihrer <<udev-rules,udev-Regel>> benannt.
+
+.Beispiel für die Syntax in einer evmap:
+----
+KEY_PROG1	=KEY_MENU #Ich bin ein Kommentar
+----
+Hier wird das Tasten-Event *KEY_PROG1* umbenannt. Der VDR empfängt dadurch das Lirc-Event *KEY_MENU*
+
+[[ir-keytable]]
+==== ir-keytable ====
+
+ir-keytable gibt Auskunft über das angelegte Inputdevice('/dev/input/eventX'), das verwendete Protokoll und den verwendeten Treiber für IR-Eingabegeräte, die *rc-core* bzw. das Treibermodul *ir-core* verwenden. Es kann über das Paket *ir-keytable* <<install-packages,nachinstalliert>> werden.
+
+[[ir-keytable-pvr350]]
+.Beispiel für eine Hauppauge PVR350 mit IR-Empfänger:
+----
+user@yavdr:~$ sudo ir-keytable
+Found /sys/class/rc/rc0/ (/dev/input/event3) with:      <1>
+	Driver ir-kbd-i2c, table rc-rc5-tv              <2>
+	Supported protocols: RC-5                       <3>
+	Enabled protocols:                  
+Repeat delay = 500 ms, repeat period = 33 ms       
+----
+<1> Die Fernbedienung wurde unter '/dev/input/event3' eingebunden
+<2> Der verwendete Treiber ist *ir-kbd-i2c*, (die von ir-core geladene Keytable rc-rc5-tv muss noch abgeändert werden, damit alle Tasten korrekt funktionieren)
+<3> Das unterstützte Protokoll ist http://de.wikipedia.org/wiki/RC-5[*RC-5*]
+
+===== Scancodes ermitteln =====
+
+Mit *ir-keytable* kann man auch Tastencodes der Fernbedienung ermitteln, z.B. um zu sehen ob überhaupt Tastendrücke erkannt werden oder um eine Keymap zu erstellen, die zur '/vdr/lib/vdr/remote.conf' des yaVDR passt.
+Da Tastendrücke von eventlircd abgefangen werden, muss dieser Dienst gestoppt sein. Außerdem ist es empfehlenswert den VDR vorher zu <<stop-vdr,stoppen>>, um eine unbeabsichtigte Fehlbedienung zu vermeiden.
+
+[[pvr350-wok]]
+.Beispielausgabe ohne geladene Keytable
+----
+user@yavdr:~$ sudo ir-keytable -t
+Testing events. Please, press CTRL-C to abort.
+1310546299.271540: event MSC: scancode = 3d
+1310546300.071543: event MSC: scancode = 3b
+1310546301.471538: event MSC: scancode = 01
+1310546301.871547: event MSC: scancode = 02
+1310546302.271537: event MSC: scancode = 03
+----
+
+===== Keymap erstellen =====
+
+Passend zur eigenen Fernbedienung kann man sich nun eine Keymap erstellen, dabei muss der scancode in eine Hexadezimalzahl übertragen und der Taste eine Funktion zugewiesen werden.
+Aus *scancode = 3d* wird also *0x003d*, aus *scancode = 01* wird *0x0001* usw.
+
+Die Keymap wird dann unter einem möglichst aussagekräftigen Namen in '/etc/rc_keymaps/' gespeichert.
+
+.'/etc/rc_keymaps/pvr350' (Auszug)
+----
+# Keymap for Hauppauge PVR350 and A415-HPG-WE remote control
+0x003b KEY_SETUP
+0x003d KEY_POWER2
+0x0001 KEY_1
+0x0002 KEY_2
+0x0003 KEY_3
+[...]
+----
+
+===== Keymap laden =====
+
+.Damit die Keytable auch automatisch geladen wird, muss eine Regel in '/etc/rc_maps.conf' für die Fernbedienung erstellt werden.
+----
+# driver        table                           file
+ir-kbd-i2c <1>    *                               /etc/rc_keymaps/pvr350
+----
+<1> Den Treiber haben wir wie weiter oben beschrieben mittels <<ir-keytable-pvr350,*sudo ir-keytable*>> ermittelt.
+
+Zu Testzwecken kann man Einstellungen für per ir-core eingebundene Geräte auch von Hand laden oder zurücksetzen. 
+
+.Manuelles Laden einer Keymap durch ir-keytable
+----
+user@yavdr:~$ sudo ir-keytable -c <1> -p rc-5 <2> -w /etc/rc_keymaps/pvr350 <3>
+----
+<1> *-c* entfernt alle bereits geladenen Keymaps
+<2> *-p <Protokoll>* setzt das IR-Protokoll
+<3> *-w <keymap>* gibt die zu ladende Keymap an.
+Weitere  Informationen findet man in der <<manpages,Manpage>> von *ir-keytable*.
+
+[[pvr350-wk]]
+.Beispielausgabe von *ir-keytable -t* für die <<pvr350-wok,gleichen Tasten>> mit passender Keytable
+----
+user@yavdr:~$ sudo ir-keytable -t
+Testing events. Please, press CTRL-C to abort.
+1310546400.571539: event MSC: scancode = 3d
+1310546400.571545: event key down: KEY_POWER2 (0x0164)
+1310546400.571547: event sync
+1310546400.820703: event key up: KEY_POWER2 (0x0164)
+1310546400.820705: event sync
+1310546401.471543: event MSC: scancode = 3b
+1310546401.471551: event key down: KEY_SETUP (0x008d)
+1310546401.471553: event sync
+1310546401.720700: event key up: KEY_SETUP (0x008d)
+1310546401.720703: event sync
+1310546406.271547: event MSC: scancode = 01
+1310546406.271556: event key down: KEY_1 (0x0002)
+1310546406.271558: event sync
+1310546406.520700: event key up: KEY_1 (0x0002)
+1310546406.520703: event sync
+1310546407.071539: event MSC: scancode = 02
+1310546407.071543: event key down: KEY_2 (0x0003)
+1310546407.071545: event sync
+1310546407.320705: event key up: KEY_2 (0x0003)
+1310546407.320709: event sync
+1310546407.871539: event MSC: scancode = 03
+1310546407.871544: event key down: KEY_3 (0x0004)
+1310546407.871546: event sync
+1310546408.120700: event key up: KEY_3 (0x0004)
+1310546408.120702: event sync
+----
+
+
+[[evtest]]
+==== evtest ====
+
+*evtest* ist ein Programm, das es erlaubt nähere Informationen über ein unter '/dev/input/event<X>' eingebundenes Gerät zu erhalten. Es kann über das Paket *evtest* nachinstalliert werden.
+
+----
+user@yavdr:~$ sudo evtest /dev/input/event3
+Input driver version is 1.0.1
+Input device ID: bus 0x18 vendor 0x0 product 0x0 version 0x0    <1>
+Input device name: "i2c IR (Hauppauge WinTV PVR-350"            <2>
+Supported events:
+  Event type 0 (Sync)
+  Event type 1 (Key)                                            
+    Event code 1 (Esc)                                          <3>
+    Event code 2 (1)
+    Event code 3 (2)
+    Event code 4 (3)
+    Event code 5 (4)
+    Event code 6 (5)
+    Event code 7 (6)
+    Event code 8 (7)
+    Event code 9 (8)
+    Event code 10 (9)
+    Event code 11 (0)
+    Event code 103 (Up)
+    Event code 105 (Left)
+    Event code 106 (Right)
+    Event code 108 (Down)
+    Event code 113 (Mute)
+    Event code 114 (VolumeDown)
+    Event code 115 (VolumeUp)
+    Event code 119 (Pause)
+    Event code 128 (Stop)
+    Event code 139 (Menu)
+    Event code 141 (Setup)
+    Event code 158 (Back)
+    Event code 167 (Record)
+    Event code 168 (Rewind)
+    Event code 207 (Play)
+    Event code 208 (Fast Forward)
+    Event code 352 (Ok)
+    Event code 356 (Power2)
+    Event code 358 (Info)
+    Event code 359 (Time)
+    Event code 363 (Channel)
+    Event code 365 (EPG)
+    Event code 366 (PVR)
+    Event code 370 (Subtitle)
+    Event code 373 (Mode)
+    Event code 388 (Text)
+    Event code 398 (Red)
+    Event code 399 (Green)
+    Event code 400 (Yellow)
+    Event code 401 (Blue)
+    Event code 402 (ChannelUp)
+    Event code 403 (ChannelDown)
+    Event code 407 (Next)
+    Event code 412 (Previous)
+  Event type 4 (Misc)
+    Event code 4 (ScanCode)
+  Event type 20 (Repeat)
+Testing ... (interrupt to exit)
+----
+<1> Produkt- und Hersteller-ID
+<2> Produktname, z.B. für eine udev-Regel
+<3> Ab hier sind die verfügbaren Tasten der Fernbedienung aufgelistet
+
+[[udev]]
+==== udev ====
+
+http://wiki.ubuntuusers.de/udev[udev] ist ein Dienst, der es erlaubt Hardware dynamisch zu erkennen und in das System einzubinden. Für jedes Gerät, das vom Hersteller i.d.R. mit individuellen Identifikationsmerkmalen ausgestattet wurde, kann so anhand von <<udev-rules,udev-Regeln>> festgelegt werden, welche Treiber, Module oder Befehle aktiviert werden sollen, sobald ein Gerät erkannt wird.
+
+[[udev-rules]]
+===== udev-Regeln =====
+
+Über Regeln in der Datei https://github.com/yavdr/yavdr-remote/blob/master/udev/98-eventlircd.rules['/lib/udev/98-eventlircd.rules'] kann festgelegt werden, welche Konfiguration eventlircd für angeschlossene USB-Fernbedienungen lädt.
+
+.Beispiel für einen Eintrag in '/lib/udev/98-eventlircd.rules'
+----
+ENV{ID_VENDOR_ID}=="0419", ENV{ID_MODEL_ID}=="0001", \                      <1>
+  ENV{eventlircd_enable}="true",\                                           <2>
+  ENV{eventlircd_evmap}="03_$env{ID_VENDOR_ID}_$env{ID_MODEL_ID}.evmap"     <3>
+----
+<1> Die Fernbedienung wird anhand der ID_VENDOR_ID und der ID_MODEL_ID erkannt (siehe <<evtest,evtest>>)
+<2> Erlaubt eventlircd die Eingaben des Geräts zu verwerten
+<3> Lädt die <<evmaps,evmap>> für das Gerät. In diesem Fall entsteht nach Einsetzen der Umgebungsvariablen der Name "03_0419_0001.evmap", demnach wird '/etc/eventlirc.d/03_0419_0001.evmap' als Keymap geladen.
+
+
+[[udev-tools]]
+===== udev-Crashkurs =====
+
+.TODO:
+****
+* näheres zu UDEV, mitgelieferte und benutzerdefinierte Regeln, UDEV-Merkmale ermitteln <<
+****
+
+.TODO
+****
+* udev für USB-FB
+****
+
+Weitere Informationen über ein Eingabegerät kann man mittels udevadm herausfinden. Es eignet sich gut, wenn man Kriterien für <<udev-rules,udev-Regeln>> bestimmen möchte:
+
+[[udevadm]]
+.udevadm
+----
+user@yavdr:~$ sudo udevadm info --query=all --attribute-walk --name=/dev/input/event4
+
+Udevadm info starts with the device specified by the devpath and then
+walks up the chain of parent devices. It prints for every device
+found, all possible attributes in the udev rules key format.
+A rule to match, can be composed by the attributes of the device
+and the attributes from one single parent device.
+
+  looking at device '/devices/virtual/input/input4/event4':
+    KERNEL=="event4"
+    SUBSYSTEM=="input"
+    DRIVER==""
+
+  looking at parent device '/devices/virtual/input/input4':
+    KERNELS=="input4"
+    SUBSYSTEMS=="input"
+    DRIVERS==""
+    ATTRS{name}=="Sundtek Ltd. Remote Control"
+    ATTRS{phys}==""
+    ATTRS{uniq}==""
+    ATTRS{modalias}=="input:b0003v0000p0000e0001-e0,1,2,4,14,k71,72,73,74,80,9E,A7,AE,CF,161,174,18E,18F,190,191,192,193,ramlsfw"
+----
+
+==== lirc ====
+
+.TODO:
+****
+* lircd.conf, hardware.conf, --uinput
+* automatischer Start von Lircd???
+* Beispielhardware lirc_ttusbir, lirc_parallel, lircd interne userspace treiber usw.
+****
+
+****
+Chat-Auszug:
+
+[qanda]
+Ich: Und was wären Beispiele für weitere Geräte neben Seriellen Empfängern, die über Lircd laufen?::
+steffenbpunkt: lirc_ttusbir
+lirc_parallel
+lircd interne userspace treiber
+noch ein paar andere
+nicht wundern wenns länger dauert, bin noch nicht zu Haus
+Ich: Ok, danke - dann werde ich die noch als Beispiele aufnehmen. Zur Konfigurationshilfe (mangels passender Hardware kann ich da leider nicht alles ausprobieren): Wenn der Nutzer noch nicht weiß wie sein Empfänger eingebunden ist, wird er aber höchstens lirc_ttusbir unter den automatisch geladenen Modulen finden und lirc_serial und lirc_parallel muss er von Hand oder über das Webfrontend in der lircd-Konfiguration einstellen.::
+steffenbpunkt: genau
+den Namen des lirc Gerätes is in eventlircd fest eingebunden, devinput wurde wohl in Anlehnung an die lircd.conf des devinput Modus von lircd gewählt. Das es nur einen Namen gibt ist zumindest für XBMC sinnvoll, da XBMC diesen Namen auswertet.
+****
+
+
+==== irw ====
+
+Wenn lircd oder eventlircd <<status-remoted,gestartet>> sind, zeigt der Befehl *irw* die vom VDR erkannten Tastendrücke an. Die Ausgabe der erkannten Tastendrücke kann per *STRG + c* <<control-c,abgebrochen>> werden.
+
+.irw bei eventlircd mit einer Hama MCE Remote
+----
+user@yavdr:~$ sudo irw
+<1> <2> <3>       <4>
+67 0 KEY_UP devinput
+6c 0 KEY_DOWN devinput
+----
+<1> Tastencode
+<2> Tastendruck 0=Event
+<3> Name der Taste
+<4> Die Tasten werden per devinput an eventlirc übergeben
+
+.irw für lircd am Beispiel eines Atric-Empfängers footnote:[http://www.atric.de/IR-Einschalter/index.php] mit Hauppauge A415-HPG-WE Fernbedienung
+----
+user@yavdr:~$ sudo irw
+<1>               <2>  <3>      <4>
+0000000000001794 00 KEY_UP hvr4000-2
+0000000000001794 01 KEY_UP hvr4000-2
+0000000000001795 00 KEY_UP hvr4000-2
+0000000000001795 01 KEY_UP hvr4000-2
+----
+<1> Tastencode
+<2> 00=Taste gedrückt 01=Taste losgelassen
+<3> Name der Taste
+<4> Benutzte Fernbedienung aus der lircd.conf für die Tastenzuordnung
+
+==== Noch nicht unterstützte Fernbedienungen ====
+
+Funktioniert eine Fernbedienungn nicht direkt in yaVDR muss man sie von Hand konfigurieren. Im Folgenden ein kurzer Leitfaden, der dabei hilft notwendige Informationen über das Gerät zu sammeln. Dies erleichtert die Suche im Internet und hilft dabei Support-Anfragen im http://vdr-portal.de oder beim Hinzufügen der eigenen Konfiguration zur yaVDR-Konfigurationssammlung im https://bugs.yavdr.com/projects/yavdr/issues[Bug- & Feature-Tracker von yaVDR] mit sinnvollen Informationen zu versehen.
+
+===== Erkennt Linux meinen Empfänger? =====
+
+Die Hardwareunterstützung ist in den letzten Jahren unter Linux immer besser geworden, so dass in vielen Fällen der Empfänger zumindest erkannt wird und nur die Konfiguration für die Tasten-Codes angepasst werden muss.
+
+****
+.TODO
+* Informationen über den Empfänger sammeln  (lsusb/lspci, dmesg, cat '/proc/bus/input/devices', evtest, lsmod
+****
+
+===== Erkennt Linux meine Fernbedienung/Tastendrücke? =====
+
+****
+.TODO:
+* irw, ir-keytable (-t), sudo cat /dev/hidraw[0-9], evtest, xev???
+****
+
+===== Schritte zur Konfiguration der Fernbedienung =====
+
+[qanda]
+.Wie ist der Empfänger angeschlossen?
+* Via <<USB-Remote,USB>>
+* Via <<TV-Card-Remote, TV-Karte>>
+* Via <<Serial-Remote, Serielle Schnittstelle>>
+
+Funktioniert die angeschlossene Fernbedienung nicht sofort mit {version} helfen die folgenden Schritte, das Problem einzugrenzen:
+
+[[USB-Remote]]
+===== USB-Empfänger/DVB-Sticks =====
+
+[NOTE]
+=====================================================================
+Im folgenden sind alle Befehle mit den relevanten Ausgaben am Beispiel einer "Hama MCE Remote Control"beschrieben, die OOTB von yaVDR unterstützt wird, sich aber gut als Beispiel eignet.
+=====================================================================
+
+Ruft man *dmesg* direkt nach dem Einstecken eines USB-Gerätes auf, sieht man, ob Linux für das Gerät Treiber geladen und Geräte angelegt hat.
+[[dmesg]]
+.dmesg
+----
+user@yavdr:~$ dmesg
+[...]
+[ 7178.064139] usb 2-2: new full speed USB device using ohci_hcd and address 3
+[ 7178.535387] input: HID 05a4:9881 as /devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.0/input/input5
+[ 7178.535645] generic-usb 0003:05A4:9881.0002: input,hidraw1: USB HID v1.10 Keyboard [HID 05a4:9881] on usb-0000:00:06.0-2/input0
+[ 7178.574745] input: HID 05a4:9881 as /devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.1/input/input6
+[ 7178.574885] generic-usb 0003:05A4:9881.0003: input,hidraw2: USB HID v1.10 Mouse [HID 05a4:9881] on usb-0000:00:06.0-2/input1
+
+----
+****
+.TODO:
+dmesg -> Eventgeräte?
+****
+
+Um zu sehen, welche USB-Geräte Linux momentan erkannt hat, kann man den Befehl lsusb benutzen. Er gibt Hinweise auf Hersteller und Typ der angeschlossenen Geräte.
+
+[[lsusb]]
+.lsusb
+----
+user@yavdr:~$ lsusb
+		       <1>    <2>   <3>
+Bus 002 Device 003: ID 05a4:9881 Ortek Technology, Inc.  <4>
+Bus 002 Device 002: ID 80ee:0021  
+Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+----
+<1> Hersteller-ID
+<2> Produkt-ID	
+<3> Bezeichnung
+<4> Hama MCE Remote
+
+****
+.TODO:
+* Informationen über den Empfänger sammeln  (lsusb, dmesg, cat '/proc/bus/input/devices', evtest, lsmod
+* UDEV-Regel-Erstellung beschreiben
+****
+
+[[devices]]
+.cat /proc/bus/input/devices
+----
+user@yavdr:~$ cat /proc/bus/input/devices
+[..]
+I: Bus=0003 Vendor=05a4 Product=9881 Version=0110
+N: Name="HID 05a4:9881"
+P: Phys=usb-0000:00:06.0-2/input0
+S: Sysfs=/devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.0/input/input5
+U: Uniq=
+H: Handlers=sysrq kbd event5    <1>
+B: PROP=0
+B: EV=120013
+B: KEY=e080ffdf 1cfffff ffffffff fffffffe
+B: MSC=10
+B: LED=7
+
+I: Bus=0003 Vendor=05a4 Product=9881 Version=0110
+N: Name="HID 05a4:9881"
+P: Phys=usb-0000:00:06.0-2/input1
+S: Sysfs=/devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.1/input/input6
+U: Uniq=
+H: Handlers=kbd mouse2 event6   <2>
+B: PROP=0
+B: EV=17
+B: KEY=1f0000 0 2020000 3878 d801d001 1e0000 0 0 0
+B: REL=103
+B: MSC=10
+----
+<1> /dev/input/event5 für die Fernbedienungstasten
+<2> /dev/input/event6 für die Mausfunktion
+
+Für diese Fernbedienung werden also zwei Eventgeräte angelegt.
+
+
+
+
+
+[[TV-Card-Remote]]
+===== Fernbedienungen von internen TV-Karten =====
+
+
+
+****
+.TODO:
+* Informationen über den Empfänger sammeln  (lsusb/lspci, dmesg, cat '/proc/input/devices', evtest, lsmod
+* UDEV-Regel-Erstellung beschreiben
+****
+
+[[Serial-Remote]]
+===== Serielle Empfänger =====
+
+.Serielle Empfänger wie z.B. der Atric-Einschalter oder Homebrew-Empfänger lassen sich leider schlecht vorkonfigurieren, da sie mit beliebigen Fernbedienungen benutzt werden können. Es gibt zwei Möglichkeiten sie zu nutzen:
+* Deaktiveren von eventlirc und die gewohnte Konfiguration von lircd
+* Nutzung von lircd mit dem Switch --uinput zusammen mit eventlircd - dieser Ansatz hat den Vorteil, dass man parallel noch weitere Fernbedienungen und falls nötig auch mehrere Instanzen von lircd nutzen kann.
+****
+.TODO
+Konfiguration der Seriellen Schnittstelle, hardware.conf, lircd.conf, --uinput, automatisches Starten von lircd
+****
+

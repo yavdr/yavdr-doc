@@ -1,0 +1,152 @@
+[[template]]
+=== Das yaVDR Template-System ===
+
+//////////////////////////////////////////////////////////////////////
+Ist dieser Abschnitt überhaupt sinnvoll?
+Viele Konfigurationsdateien werden regelmäßig bei Updates oder Änderungen der Einstellungen im Webfrontend automatisch mit neuem Inhalt überschrieben. Wenn man selbst Änderungen an Konfigurationsdateien vornehmen möchte, die auch nach Änderung einer Datei durch Updates oder Konfigurations-Skripte erhalten bleiben sollen, ist es notwendig Custom-Templates anzulegen.
+
+==== Templates ====
+//////////////////////////////////////////////////////////////////////
+
+Unter yaVDR werden viele Konfigurationsdateien automatisch aus Vorlagen zusammengesetzt. Diese Vorlagen werden *Templates* genannt.
+
+Die Templates, die das yaVDR-Team mit seinen Paketen ausliefert, sind so genannte *Standard-Templates*. Eine http://www.yavdr.org/developer-zone/template-overview/[Übersicht der Standard-Templates] befindet sich im Entwicklerbereich auf der yaVDR Homepage.
+
+Wollte man nun etwas direkt an einer Konfigurationsdatei ändern, die aus Templates generiert wird, entstünde folgendes Problem:
+Die manuelle Änderung würde durch Skripte beim Ändern von Einstellungen über das Webfrontend oder beim nächsten Update eines Paketes überschrieben, da dabei die Konfigurationsdateien aus den Standard-Templates neu generiert werden würden.
+
+Änderungen an den Standard-Templates wären deshalb gleichermaßen nicht sinnvoll, da diese bei einem Paketupdate ebenfalls aktualisiert werden würden und manuelle Änderungen dabei verloren gingen.
+
+Um dennoch Veränderungen an Konfigurationsdateien vorzunehmen wurde die Möglichkeit geschaffen benutzerdefinierte Vorlagen, so genannte *Custom-Templates* anzulegen, welche die Standard-Templates ergänzen oder Teile von ihnen überschreiben.
+
+Alle *Custom-Templates* müssen unterhalb des Ordners '/etc/yavdr/templates_custom/' abgelegt werden. Benutzerdefinierte Vorlagen in diesem Ordner werden bei Paketupdates nicht verändert.
+
+[TIP]
+.Wo befinden sich die Templates?
+=====================================================================================
+*Standard-Templates* liegen unter '/usr/share/yavdr/templates/'
+
+*Custom-Templates* sind unter '/etc/yavdr/templates_custom/' zu finden.
+
+Zusätzliche Custom-Templates werden in Konfigurationsdateien eingefügt, gleichnamige Custom-Templates [red]#überschreiben# das entsprechende Standard-Template.
+
+Man kann die Erstellung einer Konfigurationsdatei aus den Templates so aufrufen:
+------------------------
+user@yavdr04:~$ sudo process-template <Pfad zur Konfigurationsdatei>
+------------------------
+======================================================================================
+
+image:Yavdr_templating-visualization.png["Templates in yaVDR",align="left"] footnote:[http://www.vdr-wiki.de/wiki/index.php/Datei:Yavdr_templating-visualization.png]
+
+<<<
+
+==== Beispiel anhand der Datei '/etc/vdr/vdr-addon-acpiwakeup.conf' ====
+Anhand der Konfigurationsdatei für vdr-addon-acpiwakeup soll das Template-System an einem Beispiel verdeutlicht werden.
+Wir möchten, dass der VDR jeden Tag um 19:45 aufwacht, damit das EPG aktualisiert und der VDR die Gelegenheit hat nach neuen Treffern für die Suchtimer zu suchen. Außerdem müssen wir ihn dann nicht extra einschalten, wenn wir die Tagesschau sehen wollen.
+
+Die Datei '/etc/vdr/vdr-addon-acpiwakeup.conf' sieht im Auslieferungszustand in so aus footnote:[Wenn im Webfrontend acpi-wakeup aktiviert ist]:
+
+-------------------------------------
+#################################################################################
+#                                                                               #
+#   The following configuration file is generated automatically by the yaVDR    #
+#     system. Don't change this file as every update of yaVDR will overwrite    #
+#         the local changes. Instead put your required customizations           #
+#       into /etc/yavdr/templates_custom/ based on the original templates       #
+#                      under /usr/share/yavdr/templates.                        #
+#                                                                               #
+#            http://www.yavdr.org/developer-zone/template-overview/             #
+#                                                                               #
+#                                                                               #
+#################################################################################
+# Activate/deactivate ACPIWakeup with yes/no:
+ACPI_ENABLED="yes"
+
+# How many minutes should the machine wake up before the timer starts:
+ACPI_START_AHEAD=5
+
+# If you want your VDR machine to wakeup in regular intervals (i.e. for
+# updating EPG data), specify the days of the week and the wakeup time.
+#
+# Days of the week for regular wakeup (not set=Disabled, 1=Monday...7=Sunday)
+# ACPI_REGULAR_DAYS="1 2 3 4 5 6 7"
+
+# Wakeup time
+#ACPI_REGULAR_TIME=01:00  # HH:MM
+----------------------------------------
+
+Sie wird aus den Standard-Templates in '/usr/share/yavdr/templates/etc/vdr/vdr-addon-acpiwakeup.conf/' zusammengesetzt:
+
+.Beispiel für ein Template-Verzeichnis
+------------------------------------------------------------------------------------
+user@yavdr04:~$  ls -1 /usr/share/yavdr/templates/etc/vdr/vdr-addon-acpiwakeup.conf/
+02_header               <1>
+10_enable-acpiwakeup    <2>
+20_start-ahead          <3>
+30_regular-days         <4>
+------------------------------------------------------------------------------------
+
+<1> Template für die Warnung, Templates zu verwenden
+<2> Template um ACPI-Wakeup erlauben
+<3> Template um Zeitspanne einzustellen, um rechtzeitig vor dem Timer aufzuwachen
+<4> Template der Einstellungen für regelmäßiges Aufwachen
+
+Wir wollen nun ein Custom-Template für das Standard-Template '30_regular-days' erstellen.
+
+Dazu erstellen wir einen entsprechenden Ordner in dem Verzeichnis für die Custom-Templates und kopieren das Standard-Template, dass wir anpassen wollen dorthin (da die anderen Templates nicht geänderd werden sollen, benötigen wir sie nicht als Custom-Templates, und sie dürfen daher auch weiterhin durch zukünftige Updates überschrieben werden):
+
+-----------------------------------------
+user@yavdr04:~$ sudo mkdir -p /etc/yavdr/templates_custom/etc/vdr/vdr-addon-acpiwakeup
+user@yavdr04:~$ sudo cp /usr/share/yavdr/templates/etc/vdr/vdr-addon-acpiwakeup.conf/30_regular-days /etc/yavdr/templates_custom/etc/vdr/vdr-addon-acpiwakeup/30_regular-days
+-----------------------------------------
+
+Jetzt passen wir mit dem Text-Editor unserer Wahl dieses Custom-Template an und ändern es so ab, dass der VDR jeden Abend um 19:45 aufwacht:
+-----------------------------------------
+user@yavdr04:~$ sudo nano /etc/yavdr/templates_custom/etc/vdr/vdr-addon-acpiwakeup/30_regular-days
+-----------------------------------------
+
+-----------------------------------------
+# If you want your VDR machine to wakeup in regular intervals (i.e. for
+# updating EPG data), specify the days of the week and the wakeup time.
+#
+# Days of the week for regular wakeup (not set=Disabled, 1=Monday...7=Sunday)
+ACPI_REGULAR_DAYS="1 2 3 4 5 6 7"
+
+# Wakeup time
+ACPI_REGULAR_TIME=19:45  # HH:MM
+-----------------------------------------
+Nachdem das Custom-Template gespeichert wurde, lassen wir die Konfigurationsdatei aus den Templates neu erstellen:
+-----------------------------------------
+user@yavdr04:~$ sudo process-template /etc/vdr/vdr-addon-acpiwakeup.conf
+-----------------------------------------
+
+Die neu erzeugte Datei sieht nun so aus:
+
+-----------------------------------------
+#################################################################################
+#                                                                               #
+#   The following configuration file is generated automatically by the yaVDR    #
+#     system. Don't change this file as every update of yaVDR will overwrite    #
+#         the local changes. Instead put your required customizations           #
+#       into /etc/yavdr/templates_custom/ based on the original templates       #
+#                      under /usr/share/yavdr/templates.                        #
+#                                                                               #
+#            http://www.yavdr.org/developer-zone/template-overview/             #
+#                                                                               #
+#                                                                               #
+#################################################################################
+# Activate/deactivate ACPIWakeup with yes/no:
+ACPI_ENABLED="yes"
+
+# How many minutes should the machine wake up before the timer starts:
+ACPI_START_AHEAD=5
+
+# If you want your VDR machine to wakeup in regular intervals (i.e. for
+# updating EPG data), specify the days of the week and the wakeup time.
+#
+# Days of the week for regular wakeup (not set=Disabled, 1=Monday...7=Sunday)
+ACPI_REGULAR_DAYS="1 2 3 4 5 6 7"
+
+# Wakeup time
+ACPI_REGULAR_TIME=19:45  # HH:MM
+-----------------------------------------

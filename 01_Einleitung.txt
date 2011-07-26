@@ -1,0 +1,12 @@
+=== Einleitung ===
+
+yaVDR footnote:[yaVDR steht für yet another VDR] ist eine auf Ubuntu basierende Linux-Distribution, die speziell für die Nutzung des http://www.tvdr.de[Video Disk Recorder] von Klaus Schmidinger angepasst wurde.
+Sie ist bestens geeignet um digitales und analoges footnote:[setzt Hauppauge PVR-TV-Karten voraus, siehe http://www.vdr-wiki.de/wiki/index.php/Pvrinput-plugin[PVRinput-Plugin]] Fernsehen über alle gängigen Empfangswege footnote:[DVB-S(2), DVB-C, DVB-T] zu empfangen, aufzuzeichnen, zu bearbeiten und wiederzugeben. 
+
+Mit http://www.xbmc.org[XBMC] ist außerdem ein mächtiges MediaCenter mit an Bord, das es ermöglicht einen PC mit yaVDR als praktisch vollwertigen HTPC footnote:[Home Theater PC] zu nutzen.
+
+Um neue Funktionen schnell zu integrieren und die Hardware-Unterstützung zu verbessern setzt yaVDR auf relativ aktuelle (aber dennoch möglichst stabile) Entwicklungs-Versionen.
+
+Um dem Nutzer möglichst viel Konfigurationsarbeit abzunehmen, wird unterstützte Hardware bei der Installation automatisch erkannt und eingerichtet.
+
+Ein Großteil der Einstellungen für das System kann über ein komfortables Webinterface vorgenommen werden.
