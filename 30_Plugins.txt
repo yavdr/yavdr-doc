@@ -1,0 +1,5 @@
+=== Plugins ===
+Der VDR selbst konzentriert sich auf die Kernfunktionen DVB-Empfang, das Aufzeichnen von Sendungen und eine rudimentäre EPG-Verwaltung. Zusätzliche Funktionen werden über Plugins realisiert.
+Eine gute Übersicht welche Plugins existieren und ob sie mit den unter yaVDR verwendeten VDR-Versionen 1.7.x kompatibel sind, bietet die Seite http://vdr-wiki.de/wiki/index.php/Plugins[Plugins] im VDR-Wiki.
+Die meisten kompatiblen Plugins sind in den yaVDR-Paketquellen zu finden und können bei Bedarf einfach über das <<wfe-packages,Webfrontend>> oder die <<install-packages,Shell>> nachinstalliert werden.
+

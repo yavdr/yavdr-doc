@@ -1,0 +1,266 @@
+== Troubleshooting footnote:[http://vdr-wiki.de/wiki/index.php/YaVDR/Troubleshooting] ==
+http://vdr-wiki.de/wiki/index.php/YaVDR/Troubleshooting
+////
+Wer yaVDR installiert, wird häufig darauf hoffen, mit wenig Hintergrundwissen schnell und "out of the box" einen funktionierenden VDR zu bekommen. Das mag in vielen Fällen auch klappen, sofern man die richtige Hardware und das nötige Quentchen Glück hat. Meiner Erfahrung nach geht es aber selten ganz glatt. Zu vielfältig sind die möglichen Fallstricke: defekte oder exotische Hardware, falsche Konfiguration usw.
+
+Nun muss man sich entweder durch Tausende Forum-Posts wühlen, oder die Entwickler mit seinen vermutlich nicht wirklich zum ersten mal gestellten Fragen nerven und von der Weiterentwicklung abhalten. Es wäre für beide Seiten einfacher, ein paar Hilfen zur Selbst-Hilfe zentral an die Hand zu bekommen/geben.
+
+Um zielgerichtet den Problemen auf die Spur zu kommen, möchte ich hier einen kleinen TroubleShooting-Guide starten - d.h. ich mache den Anfang (als yaVDR Anfänger!), hoffe dann aber auf zahlreiche weitere Beiträge zu dieser Seite. Bitte auch alles Vorhandene jederzeit korrigieren / erweitern!
+
+Die Themen hier sind nicht notwendig alle komplett yaVDR spezifisch und womöglich anderweitig bereits zu finden, aber hiermit soll ein Einsprungs-Punkt für yaVDR-Nutzer mit Problemen geschaffen werden. Wer gute Quellen kennt, soll diese bitte hier verlinken!
+
+Es existiert bereits eine *YaVDR-FAQ|FAQ*.<br>
+Die FAQ sind kurze Fragen und kurze Antworten hier geht es etwas ausführlicher zu.
+
+=== Grundlagen ===
+Bei Problemen immer zuerst im http://vdr-wiki.de/wiki/index.php/YaVDR/Webfrontend[YaVDR/Webfrontend] schauen ob sie sich darüber lösen lassen, als zweites den VDR updaten *YaVDR/FAQ#Ich_habe_ein_bestimmtes_Problem_mit_yavdr.2C_was_nun.3F*  dann auch die <<template,YaVDR/Templates>> beachten, und mal im http://wiki.ubuntuusers.de/Startseite[Ubuntu Wiki] lesen schadet selten.
+
+=== DVB devices ===
+
+Die zentrale Hardware für einen VDR ist der DVB-Empfänger. Kein Bild, aber Menu-Einblendungen? Erst mal prüfen, ob der TV-Empfänger erkannt wird.
+
+Ein DVB device taucht unter /dev/dvb auf, sofern die Treiber erfolgreich geladen wurden.
+
+ $ ls /dev/dvb/adapter0/
+ demux0  demux1  dvr0  dvr1  frontend0  frontend1
+
+Ein Adapter muss mindestens ein Frontend enthalten, um vom VDR verwendet werden zu können.
+
+Fehlt dieses Verzeichnis oder das Frontend, so kann man sich erst mal mittels lspci ansehen, ob die Karte im System gefunden wird. Hier ein Beispiel für eine Mystique Satix S2 dual V2 Karte.
+
+-------------------------------------------------------------------------------------------------------------------
+ $ (sudo) lspci -vvvnn
+ 02:00.0 Multimedia video controller [0400]: Micronas Semiconductor Holding AG Device [18c3:0720] (rev 01)
+        Subsystem: Micronas Semiconductor Holding AG Device [18c3:db02]
+        Control: I/O+ Mem+ BusMaster+ SpecCycle- MemWINV- VGASnoop- ParErr- Stepping- SERR- FastB2B- DisINTx-
+        Status: Cap+ 66MHz- UDF- FastB2B- ParErr- DEVSEL=fast >TAbort- <TAbort- <MAbort- >SERR- <PERR- INTx-
+        Latency: 0, Cache Line Size: 64 bytes
+        Interrupt: pin A routed to IRQ 19
+        Region 0: Memory at faef0000 (32-bit, non-prefetchable) [size=64K]
+        Region 1: Memory at faee0000 (64-bit, non-prefetchable) [size=64K]
+        Capabilities: [40] Power Management version 2
+                Flags: PMEClk- DSI- D1- D2- AuxCurrent=0mA PME(D0-,D1-,D2-,D3hot-,D3cold-)
+                Status: D0 PME-Enable- DSel=0 DScale=0 PME-
+        Capabilities: [48] Message Signalled Interrupts: Mask- 64bit+ Queue=0/0 Enable-
+                Address: 0000000000000000  Data: 0000
+        Capabilities: [58] Express (v1) Endpoint, MSI 00
+                DevCap: MaxPayload 128 bytes, PhantFunc 0, Latency L0s <64ns, L1 <1us
+                        ExtTag- AttnBtn- AttnInd- PwrInd- RBE- FLReset-
+                DevCtl: Report errors: Correctable- Non-Fatal- Fatal- Unsupported-
+                        RlxdOrd+ ExtTag- PhantFunc- AuxPwr+ NoSnoop+
+                        MaxPayload 128 bytes, MaxReadReq 512 bytes
+                DevSta: CorrErr- UncorrErr+ FatalErr- UnsuppReq+ AuxPwr- TransPend-
+                LnkCap: Port #0, Speed 2.5GT/s, Width x1, ASPM L0s, Latency L0 unlimited, L1 unlimited
+                        ClockPM- Suprise- LLActRep- BwNot-
+                LnkCtl: ASPM Disabled; RCB 64 bytes Disabled- Retrain- CommClk-
+                        ExtSynch- ClockPM- AutWidDis- BWInt- AutBWInt-
+                LnkSta: Speed 2.5GT/s, Width x1, TrErr- Train- SlotClk+ DLActive- BWMgmt- ABWMgmt-
+        Capabilities: [100] Device Serial Number 00-11-3c-20-07-00-00-00
+        Capabilities: [400] Virtual Channel <?>
+        Kernel driver in use: ngene
+        Kernel modules: ngene
+-------------------------------------------------------------------------------------------------------------------
+
+Die Ausgabe ist natürlich viel umfangreicher, sie enthält sämtliche per PCI Bus angebundenen Geräte, darunter meist sämtliche im Chipsatz vorhandenen Sachen. Die DVB Karte ist i.a. als "Multimedia video controller" zu finden. Der Name der Karte taucht nicht notwendig auf, da häufig nur der Hersteller des zentralen Chips ausgelesen werden kann. Daran kann man häufig auch enge Verwandtschaften zwischen unterschiedlichen Karten erkennen.
+
+Im Falle eines USB-Empfängers lautet der entsprechende Befehl "lsusb"! 
+
+Beispiel für einen Sundtek MediaTV Pro DVB-C USB-Stick: (gerne auch andere eintragen)
+
+-------------------------------------------------------------------------------------------------------------------
+ $ lsusb
+ Bus 001 Device 004: ID eb1a:51b2 eMPIA Technology, Inc. 
+-------------------------------------------------------------------------------------------------------------------
+
+Die Treiber für die Karte entstammen dem Linux-Projekt "Video4Linux" (v4l, linuxtv.org). Es handelt sich um nah am Kernel gepflegte Module. Man muss sich i.a. nicht selbst einen Treiber vom Hersteller holen und einbinden, für alle einigermassen verbreiteten und nicht ganz brandneuen Karten finden sich die Treiber im zentralen Paket von v4l, oder aber alternativ im sogenannten "s2-liplianin" Paket (siehe yaVDR Tutorial und FAQ zur Installation).
+
+Die entsprechenden zu ladenden Module sollten im Normalfall automatisch vom System anhand der eingebauten Karte erkannt werden. Ist das nicht der Fall, so kann Recherche bei linuxtv.org helfen (siehe http://www.linuxtv.org/wiki/index.php/Hardware_Device_Information[hier]).
+
+Welches Modul für die eigene Karte geladen wurde zeigt:
+
+-------------------------------------------------------------------------------------------------------------------
+ $ lsmod | grep dvb_core
+ dvb_core  12345  1 ngene
+-------------------------------------------------------------------------------------------------------------------
+
+In diesem Fall das Modul "ngene" für zB die Satix-Karten. Beim Laden des Moduls (alternativ auch von Hand mit "rmmod <modul>" entladen - geht nur wenn der VDR nicht darauf zugreift - zum Start/Stop des VDR unter yaVDR siehe FAQ - und mit "modprobe <modul>" laden) sollten hilfreiche Ausgaben auf der Shell bzw. im Log landen. Hier wieder für das ngene Modul:
+
+-------------------------------------------------------------------------------------------------------------------
+ Jun  7 01:06:38 flgmedia kernel: [   11.609127] nGene PCIE bridge driver, Copyright (C) 2005-2007 Micronas
+ Jun  7 01:06:38 flgmedia kernel: [   11.610759] ngene 0000:02:00.0: PCI INT A -> Link[LN0A] -> GSI 19 (level, low) -> IRQ 19
+ Jun  7 01:06:38 flgmedia kernel: [   11.610819] ngene: Found Mystique SaTiX-S2 Dual (v2)
+ Jun  7 01:06:38 flgmedia kernel: [   11.613441] ngene 0000:02:00.0: setting latency timer to 64
+ Jun  7 01:06:38 flgmedia kernel: [   11.613641] ngene: Device version 1
+ Jun  7 01:06:38 flgmedia kernel: [   11.613693] ngene 0000:02:00.0: firmware: requesting ngene_15.fw
+ Jun  7 01:06:38 flgmedia kernel: [   11.645951] ngene: Loading firmware file ngene_15.fw.
+ Jun  7 01:06:38 flgmedia kernel: [   11.658034] DVB: registering new adapter (nGene)
+-------------------------------------------------------------------------------------------------------------------
+
+Dabei ggf. auf Fehlermeldungen achten! 
+Die Logs liegen unter /var/log. Ubuntu (Basis von yaVDR) verteilt die Ausgaben über verschiedene Dateien. Der obige Modul-Start findet sich zB in syslog. Ausgaben des vdr selbst finden sich in user.log. Auch der VDR meldet die gefundenen DVB devices (hier ein Beispiel mit TBS 6920, TechnoTrend 3600 USB, MSI digivox):
+
+-------------------------------------------------------------------------------------------------------------------
+ Jun  7 19:36:04 flmedia vdr: [2905] device 1 provides DVB-S2 ("STB0899 Multistandard")
+ Jun  7 19:36:04 flmedia vdr: [3052] tuner on device 1 thread started (pid=2905, tid=3052)
+ Jun  7 19:36:08 flmedia vdr: [2905] device 2 provides DVB-S2 ("Conexant CX24116/CX24118")
+ Jun  7 19:36:08 flmedia vdr: [3186] tuner on device 2 thread started (pid=2905, tid=3186)
+ Jun  7 19:36:10 flmedia vdr: [2905] device 3 provides DVB-T ("Philips TDA10046H DVB-T")
+ Jun  7 19:36:10 flmedia vdr: [3316] tuner on device 3 thread started (pid=2905, tid=3316)
+-------------------------------------------------------------------------------------------------------------------
+
+=== Besonderheit dynamite Plugin ===
+
+Das dynamite Plugin setzt die bekannten VDR eigenen Schalter ("vdr -D x") zur Auswahl der zu nutzenden DVB Devices ausser Kraft, siehe hierzu den englisch sprachigen Eintrag #643 (http://projects.vdr-developer.org/issues/643) im Bugtracker von http://projects.vdr-developer.org
+
+Es wird aktuell noch an Optimierungsmöglichkeiten gesucht (05/2011). Bis aber aber evtl. eine andere Möglichkeit gibt muß man die über udev Regeln steuern, auf die das dynamite Plugin reagiert.
+
+Hier beispielhaft für einen DigitalDevice CineS2 mit FlexS2 Erweiterung, eine PCI-E DVB Karte mit Tuner. Davon sollen nur 2 Tuner genutzt werden, #0 und #2.
+
+Die 4 Tuner sind jeweils per Parameter des Kernelmodules "ngene" als Adapter konfiguriert und nicht nur als Frontend:
+
+-------------------------------------------------------------------------------------------------------------------
+ cat /etc/modprobe.d/ngene.conf 
+ # options ngene shutdown_workaround=1
+ # options ngene one_adapter=0 adapter_nr=0,1 
+ options ngene one_adapter=0
+
+ ll /dev/dvb/adapter?/frontend0
+ crw-rw---- 1 root video 212,  0 2011-05-26 18:00 /dev/dvb/adapter0/frontend0
+ crw-rw---- 1 root video 212,  4 2011-05-26 18:00 /dev/dvb/adapter1/frontend0
+ crw-rw---- 1 root video 212,  8 2011-05-26 18:00 /dev/dvb/adapter2/frontend0
+ crw-rw---- 1 root video 212, 12 2011-05-26 18:00 /dev/dvb/adapter3/frontend0
+-------------------------------------------------------------------------------------------------------------------
+
+Mit der folgenden udev-Regel schaltet das dynamite Plugin nur die gewünschten Adapter der Karte hinzu und ignoriert die beiden anderen Tuner:
+
+-------------------------------------------------------------------------------------------------------------------
+ cat /etc/udev/rules.d/41-dynamite-prevent.rules
+ ACTION=="add", SUBSYSTEM=="dvb", ENV{DVB_DEVICE_TYPE}=="frontend", KERNEL=="dvb[13].frontend0", ENV{dynamite_attach}="no"
+-------------------------------------------------------------------------------------------------------------------
+
+Sonstige Ansatzpunkte zur Fehlersuche?
+
+=== Fernbedienungen / LIRC ===
+yaVDR kann LIRC verwenden, einstellbar über das *YaVDR/Webfrontend*. Der altbekannte Daemon lircd wird über das upstart-Skript "remoted" gestartet, bevor der VDR-Dienst startet.<br>
+Manuell stoppen und auch wieder starten kann man diesen Dienst über:
+ sudo stop remoted
+ sudo start remoted
+
+'''Folgende Punkte sind zu beachten:'''
+* Webfrontend:  Auswahl des Empfängertyps (z.B. "''Home-brew''" für normale, serielle Empfänger wie z.B. Atric-Einschalter etc)
+* Webfrontend:  Auswahl des seriellen Schnittstelle (Com-Port)<br>Mit diesen beiden Punkten werden automatisch die benötigten Kernel-Module festgelegt.<br>(Siehe Datei ''/etc/lirc/hardware.conf'')
+* prüfen, ob Kernelmodule geladen sind<br>(Vergleiche nach Neustart Ausgabe von ''lsmod |grep lirc'' mit Zeile "''REMOTE_MODULES=''" aus o.g. ''hardware.conf'' Datei)<br>Sofern die Module nicht geladen sind, können diese via ''modprobe <Modulname>'' geladen werden.<br>(Für eine selbst gebaute Fernbedienung am COM-Port werden die Module "lirc_dev" und "lirc_serial" benötigt)<br>Sollte beim Laden der Module etwas schief gehen (Fehler: Device or Resource busy), so ist dies u. U. darauf zurückzuführen,<br>dass die serielle Schnittstelle belegt ist. Diese kann mit folgendem Befehl freigeschaltet werden:<br>
+ setserial /dev/ttyS0 uart none   (/dev/ttyS0 = COM1)
+* Anschliessend müssen die Module neu geladen werden.
+* dmesg kontrollieren (''dmesg |grep lirc'')<br>Da darf nichts von ''active high receiver'' zu lesen sein; Das würde auf einen Hardwarefehler hinweisen.
+* ''mode2 -d /dev/lirc0'': mit beliebigen Tasten (auf beliebigen Fernbedienungen) prüfen, ob irgendetwas empfangen wird
+* Webfrontend:  ''/etc/lirc/lircd.conf'' hochladen (siehe http://lirc.sourceforge.net/remotes/) oder selbst anlegen. (siehe *LIRC*)
+* den Dienst starten:  ''sudo start remoted''
+* anschließend sollte irw unbedingt die Tasten der Fernbedienung erkennen.<br>Wenn nicht, dann ist die /etc/lircd.conf falsch!
+* Sobald die /etc/lircd.conf stimmt, müssen die Tasten jeweils einer Aktion/Funktion im VDR und in XBMC zugewiesen werden:
+** /var/lib/vdr/remote.conf  (für VDR)
+** /var/lib/vdr/.xbmc/userdata/Lircmap.xml (für XBMC)
+
+
+'''benötigte Konfigurationsdateien:'''
+* /etc/lirc/hardware.conf                 (Definition der Kernelmodule und des Devices)
+* /etc/serial.conf                        (UART muss abgeschaltet sein bei Com-Ports!)
+* /etc/lirc/lircd.conf                    (das Signal der Fernbedienung wird einem Befehl zugeordnet)
+* /var/lib/vdr/remote.conf                (Diese Datei legt fest was der VDR mit den empfangenen Befehlen macht)
+* /var/lib/vdr/.xbmc/userdata/Lircmap.xml (XBMC-Datei analog zur remote.conf des VDR)
+(was prüfen im Log? welche Prozesse müssen laufen?)
+
+
+'''ATI X10 / Medion Fernbedienung'''
+
+Funktioniert oft nicht; folgende Modifikation der /etc/init/vdr.conf (Achtung Abschnitt Template im FAQ) schafft Abhilfe:
+
+ pre-start script
+  /etc/init.d/lirc stop       EDIT:   <--- dieses Skript gibt es gar nicht bei yaVDR !!
+  rmmod lirc_imon
+  rmmod lirc_atiusb
+  rmmod lirc_dev
+  modprobe lirc_atiusb
+  modprobe lirc_imon
+  /etc/init.d/lirc start
+ end script
+
+oder 
+sudo rm -rf /etc/udev/rules.d/80-remote-eeti.rules /lib/udev/rules.d/80-remote-eeti.rules
+
+'''Selbst gelöteter serieller Empfänger'''
+Heißt in der Liste "Home-Brew".
+
+=== Basis-System ===
+Wer kanns erklären?
+
+( Aufruf des vdr wo?, wo ggf. Skripte an eigene Bedürfnisse anpassen / Templates? eigene Übergabe-Parameter?)
+
+=== Eigene Partition für Aufzeichnungen ===
+
+* partitionieren: cfdisk oder althergebracht: fdisk <device> (z.B. fdisk /dev/sda)
+* formatieren: mkfs.ext4 <Partition> (z.B. mkfs /dev/sda5)
+* in fstab einhängen
+** UID ermitteln: ls -l /dev/disk/by-uuid/
+** eintragen: vi /etc/fstab
+*** z.b. : UUID=eefa013d-d09e-40c2-a677-1d5c54aeefa5 /var/lib/video.00            ext4 defaults,noatime             0       0
+* mounten (alles): mount -a
+* prufen: df -h
+
+Sollte dies nicht funktionieren, weil YaVDR die Aufzeichnungen in /srv/vdr/video.00 ablegt, so muss der Eintrag in /etc/fstab dementsprechend angepasst werden.<br/>
+
+* z.b. : UUID=12da013d-f092-44c2-a687-1d4c54ae20a5 /srv/vdr/video.00 ext4 defaults,noatime 0 0
+ 
+Achtung: Der Ordner /srv/vdr/video.00 sollte dem Benutzer "vdr" und der Gruppe "vdr" gehören, da YaVDr sonst u. U. den Dienst versagt.<br/>
+Ob alles funktioniert hat, kann man auch überprüfen, indem man die Menütaste drückt. Der freie Festplattenspeicher wird dann angezeigt.
+
+=== Video ===
+
+[quanda]
+Bild skaliert zu klein::
+Bei machen Privatsendern werden alte 16:9 im 4:3 Format mit schwarzen Balken gesendet.
+
+xineliboutput::
+OSD-Menue ->System->Einstellungen->Plugins->xineliboutput->Video->Schneider letterbox 4:3 zu 16:9
+http://www.vdrportal.de/board/thread.php?postid=947373[Beitrag im VDR Portal]
+
+=== DVDs abspielen (unter XBMC) ===
+Aufgrund der hinlänglich bekannten rechtlichen Situation wird yaVDR (genau wie Ubuntu) nicht mit der benötigten libdvdcss2 Bibliothek ausgeliefert.  Somit ist das Abspielen von geschützter DVDs nicht möglich bevor die fehlende Bibliothek nachinstalliert wurde. Bequem funktioniert das Ganze über folgenden Befehl:
+------------------------------------------------
+sudo /usr/share/doc/libdvdread4/install-css.sh
+------------------------------------------------
+Nach einem Neustart spielen die DVDs dann ab.
+
+****
+.Sound (Alsa, HDMI)
+
+Sound über HDMI auf Nvidia-Grafikkarte siehe http://www.vdr-portal.de/board/thread.php?postid=944920#post944920[Beitrag im vdr-portal]
+
+Kurzform:
+------------
+sudo aplay -l
+------------
+sagt Dir welche devices es gibt
+
+
+.alsamixer
+besser dort mal alles anmuten
+.'/etc/asound.conf'
+Sollte wenn als neu genug ist für die Soundkarte nicht nötig sein,
+alsa ist oft nicht neu genug :(
+Beispiel:
+
+.nano '/etc/asound.conf'
+----------------------
+pcm.!default {
+	type hw
+	card 0
+	device 3
+}
+----------------------
+
+Wer kanns erklären?
+
+(wie analysiert man, ob der Sound-Treiber richtig geladen wurde, wo steckt die Konfiguration, Mixer, ...)
+****
+////

@@ -87,6 +87,20 @@ sudo apt-get purge Paketname	<2>
 <1> Paket entfernen, Konfigurationsdateien bleiben erhalten
 <2> Paket inklusive der Konfigurationsdateien entfernen
 
+[[autoremove]]
+.Nicht benötigte Pakete entfernen
+---
+sudo apt-get autoremove
+---
+Dadurch werden alle überflüssigen Pakete entfernt, die aufgrund von Abhängigkeiten mitinstalliert wurden, momentan aber nicht gebraucht werden.
+
+[[clean]]
+.Lokal gespeicherte Pakete entfernen
+---
+sudo apt-get clean
+---
+Entfernt alle lokal zwischengespeicherten Pakete, die aus den Paketquellen bezogen wurden.
+
 [[packet-sources]]
 ===== Paketquellen ===== 
 yaVDR nutzt im Auslieferungszustand die Ubuntu-Quellen sowie die https://launchpad.net/~yavdr[stable-PPAs] des yaVDR-Teams.

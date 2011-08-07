@@ -10,9 +10,6 @@ image:wfe/wfe_start.png["Startseite des yaVDR-Webfrontend"]
 . <<vdr-live,*VDR LIVE!*>>
 . <<streamdev-server-http,*Das HTTP-Interface des Streamdev-Servers*>>
 
-[[wfe-config]]
-===== Konfiguration über das Webfrontend =====
-
 .Das Webfrontend startet mit dem Dashboard, das eine Übersicht über das System gibt. Unter anderem wird angezeigt ob
 * der VDR läuft
 * freier und belegter Festplattenplatz
@@ -23,6 +20,9 @@ image:wfe/wfe_start.png["Startseite des yaVDR-Webfrontend"]
 * Aufnahmen und anstehende Timer
 
 image:wfe/dashboard.png["Dashboard"]
+
+[[wfe-config]]
+===== Überblick über das Webfrontend =====
 
 Ein Großteil der Einstellungen kann bei yaVDR über das Webfrontend vorgenommen werden. 
 
@@ -36,6 +36,20 @@ Ein Großteil der Einstellungen kann bei yaVDR über das Webfrontend vorgenommen
 * <<wfe-video,Anzeigeneinstellungen>>
 * <<wfe-system,Systemeinstellungen>> wie Sprache, Ausschalt- und Aufweckmethode
 * <<wfe-network,Netzwerkeinstellungen>> zum Einbinden von NFS-Freigaben und dem Aufwecken anderer Rechner
-* <<wfe-packages,Paketverwaltung>>
+* <<wfe-packages,Paketverwaltung>> um Plugins für den VDR nachzuinstallieren
 * <<wfe-config-editor,Editor für Konfigurationsdateien>>
+
+
+[[wfe-packages]]
+===== Plugins =====
+
+Über das Webfrontend können Plugins, Addons und andere VDR-bezogene Pakete verwaltet werden.
+image:wfe/plugins.png["Plugins nachinstallieren"]
+
+image:wfe/plugins_apt.png[APT-Befehle]
+Über die Buttons über der Plugin-Liste können die Paketquellen neu eingelesen (<<update-packages,"apt-get update">>), nicht mehr benötigte als Abhängigkeit installierte Pakete deinstalliert (<<autoremove,"apt-get autoremove">>) und lokale Kopien heruntergeladener Pakete gelöscht werden (<<clean,"apt-get clean">>).
+
+Über das mit einem Rechtsklick auf ein Paket in der Liste erreichbare Menü kann das jeweilige Paktet  installiert, entfernt oder (de)aktiviert werden.
+
+image:wfe/plugin-installation.png["Paketinstallation"]
 

@@ -1,0 +1,220 @@
+== Häufig gestellte Fragen footnote:[http://vdr-wiki.de/wiki/index.php/YaVDR/FAQ] ==
+http://vdr-wiki.de/wiki/index.php/YaVDR/FAQ
+////
+=== Grundlagen ===
+[quanda]
+Was ist yaVDR?::
+Bitte auf http://yavdr.org[YaVDR] nachlesen.
+
+Wie sind die Hardware-Voraussetzungen für yaVDR::
+Diese Frage versucht die Seite http://vdr-wiki.de/wiki/index.php/YaVDR/Hardware-Voraussetzungen[Hardware-Voraussetzungen] zu beantworten.
+
+Kann ich yaVDR als VDR-Client oder VDR-Server verwenden?::
+Diese Frage versucht die Seite http://vdr-wiki.de/wiki/index.php/YaVDR/Hardware-Voraussetzungen#Nutzungs-Szenarien:_yaVDR_als_Client.2C_Server_oder_Zwitter.3F[Hardware-Voraussetzungen] zu beantworten.
+
+yaVDR basiert auf Ubuntu. Was bedeutet das genau?::
+Dies versucht http://www.yavdr.org/features/[eine Vergleichstabelle] auf der yaVDR Website zu erklären.
+
+=== Installation ===
+
+[quanda]
+Woher kann man yaVDR bekommen?::
+Man kann das ISO-Image von der http://www.yavdr.org[offiziellen yaVDR-Website] herunterladen.
+
+Gibt es ein yaVDR-Live-ISO-Image?::
+Nein, das ISO-Image muss auf der Festplatte installiert werden, bevor man es ausprobieren kann. Es ist nicht möglich, yaVDR direkt von der Installations-CD zu starten. Man kann es aber auch zu Testzwecken in einer virtuellen Maschine installieren (VMWare, VirtualBox, etc.)
+
+Gibt es separate yaVDR-ISO-Images für 32bit und 64bit?::
+Nein. Aus Zeitgründen und um die Supportlast überschaubar zu halten, kann das yaVDR-Team nur für eine der beiden Plattformen ein ISO-Image anbieten. Aber die meisten Einzelpakete der yaVDR-Repositories liegen sowohl als i386- als auch amd64-Varianten vor.
+Die ISO-Images zu yaVDR 0.1, 0.1.1, 0.2 und 0.3.x liegen allesamt nur als 32bit-Versionen vor.
+
+NOTE: Für die momentan in Entwicklung befindliche Version yaVDR 0.4 plant das yaVDR-Team, zur 64bit-Plattform zu wechseln.
+
+Ist eine Installation von yaVDR per USB Stick möglich?::
+Man benutzt das ab Ubuntu 9.04 integrierte Tool zum erstellen eines bootfähigen Sticks. Es ist in Gnome unter System -> Systemverwaltung -> "USB-Startmedien-Ersteller" zu finden.
+Wer kein installiertes Ubuntu hat kann einfach von der aktuellen Desktop Ubuntu CD das Livesystem booten und dafür nutzen.
+Weiterführende Informationen: http://wiki.ubuntuusers.de/Live-USB#USB-Creator
+WARNING: Weil das yaVDR ISO-Image keine Live CD ist, kann man das Tool UNetbootin hier nicht verwenden.
+
+Wie lange dauert eine yaVDR-Installation?::
+Je nach yaVDR-Version und eigener Routine mit dem alternativen Ubuntu-Installer dauert eine Installation 25 bis 70 Minuten, bis man den ersten Boot durchführen kann. Unerfahrene Nutzer werden wahrscheinlich viel Zeit mit dem Partitionierungsdialog verbringen und damit die Dauer der Installation erhöhen.
+
+Das Thema Partitionierung ist neu für mich. Hat yaVDR bestimmte Anforderungen?::
+yaVDR basiert auf Ubuntu. Unsere Empfehlungen decken sich daher mit den für Ubuntu gültigen (http://wiki.ubuntuusers.de/Partitionierung). Mit einer Ausnahme: Die empfohlene eigene "/home" Partition ist im Normalfall für die Nutzung von yaVDR eher unwichtig. Wer für eine einfache vollständige Neuinstallation von yaVDR gerüstet sein möchte, dem empfehlen wir stattdessen das Anlegen einer eigenen Video-Partition für die VDR-Aufnahmen. Für die Root Partition "/" (auf der keinerlei Mediendaten und Aufnahmen abgelegt werden sollten) mögen bei yaVDR zunächst 2 GB ausreichen. Mit einer Größe von 4-5 GB ist man jedoch auf der sicheren Seite für momenten noch nicht vorhersehbare Erweiterungen / Updates.
+
+Wie kann ich eine bestehende Video-Partition weiterbenutzen?::
+Es empfiehlt sich, die vorhandene Partition in /etc/fstab als /srv/vdr/video.00 einzubinden. Nach dem Mounten die Rechte anpassen:
+----
+user@yavdr:~$ sudo chown -R vdr:vdr /srv/vdr/video.00/* 
+user@yavdr:~$ sudo chown vdr:vdr /srv/vdr/video.00/
+----
+und anschließend den Dienst vdr <<restart-vdr,neu starten>>.
+Liegt die Videopartition auf einer anderen Platte und soll '''zusätzlich''' verwendet werden, erstellt man das Verzeichnis /srv/vdr/video.01 und mountet diese.
+Eine alternative Möglichkeit ist, die Video-Partition in /etc/default/vdr mittels der zusätzlichen Zeile VIDEO_DIR="" vorzugeben. Dies ist jedoch nicht updatesicher. Daher sollte man ein <<template,Custom-Template>> für diese Datei erstellen.
+
+Ich kann yaVDR nicht installieren, weil es einen Fehler gibt, was soll ich tun?::
+Die Fehlermeldung dokumentieren, ebenso wie evtl. die Hardware oder andere besondere Umstände. Ausserdem kann es helfen Google zu bemühen, evtl. sind Lösungen anderweitig dokumentiert. (Stichwort: Ubuntu Alternate Installer)
+
+Bekannt sind folgende Probleme:::
+- Wenn die Festplatte schonmal in einem Raid-Setup verwendet worden ist und der Installer das im MBR der HDD erkennt, bricht die Installation ab. Das kann man so lösen, wie hier beschrieben: http://www.vdr-portal.de/board/thread.php?postid=877653#post877653
+
+Warum kann ich bei der Installation nicht den Benutzernamen "vdr" wählen?::
+yaVDR verwendet intern den Benutzer "vdr" als unpersonalisierten Benutzer, der für die automatische Anmeldung verwendet wird und kein Passwort hat. Unter dem Benutzer "vdr" laufen alle automatisch gestarteten Vorgänge wie zum Beispiel der eigentliche VDR oder auch XBMC.
+Ab yaVDR 0.3 ist der Nutzernamen "vdr" im Installationsdialog blockiert, der Installationsassistent lässt "vdr" nicht zu. 
+
+=== Erste Schritte nach dem ersten Booten  ===
+
+Es sind anfänglich nur drei TV-Kanäle vorhanden. Ist etwas kaputt?::
+Dies sind drei Beispiel IPTV-Kanäle, welche über das Internet gestreamt werden (Voraussetzung: Internet-Anschluss). yaVDR liefert diese drei Kanäle mit, um schon gleich nach dem ersten Booten ein visuelles Erfolgserlebnis zu bieten, auch wenn noch kein DVB-Gerät angeschlossen ist. Du kannst die Kanalliste über das yaVDR Web-Frontend selbst bearbeiten und die IPTV-Kanäle entfernen, wenn sie Dir nicht gefallen. Anstelle dessen musst Du Deine eigene Kanalliste erstellen, die zu Deinem TV-Provider passt. Kanallisten gibt es unter anderem in der http://channelpedia.yavdr.com[yaVDR-Channelpedia].
+
+Wie kann ich das Webfrontend erreichen?::
+Entweder <nowiki>http://ip-des-rechners/</nowiki> oder über das Menü zum Webbrowser in VDR selbst.
+Das Webfrontend bietet Zugriff auf verschiedene Logdateien sowie andere wichtige Informationen. Weiterhin kann der VDR neu gestartet werden oder der ganze Rechner. 
+****
+Username: <Der Username der bei der Installation angegeben wurde>
+
+Passwort: <Das Passwort das bei der Installation angegeben wurde>
+****
+Es können außerdem verschiedene Konfigurationen vorgenommen werden. 
+Siehe *yavdr-wfe,YaVDR-Webfrontend*
+
+Das Bild, welches yaVDR an meinen TV liefert, wird an den Bildrändern abgeschnitten. Was kann ich tun?::
+War der yaVDR-Rechner zuvor mit einem anderen Fernseher oder Display verbunden? Wenn ja, bitte auch den FAQ-Eintrag YaVDR/FAQ#Warum_ist_das_TV-Bild_komisch,_nachdem_ich_den_angeschlossenen_Fernseher_ausgewechselt_habe? lesen.
+Entweder den Overscan-Parameter des Fernsehers im Setup-Menü des Fernsehers ändern (heißt bei einigen Herstellern nicht Overscan), oder im yaVDR-Web-Frontend den Wert für Overscan *YaVDR-Webfrontend#Nvidia|ändern*, bis es passt. Die Overscan-Funktion im Web-Frontend hat nur bei Verwendung von Nvidia-GPUs einen Effekt.
+
+Warum kommt kein Bild, wenn der Fernseher zuerst und danach erst der yaVDR-Rechner eingeschaltet wird?::
+Symptom: yaVDR liefert problemlos ein Bild, wenn der yaVDR-Rechner nach dem Fernseher eingeschaltet worden ist. Andersherum gibt es aber kein Bild. Das Bild bleibt komplett schwarz ohne jeglichen sichtbaren Inhalt (keine Schrift, keine Logos, kein Mauszeiger, kein TV-Bild).
+* '''Für Nutzer ab yaVDR Version 0.3:''' Im yaVDR-Web-Frontend muss die Display-Konfiguration vorgenommen und abgespeichert werden. Darauf hin wird automatisch eine Datei namens edid.0.yavdr unter /etc/X11/ abgelegt, die nur zum angeschlossenen Fernseher-Modell passt. Dies muss nur einmal gemacht werden, solange sich das angeschlossene Fernseher-Modell nicht ändert.
+[NOTE]
+=====================================================================
+Eine edid.bin wird nur von den Tools, die dem Nvidia-Treiber beiligen, generiert. Wenn keine Nvidia-GPU im Rechner steckt, gilt das hier gesagte nicht.
+=====================================================================
+
+Warum ist das TV-Bild komisch, nachdem ich den angeschlossenen Fernseher ausgetauscht habe oder einen Surround-Receiver zwischengeschaltet habe?::
+
+Wenn über das Web-Frontend die Display-Settings gespeichert werden, legt yaVDR ab Version 0.3 auch eine edid.bin unter /etc/X11/ ab, welche von nun an aus der xorg.conf.yavdr eingebunden wird. Der Sinn einer edid.bin ist, dass yaVDR beim Booten auch bei ausgeschaltetem TV weiß, welcher Fernseher dranhängt, damit das Bild von yaVDR wie erwartet erscheint, wenn der Fernseher erst später eingeschaltet wird. Wechselt man nun den Fernseher/das Display, an den yaVDR angeschlossen ist, passt die edid.bin nicht mehr zum neuen Fernseher. Am besten die edid.bin löschen und im Web-Frontend bei Display-Settings nochmal alles neu einstellen und speichern.
+
+Warum ist das OSD am unteren Rand trotz HDMI abgeschnitten?::
+Monitor bzw. Overscaneinstellung überprüfen. Bei Samsung Monitoren gibt es z.B. eine PC/AV Einstellung.
+Bei LG muss man den entsprechenden HDMI-Eingang "PC" nennen.
+
+Wie ist das root Passwort?::
+Wie auch bei Ubuntu üblich, es gibt keins. Viele Befehle können mit sudo ausgeführt werden. Möchte man unbedingt ein root-Passwort, so kann man dieses per <code>sudo passwd</code> setzen. Das ist aber nicht empfohlen. 
+
+Wie komme ich auf die Konsole?::
+Die empfohlene Variante ist, von einem anderen Rechner im Haushalt aus ssh zu verwenden, von Windows-Rechnern aus bietet sich putty an. Wenn keine anderen Rechner verfügbar sind und man lokal eine Konsole benutzen möchte, so kann man einen xterm im Menüpunkt Applikationen des VDR-OSDs aufrufen. Natürlich kann man wie üblich auch die Tastenkombination {{Button neutral|Strg}}{{Button neutral|Alt}}{{Button neutral|F2}} verwenden. 
+Wer statt dessen {{Button neutral|Strg}}{{Button neutral|Alt}}{{Button neutral|F1}} drückt, soll sich nicht über einen schwarzen Bildschirm wundern: Das erste Terminal hat in yaVDR einen geschwärzten Cursor, um Bootmeldungen im Sinne des Wohnzimmer-Umfelds unsichtbar zu machen. Alle anderen Terminals funktionieren unverändert.
+
+=== Zusätzliche Software, Pakete, Plugins installieren und deinstallieren ===
+
+==== Kann ich Samba/ftp/xyz/irgendein vdr plugin installieren? Wie bekomme ich $APP? ====
+
+Dies kann man ganz normal per aptitude erledigen (Login auf der shell/xterm oder per ssh)
+Als Quellen sind standardmässig die yaVDR Repos, sowie die Ubuntu Repo's eingebunden. Probleme wird es höchstwahrscheinlich nur geben, wenn man versucht ganze Desktop Environments zu installieren.
+
+==== Ich möchte vorinstallierte Plugins deinstallieren/deaktivieren. Wie geht das? ====
+
+Eine Reihe von VDR-Plugins sind in yaVDR standardmäßig installiert, weil sie entweder notwendig für den Betrieb von yaVDR sind oder Standardfunktionalität von yaVDR bereitstellen. Diese Plugins werden vom elementar wichtigen Paket *yavdr-essential* eingefordert. Alle Pakete, die zu *yavdr-essential*> gehören, lassen sich mit folgendem Befehl auflisten:
+ apt-cache show yavdr-essential
+
+Man kann diejenigen Plugins, welche man nicht nutzen möchte, einfach deaktivieren über das Bearbeiten der Konfigurationsdatei */etc/vdr/plugins/order.conf* durch Hinzufügen einer Zeile mit dem Plugin-Namen (ohne das Prefix vdr-plugin-). Diese Zeile muss am Zeilenanfang vor dem Plugin-Namen ein Minuszeichen enthalten.
+
+[WARNING]
+=========================================================================================================================
+Es ist nicht vorgesehen, dass man diese Plugins über *sudo apt-get remove vdr-plugin-<name>* deinstallieren kann, sonst wird die Paketverwaltung versuchen, auch das Paket *yavdr-essential* mitsamt aller davon abhängigen Pakete zu deinstallieren, was zu einem nackten Ubuntu-System ganz ohne VDR führt. 
+=========================================================================================================================
+
+[TIP]
+=========================================================================================================================
+Möchte man Plugins, die vom Paket *yavdr-essential* gefordert werden, unbedingt komplett deinstallieren, so muss man die Abhängigkeiten in yaVDR erst mit *sudo untie-packages* lösen (untie-packages ist ein spezielles Skript, welches yaVDR für solche Sonderfälle mitbringt). Damit werden die Abhängigkeiten auf das Paket *yavdr-essential* gelöst und nachfolgend das Paket deinstalliert. Dies ist eine Notlösung, weil man von nun an nicht mehr profitiert von Änderungen an *yavdr-essential*, die man sonst per Update bekommen würde.
+=========================================================================================================================
+
+==== Wie kann ich das Flash Plugin für den Firefox Webbrowser installieren? ====
+
+Entweder http://wiki.ubuntuusers.de/adobe_flash oder das youtube-addon aus dem WFE installieren.
+
+
+====Updates und Upgrades====
+
+[qanda]
+Wie kann ich Pakete über's Internet aktualisieren?::
+Siehe <<updates,Updaten des Systems>>
+
+==== Woher kommen die Updates? Welche Repositories werden genutzt? ====
+siehe <<updates,Updaten des Systems>>
+
+==Was ist der Unterschied zwischen apt-get upgrade und apt-get dist-upgrade?==
+siehe <<updates,Updaten des Systems>>
+==Wie mache ich ein Upgrade von yaVDR 0.x zu yaVDR 0.y?==
+siehe <<updates,Updaten des Systems>>
+
+=== S3 - Suspend To Ram ===
+
+Yavdr wird standardmäßig mit S3 ausgeliefert. Der Mehrverbrauch gegenüber dem ausgeschaltetem Zustand ist bei der meisten Hardware sehr gering. Weitere Vorteile sind ein schnellerer Start, sowie dass einige Features auf bestimmter Hardware nur aus S3 funktionieren. Dem entgegen steht, dass einige Hardwaretreiber nicht für den S3 konzipiert sind. 
+
+.Wie funktioniert der S3? :
+Wenn der Rechner mit der Power Taste oder über das Menü heruntergefahren wurde und wieder ohne Probleme hochkommt: Einfach so Augenzwinkern
+
+.S3 funktioniert, aber leider bleibt manchmal der Bildschirm schwarz. Gibt es Abhilfe? :
+Das Nvidia-Modul hat teilweise Probleme mit dem S3. In solchen Fällen hilft es meistens, während des Aufwachens das Modul zu entladen und wieder neu zu laden. In yaVDR gibt es dafür einen einfachen Weg: Einfach eine Datei Namens "/etc/yavdr/force-reload-modules.list" anlegen und dort das Modul "nvidia" eintragen.
+
+.Nach dem S3 funktioniert meine USB-Tastatur / mein USB-Empfänger nicht mehr. Hilft die Datei auch dabei? :
+Ja, gleiche Lösung wie für die Grafikkarte. Mehrere Module können untereinander in der "force-reload-modules.list" eingetragen werden.
+
+.Nach dem S3 funktioniert meine Fernbedienung trotz eingetragenem Modul immer noch nicht. Wie kann ich Lirc automatisch neu starten? :
+.Auf einem ganz ähnlichen Weg. Zum erzwungenen Neustarten von Diensten einfach eine Datei namens "/etc/yavdr/force-reload-services.list" anlegen und dort den gewünschten Dienst, z.b. "lirc" eintragen.
+
+.Ich möchte den S3 trotzdem gerne komplett deaktivieren. Geht das? :
+Um zu verhindern, dass yaVDR den S3-Modus zum Herunterfahren verwendet, einfach die Datei */usr/share/vdr/shutdown-hooks/S90.suspend2ram* löschen bzw. deren Inhalt auskommentieren. Seit dem 22.03.2010 gibt es hierfür eine Einstellmöglichkeit im Webfrontend: suspend2ram(S3) oder shutdown(S5) oder rebootPowerOff-kernel.
+
+=== Wakeup ===
+
+Absolut unverzichtbar für einen VDR, der als Receiver-Ersatz dienen (also nicht nur als Recording-Server durchlaufen) soll ist die Möglichkeit, Timer so zu setzen, dass der VDR zur richtigen Zeit aufwacht. Wer ihn dabei nicht nur "schlafen legen" will (siehe oben S3), sondern richtig herunterfahren (das Booten geht ja schön schnell), der muss entweder ACPI wakeup oder nvram wakeup konfigurieren. yaVDR bietet das im Moment nicht per GUI aktivierbar an, ausserdem muss man ohnehin evtl. etwas mehr manuellen Aufwand treiben, bis das funktioniert.
+
+.ACPI Wakeup
+
+Das kann einfach in der Datei /etc/vdr/vdr-addon-acpiwakeup.conf aktiviert werden, mit etwas Glück funktioniert es dann schon. Man sollte die Rechnerzeit unbedingt auf UTC stehen haben (siehe /etc/default/rcS), damit die yaVDR Skripte funktionieren. Häufig ist es noch notwendig, die Funktion HPET (high precision event timer) im BIOS abzustellen, auch die Emulation dem Kernel per GRUB_CMDLINE_LINUX_DEFAULT="hpet=disabled" in /etc/default/grub (danach aufrufen: update-grub) zu verbieten sowie das Setzen der hwclock beim shutdown zu unterbinden (/etc/init/hwclock-save.conf). 
+Allgemeine Informationen sind im Artikel *ACPI Wakeup* zu finden.
+
+Diese Variante des Wakeup funktioniert grundsätzlich nicht, wenn man auf einen reboot-shutdown angewiesen ist (etwa wegen bestimmter SAT-Karten, mit denen der Rechner nicht normal herunterfährt): der ACPI Alarm überlebt den zwischengeschalteten Reboot nicht!
+
+.NVRAM WakeUp
+
+Diese Variante nutzt den vom BIOS angebotenen Aufwach-Timer, meistens im BIOS unter APM zu finden. Damit das nvram-wakeup Programm diesen Timer setzen kann, muss es wissen, wo im nvram die entsprechenden Datenfelder zu finden sind. Dies ist je nach Board/BIOS und sogar BIOS-Version unterschiedlich. Das Programm guess-helper ermittelt diese Stellen, indem man seinen Anweisungen folgt und mehrfach bestimmte vorgegebene Timer-Werte im BIOS einträgt. Am Anfang muss man sich für einen Chipsatz entscheiden (wie findet man den richtigen heraus?) Am Ende stellt es eine nvram-wakeup.conf bereit, die man am besten nach /etc legt und dort referenziert.
+
+Bei yaVDR aktiviert man dann *NVRAM WakeUp*, indem man in /etc/vdr/vdr-nvram-wakeup.conf ENABLED="yes" und COMMANDLINE="-C /etc/nvram-wakeup.conf --directisa" setzt. Achtung: diese Datei ist bevorzugt per Templating *YaVDR-Templates#Kurzes_Beispiel_.2Fetc.2Fvdr.2Fvdr-nvram-wakeup.conf |siehe hier* zu behandeln, um ein Überschreiben der eigenen Werte bei Updates zu vermeiden! Evtl. gibt es bei manchen Boards auch andere Möglichkeiten, die Konfiguration zu setzen. Allgemeine Informationen sind im Artikel *NVRAM WakeUp* zufinden.
+
+=== Weitere Fragen ===
+
+.Macht es Sinn, irgendeinen anderen Nvidia-Treiber manuell zu installieren und den von yaVDR bereitgestelleten Nvidia-Treiber zu ersetzen?
+  Nein, es macht überhaupt keinen Sinn. Updates zu diesem Paket liefert das yaVDR-Team.
+
+.Macht es Sinn, s2-liplianin manuell zu kompilieren und per make install zu installieren und das dvb-s2-liplianin-dkms-Paket von yaVDR damit zu ersetzen? :
+  Nein, es macht überhaupt keinen Sinn. Updates zu diesem Paket liefert das yaVDR-Team.
+
+.Wie gehe ich von s2-liplianin wieder zurück zu v4l-dvb? :
+  In manchen Fällen kann liplianin die schlechtere Wahl sein, d.h. es funktioniert nur mit v4l-dvb richtig (zB der Fall bei den dual tuner PCIe Karten MediaPointer/Satix). Dazu das Paket deinstallieren und das fuer v4l-dvb installieren:
+
+ aptitude remove s2-liplianin-dkms
+ aptitude install v4l-dvb-dkms
+
+; Der vi verhält sich so komisch , wie kann ich das ändern? :
+: Viele verwechseln vi mit vim, möchte man die etwas komfortablere Variante verwenden oder ist man an vim gewöhnt, so kann man diesen einfach nachinstallieren.
+
+; Hilfe ich kann mc nicht aufrufen. :
+: mc ist standardmäßig nicht installiert. Kann aber wie gehabt einfach nachinstalliert werden.
+
+; Taste F11 löst eine Pause aus, diese sieht aber anders aus als vom vdr gewohnt : 
+: Das ist die Pausefunktion von Xine, VDR hat damit nix zu tun. Du wirst auch keine Timeshfting-Aufnahme hierzu finden.
+
+; Das Fernsehbild ändert ständig die Größe :
+: Das ist ein neues Feature und nennt sich autocrop. Man kann dies unter /usr/bin/start-xine abstellen
+
+ USE_AUTOCROP="0"
+
+; Der Bildschirmschoner geht nach 2 Stunden an, was ist das? :
+: Das ist das suspendoutput plugin. Man kann dieses deinstallieren (vdr-plugin-suspendoutput) oder die Zeit nach seinen Wünschen einstellen.
+
+==== Fenster und Schriftgröße bei externen Programmen ändern ====
+Siehe diesen Thread hier: http://www.vdr-portal.de/board/thread.php?threadid=100508[Fenster und Schriftgröße bei externen Programmen ändern]
+////
