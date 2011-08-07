@@ -1,0 +1,214 @@
+= Konfiguration im Webfrontend =
+
+Im Webfrontend können verschiedene Einstellungen vorgenommen und Log Dateien und die Kanalliste eingesehen werden. Darüber hinaus kann man Dienste oder das komplette System neu starten.
+
+Um das Webfrontend im Browser öffnen zu können benötigt man die IP Adresse des YaVDR Rechners und muss mit diesem per Netzwerk verbunden sein.
+
+Eingabe Beispiel: http://192.168.0.23/admin/
+
+Ist die IP Adresse des YaVDR Rechners unbekannt so kann man alternativ versuchen, über den bei der Installation vergebenen Rechnernamen (voreingestellt: ubuntu) auf das YaVDR-Webfrontend zuzugreifen.
+
+Eingabe Beispiel: http://ubuntu/admin/
+
+Nach Eingabe im Browser und der Bestätigung mit der Return Taste sollte sich das YaVDR Webfrontend zeigen. Hier ist dann das "yavdr Web Configuration Frontend" auszuwählen.
+
+== Ihr VDR ==
+=== VDR-Frontend wählen ===
+Hier sollte das VDR-Frontend ausgewählt werden, standardmäßig ist vdr-sxfe@vdr-plugin-xineliboutput voreingestellt.
+
+Die folgenden Frontends können gewählt werden:
+* xine@vdr-plugin-xine
+* vdr-sxfe@vdr-plugin-xineliboutput
+* XBMC@vdr-plugin-streamdev (experimental)
+* headless (yaVDR server)
+
+VDR Frontend ist das für die Anzeige des TV verantwortliche Programm. Normal: xine oder xineliboutput, beide haben ihre Stärken und Schwächen. Experimentell: XBMC hier fehlen noch einige zur richtigen Integration notwendige Features. Wer es dennoch ausprobieren will, sollte sich über Unzulänglichkeiten im Klaren sein.
+
+Headless (für den Einsatz als Server)
+
+Nachdem das Frontend gewählt wurde muss man auf 'Frontend-Einstellung aktivieren' klicken um die Änderung zu speichern.
+
+=== VDR-Konfigurations Editor ===
+
+Unter diesem Menüpunkt kann man Inhalte für die folgenden Dateien auf den VDR im laufenden Betrieb hochladen und die existierenden Dateien überschreiben:
+
+* /var/lib/vdr/remote.conf (Zuordnung der Fernbedienungstasten zu VDR-Funktionen)
+* /etc/vdr/diseqc.conf (Einstellung für die Satellitenkonfiguration) 
+* /var/lib/vdr/channels.conf (Kanalliste für den VDR)
+* /etc/lircd.conf (individuell für die jeweilige Fernbedienung) 
+* /var/lib/vdr/.xbmc/userdata/Lircmap.xml (Zuordnung der Fernbedienungstasten zu XBMC-Funktionen)
+
+Die Datei, die hochgeladen werden soll, auswählen und dann einfach den Inhalt der Datei in das rechte, leere Feld einfügen und dann auf 'Datei hochladen' klicken um den Inhalt zu speichern.
+Achtung: Das Feld selbst ist rudimentär editierbar, allerdings können keine Tabs eingegeben werden.
+
+=== VDR-Shutdown wählen ===
+
+Wenn das System herunter fährt, kann man die folgenden Optionen wählen:
+
+* suspend to RAM 
+
+Das System wird nach dem herunter fahren im Hauptspeicher gehalten.
+Dies ist die schnellste Art das System wieder zu starten.
+Hierbei wird das BIOS beim hoch fahren nicht abgefragt.
+
+* suspend to DISK
+
+Die Systemdateien werden auf die Festplatte gespeichert.
+Dies ist etwas schneller als wenn man das System Komplett neu starten lässt.
+Hierbei wird das BIOS beim hoch fahren nicht abgefragt.
+
+* shutdown
+
+Das System wird ganz normal runter und wieder hoch gefahren.
+Hierbei wird das BIOS beim hoch fahren immer durchlaufen.
+
+* reboot PowerOff-kernel
+
+Das System wird rebootet und darauf folgend ein spezieller Booteintrag gestartet der den Rechner abschaltet. Dies ist in speziellen Fällen nötig, wenn der Rechner sonst nicht abschalten kann.
+
+===VDR-Lifeguard===
+VDR-Lifeguard Einstellungen:
+
+ Aptitude
+ NFS
+ SMB
+ SSH = eine SSH Verbindung ist offen (z.B. Putty oder WSCP)
+ FTP = eine FTP Verbindung ist offen
+ XBMC = XBMC läuft??
+
+
+VDR-Lifeguard kann vor dem Ausschalten prüfen ob bestimmte Prozesse aktiv sind. Soll ein Prozess nicht unterbrochen werden, wird das Ausschalten verschoben. Fügen Sie hier Prozesse hinzu, die das Ausschalten verhindern sollen. Nicht markiert bedeutet: VDR-Lifeguard ist deaktiviert
+
+=== yaVDR Pakete ===
+Hier wird eine Liste der die möglichen Installationspaketen dargestellt. Installierte Pakete haben eine grüne LED, nicht installierte eine rote.
+
+=== Kanäle ===
+Es wird eine Kanalliste aller TV und Radiokanälen dargestellt. Die Liste ist in den konfigurierten Kanalgruppen gegliedert. Editieren ist nicht möglich. 
+
+
+== System ==
+=== Fernbedienung ===
+
+In diesem Menü wird die verwendete Fernbedienung konfiguriert.
+
+* Hilfe
+Hilfetext zur Fernbedienungseinstellung.
+
+* LIRC
+Dieses unterstützt die meisten Geräte.
+Zur Konfiguration ist es nötig zu wissen, welcher Treiber für das eigene Gerät benötigt wird.
+Wenn es ein serieller Empfänger ist, muss zusätzlich noch die verwendete serielle Schnittstelle ausgewählt werden.
+ 
+* Inputlirc
+Einige DVB Karten liefern einen Fernbedienungsempfänger mit. Viele dieser Empfänger, sowie einige USB Empfänger werden als sogenannte INPUT Geräte eingebunden. Hier muss nur der Fernbedienungsempfänger aus der Liste erkannter Geräte ausgewählt werden.
+
+* IRServer
+Einige HTPC-Gehäuse (z.B. OrigonAE) haben integrierte Empfänger, welche einen speziellen Server (IRServer) benötigen. Hier muss nur der Server aktiviert und anschließend gespeichert werden.
+
+=== Ton ===
+
+Mithilfe dieser Option stellt man den passenden Audio Ausgang ein. 
+
+Zur Auswahl stehen:
+
+* Analog
+* Digital (Toslink/[[S/PDIF]])
+* HDMI Stereo
+* HDMI Pass Through
+
+Nachdem man den passenden Ausgang gewählt hat klickt man nur noch auf 'Setze Soundeinstellungen'.
+
+=== Grub Timeout ===
+
+Der Grub Timeout ist die Zeit in der der Auswahlbildschirm beim Bootvorgang für die verschiedenen Bootpartitionen / Betriebssysteme (falls vorhanden) angezeigt wird.
+
+Wenn man im System mehr als ein Betriebssystem zur Auswahl hat und davon booten möchte, sollte man den Timeout einstellen, auf die gewünschte Zeit.
+
+Danach einfach 'Setze GRUB Timeout' anklicken und der Grub Auswahlbildschirm erscheint ab dem nächsten booten für die eingestellte Zeit.
+
+=== Anzeige ===
+
+Wenn ein primärer Bildschirm angeschlossen ist, kann man nur die Auflösung für den ersten Bildschirm auswählen.
+
+Wenn man 2 Bildschirme angeschlossen hat, kann man hier die beiden Bildschirme konfigurieren. 
+
+Für jede Anzeige kann man festlegen, ob es der primäre oder sekundäre Bildschirm ist und dessen Auflösung einstellen.
+
+Des weiteren kann man hier GraphTFT aktivieren. 
+
+Die Änderungen kann man dann mit 'Setze Anzeigeeinstellungen' übernehmen.
+
+=== Nvidia ===
+
+Seit 0.3 ist dieser Menüpunkt nicht mehr vorhanden. Bei "Anzeige" kann der Overscan eingestellt werden?
+
+In der Nvidia Konfigurationsseite kann man den Nvidia-Overscan Kompensation per Schieberegler einstellen und mit 'Wert anwenden' abspeichern.
+
+Für den Fall das im Anzeigegerät ein Overscan festgelegt ist der nicht abgeschaltet werden kann, kann hiermit das Bild verkleinert werden, um alle angezeigten Bildinhalte sichtbar zu machen. 
+
+Dies sollte als Notlösung angesehen werden, den Overscan direkt am TV abzuschalten ist die präferierte Lösung.
+
+
+=== Wartung ===
+
+Unter System sind drei Schaltflächen zu finden mit denen man folgende Aktionen ausführen kann:
+
+* VDR Backend neu starten
+
+Startet nur den vdr Service neu, aber keine anderen Services.
+
+* Eingefrorenes XBMC abwürgen
+
+Im falle das XBMC mal hängen sollte kann man über diese Schaltfläche das XBMC schließen.
+
+* Rechner neu starten (Vorsicht: Keine Sicherheitsabfrage!)
+
+Alle Services werden gestoppt und das System wird neu gestartet.
+
+=== Netzwerk ===
+
+Hier können NFS Freigaben von anderen Rechnern eingebunden werden. 
+
+Standardmäßig wird das Aufnahmeverzeichnis von yaVDR per NFS freigegeben. Hierüber sollte sich dann eine einfacher Austausch erledigen lassen um die Aufnahmen anderer yaVDRs zu teilen.
+
+Hierfür muss nur Rechnername:/Freigabepfad eingetragen werden und hinzugefügt werden.
+
+Nach dem man den Eintrag in das Feld gemacht hat, einfach auf 'Hinzufügen' klicken und die Freigabe wird in das untere Feld übernommen, aber noch nicht gespeichert.
+
+Zum Ändern einfach einen unten hinzugefügten Eintrag anklicken und dann im oberen Feld ändern. Danach dann auf 'Ändern' klicken, damit wird die Änderung nach unten übernommen.
+
+Zum Löschen eines Eintrages diesen einfach unten anklicken und dann auf 'Löschen' klicken.
+
+Der Button "Übernehmen" trägt sie tatsächlich in die lokale Konfiguration ein. Beim nächsten Neustart des VDR stehen sie dann zur Verfügung.
+
+Die Freigaben sollten dann im Unterverzeichnis 'net' im Aufnahmeverzeichnis des VDR verfügbar sein.
+
+=== Web Frontend ===
+
+Hier können Einstellungen am Webfrontend vorgenommen werden. Im Moment betrifft das ausschließlich die Auswahl der Sprache des Webfrontends, wenn man das Webfronten in einer anderen Sprache als der Systemsprache angezeigt haben möchte.
+
+== Demos ==
+=== (SVDRP) ===
+
+In diesem Bildschirm wird die verwendete Kanalliste des VDR's angezeigt.
+Als Spalten werden die Kanalnummer, der Kanalname und der komplette Eintrag in der channels.conf angezeigt.
+Wobei die die Kanalnummer sich wie folgt zusammen setzt:
+Die ersten 4 Nummern von rechts sind die Kanalnummer. Die ein oder zwei Nummern links davon sind der Kanalbereich, wenn mehrere in der channels.conf eingetragen sind.
+Diese erkennt man an dem Doppelpunk als erstes Zeichen in der Zeile der channels.conf.
+Beispiel:
+: :OeffentlichRechtliche
+: :Private
+Wenn man also auf dem ersten Kanal ist und auf der Fernbedienung die Pfeiltaste nach rechts drückt, kommt man zu dem Kanalbereich 'Private'.
+
+== Diagnose ==
+=== System-Information ===
+=== System-Logfiles ===
+=== XBMC-Crashes ===
+=== LIRC-Konfiguration ===
+=== VDR-Konfiguration ===
+=== X-Server ===
+=== Sound (ALSA) ===
+=== Pakete ===
+=== yaVDR-Utils ===
+
+*Kategorie:YaVDR|W*

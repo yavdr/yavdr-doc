@@ -35,6 +35,8 @@ include::10_Installation.txt[]
 
 include::20_Erste_Schritte.txt[]
 
+include::30_Plugins.txt[]
+
 [[admin-book]]
 == Systembeschreibung ==
 
