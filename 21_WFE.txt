@@ -1,5 +1,5 @@
 [[wfe]]
-==== Das Webfrontend ====
+=== Das Webfrontend ===
 
 Das Webfrontend ist via Browser unter der IP-Adresse oder dem Hostnamen des VDR aus dem Netzwerk erreichbar. Am yaVDR selbst ist es als Startseite im vorinstallieren Mozilla Firefox eingerichtet. Diesen kann man entweder über das VDR-OSD (Taste "M" auf der Tastatur, Menütaste auf der Fernbedienung: *Hauptmenü => "Applikationen" => "Web"*) aufrufen oder indem man die Maus mittig an den linken Bildschirmrand bewegt und aus dem nun erscheinenden Panel den Starter unter *http:// => Firefox* wählt.
 
@@ -9,6 +9,9 @@ image:wfe/wfe_start.png["Startseite des yaVDR-Webfrontend"]
 . <<wfe-config,*Das yaVDR-Webfrontend zu Konfiguration*>>
 . <<vdr-live,*VDR LIVE!*>>
 . <<streamdev-server-http,*Das HTTP-Interface des Streamdev-Servers*>>
+
+[[Dashboard]]
+==== Dashboard ====
 
 .Das Webfrontend startet mit dem Dashboard, das eine Übersicht über das System gibt. Unter anderem wird angezeigt ob
 * der VDR läuft
@@ -22,7 +25,7 @@ image:wfe/wfe_start.png["Startseite des yaVDR-Webfrontend"]
 image:wfe/dashboard.png["Dashboard"]
 
 [[wfe-config]]
-===== Überblick über das Webfrontend =====
+==== Überblick ====
 
 Ein Großteil der Einstellungen kann bei yaVDR über das Webfrontend vorgenommen werden. 
 
@@ -39,9 +42,71 @@ Ein Großteil der Einstellungen kann bei yaVDR über das Webfrontend vorgenommen
 * <<wfe-packages,Paketverwaltung>> um Plugins für den VDR nachzuinstallieren
 * <<wfe-config-editor,Editor für Konfigurationsdateien>>
 
+[[settings-wfe]]
+==== Einstellungen ====
+Diese Seite verlinkt zu den Einstellungen, die über das Webfrontend vorgenommen werden können:
+
+[[wfe-common]]
+===== VDR: Allgemein =====
+
+[[wfe-channels]]
+===== VDR: Kanäle =====
+.TODO:
+****
+Symbol hinzufügen
+****
+
+[[wfe-remote]]
+===== Hardware: Fernbedienung =====
+.TODO:
+****
+Symbol hinzufügen
+****
+
+[[wfe-audio]]
+===== Hardware: Audio =====
+.TODO:
+****
+Symbol hinzufügen
+****
+
+[[wfe-video]]
+===== Hardware: Anzeigeneinstellungen =====
+.TODO:
+****
+Symbol hinzufügen
+****
+
+[[wfe-system]]
+===== System: System =====
+.TODO:
+****
+Symbol hinzufügen
+****
+
+[[wfe-network]]
+===== System: Netzwerk =====
+.TODO:
+****
+Symbol hinzufügen
+****
+
+[[wfe-edit_config]]
+===== VDR: Konfiguration bearbeiten =====
+.TODO:
+****
+Symbol hinzufügen
+****
+
+
 
 [[wfe-packages]]
-===== Plugins =====
+===== System: Pakete =====
+
+.TODO:
+****
+Symbol hinzufügen
+****
 
 Über das Webfrontend können Plugins, Addons und andere VDR-bezogene Pakete verwaltet werden.
 image:wfe/plugins.png["Plugins nachinstallieren"]
@@ -52,4 +117,8 @@ image:wfe/plugins_apt.png[APT-Befehle]
 Über das mit einem Rechtsklick auf ein Paket in der Liste erreichbare Menü kann das jeweilige Paktet  installiert, entfernt oder (de)aktiviert werden.
 
 image:wfe/plugin-installation.png["Paketinstallation"]
+
+
+[[system-wfe]]
+==== System ====
 

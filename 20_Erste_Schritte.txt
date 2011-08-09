@@ -3,15 +3,39 @@
 
 Nach der Installation startet yaVDR mit drei vorkonfigurierten Internet-TV Kanälen. Ist eine Internetanbindung vorhanden sieht man also zunächst den WebTV-Stream von 3sat.
 
-.Drei Dinge die man braucht um yaVDR sinnvoll nutzen zu können:
-- Sendersuche
-- Fernbedienung
-- Inhalte
+[TIP]
+.Erste Schritte nach der Installation
+=====================================================================
+.Drei Punkte müssen abgearbeitet werden um yaVDR nach einer Neuinstallation sinnvoll nutzen zu können:
+- <<system-upgrade,aktuelle Updates einspielen>>
+- Senderliste erstellen
+- Fernbedienung einrichten
+=====================================================================
 
-include::21_WFE.txt[]
 
 ****
 .TODO
 Tastenbelegung Tastatur
 Grundlegende Bedienung des OSD
 ****
+
+[[system-upgrade]]
+==== Aktuelle Updates einspielen ====
+
+[CAUTION]
+.yaVDR immer möglichst aktuell halten
+=====================================================================
+yaVDR ist eine "stark entwickelte" Distribution, für die häufig Updates erscheinen. Viele "alte" Fehler und Probleme lassen sich dadurch vermeiden, dass man regelmäßig sein System auf den neuesten Stand bringt.
+
+Gerade *bevor* man darüber nachdenkt eine Support-Anfrage im http://www.vdr-portal.de[Forum] zu stellen, sollte man überprüfen, ob der Fehler auch nach dem Einspielen der aktuellen Pakete und einem anschließenden Neustart noch auftritt.
+=====================================================================
+
+----
+sudo apt-get update && sudo apt-get dist-upgrade
+----
+
+==== Tastaturbelegung ====
+
+Auch wenn eine Fernbedienung die Bedienung deutlich bequemer macht, ist es nach der Installation oft hilfreich, wenn man zunächst auch mit der Tastatur navigieren kann.
+
+

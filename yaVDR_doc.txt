@@ -35,6 +35,8 @@ include::10_Installation.txt[]
 
 include::20_Erste_Schritte.txt[]
 
+include::21_WFE.txt[]
+
 include::30_Plugins.txt[]
 
 [[admin-book]]
@@ -46,6 +48,10 @@ include::50_Remote.txt[]
 include::60_Templates.txt[]
 
 include::70_Dienste.txt[]
+
+include::80_restfulapi-plugin.txt[]
+
+include::81_dynamite-plugin.txt[]
 
 :leveloffset: -1
 
