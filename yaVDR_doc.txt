@@ -35,14 +35,20 @@ include::10_Installation.txt[]
 
 include::20_Erste_Schritte.txt[]
 
+<<<<
+
 include::21_WFE.txt[]
 
 include::30_Plugins.txt[]
+
+include::40_directories.txt[]
 
 [[admin-book]]
 == Systembeschreibung ==
 
 include::50_Remote.txt[]
+
+// TODO: SVDRP
 
 
 include::60_Templates.txt[]

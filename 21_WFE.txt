@@ -10,11 +10,12 @@ image:wfe/wfe_start.png["Startseite des yaVDR-Webfrontend"]
 . <<vdr-live,*VDR LIVE!*>>
 . <<streamdev-server-http,*Das HTTP-Interface des Streamdev-Servers*>>
 
+
 [[Dashboard]]
 ==== Dashboard ====
 
-.Das Webfrontend startet mit dem Dashboard, das eine Übersicht über das System gibt. Unter anderem wird angezeigt ob
-* der VDR läuft
+.Das Webfrontend startet mit dem Dashboard, das eine Übersicht über das System gibt. Unter anderem wird angezeigt
+* ob der VDR läuft
 * freier und belegter Festplattenplatz
 * das gewählte Frontend
 * die Bildschirmauflösung
@@ -31,8 +32,8 @@ Ein Großteil der Einstellungen kann bei yaVDR über das Webfrontend vorgenommen
 
 .Dazu gehören
 * <<wfe-frontend,Wahl des VDR-Frontends>>
-* <<lifeguard-addon, Lifeguard-Addon>>
-* EPG-Zeichenkorrektur
+* <<wfe-lifeguard, Lifeguard-Addon>>
+* <<wfe-epg_enc,EPG-Zeichenkorrektur>>
 * <<wfe-channels,Kanalverwaltung>>
 * <<wfe-remote,Fernbedienung(en)>>
 * <<wfe-audio,Tonausgabe>>
@@ -49,12 +50,45 @@ Diese Seite verlinkt zu den Einstellungen, die über das Webfrontend vorgenommen
 [[wfe-common]]
 ===== VDR: Allgemein =====
 
+.TODO:
+****
+Symbol hinzufügen
+****
+
+[[wfe-frontend]]
+
+Hier kann das VDR-Frontend ausgewählt werden. bei yaVDR 0.4 ist xine vorausgewählt, wenn die Ausgabe über die Grafikkarte des PCs erfolgen soll. Ist eine TT S2-6400 (HD-FF), SD-FF oder eine Hauppauge PVR350 verbaut, werden die entsprechenden Plugins für diese Karten bei der Installation automatisch installiert und aktiviert.
+
+image:wfe/settings_frontend.png[]
+
+[[wfe-lifeguard]]
+Das <<lifeguard-addon, Lifeguard-Addon>> erlaubt es ein automatisches Herunterfahren des VDRs zu verhindern, wenn noch aktive Verbindungen bzw. Prozesse der ausgewählten Dienste bestehen:
+
+image:wfe/settings_lifeguard.png[]
+
+[[wfe-epg_enc]]
+Für Sender, die den Elektronischen Programmführer nicht standardkonform encodiert senden, kann der VDR so eingestellt werden, dass er auch in diesen Fällen alle Sonderzeichen korrekt anzeigt.
+
+image:wfe/settings_epg_enc.png[]
+
 [[wfe-channels]]
 ===== VDR: Kanäle =====
 .TODO:
 ****
 Symbol hinzufügen
 ****
+Hier können die Kanäle des VDR verwaltet werden. Vorhandene Kanäle lassen sich in Gruppen einteilen, per Drag and Drop neu anordnen oder über das Kontextmenü, das per Rechtsklick erreichbar ist, bearbeiten.
+Mehrere Kanäle lassen sich bei gedrückter Umschalttaste gleichzeitig auswählen. Die Ablage rechts erlaubt es Kanäle zwischenzulagern, z.B. um sie ohne ständiges Hin- und Herscrollen anordnen zu können.
+
+image:wfe/channels.png["Kanalverwaltung"]
+
+Klickt man auf das image:wfe/left_double.gif[] Symbol links neben "Kanäle", öffnet sich die http://channelpedia.yavdr.com/gen/html/index.html[Channelpedia]:
+
+image:wfe/channelpedia.png["Channelpedia"]
+
+Dort hinterlegte Sender können ohne Kanalsuchlauf direkt in die Kanalliste übernommen werden. Dazu ruft man mittels Rechtsklick das Kontextmenü eines Kanals oder einer Kanalgruppe auf und übernimmt wahlweise das gerade markierte Objekt oder alle per Häkchen ausgewählten Objekte in die Kanalliste.
+
+image:wfe/channelpedia_add_small.png["Kanal hinzufügen"]
 
 [[wfe-remote]]
 ===== Hardware: Fernbedienung =====
@@ -108,6 +142,9 @@ Symbol hinzufügen
 Symbol hinzufügen
 ****
 
+[[wfe-packages]]
+===== Plugins =====
+
 Über das Webfrontend können Plugins, Addons und andere VDR-bezogene Pakete verwaltet werden.
 image:wfe/plugins.png["Plugins nachinstallieren"]
 
@@ -121,4 +158,5 @@ image:wfe/plugin-installation.png["Paketinstallation"]
 
 [[system-wfe]]
 ==== System ====
+
 

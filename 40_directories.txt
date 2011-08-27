@@ -1,0 +1,3 @@
+[[directories]]
+=== Verzeichnisstruktur ===
+Für *yaVDR* gibt es eine angepasste Verzeichnisstruktur, die es erlaubt lokale und von anderen Computern eingebundene Freigaben zusammenzuführen.

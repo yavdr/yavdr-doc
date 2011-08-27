@@ -3,3 +3,14 @@ Der VDR selbst konzentriert sich auf die Kernfunktionen DVB-Empfang, das Aufzeic
 Eine gute Übersicht welche Plugins existieren und ob sie mit den unter yaVDR verwendeten VDR-Versionen 1.7.x kompatibel sind, bietet die Seite http://vdr-wiki.de/wiki/index.php/Plugins[Plugins] im VDR-Wiki.
 Die meisten kompatiblen Plugins sind in den yaVDR-Paketquellen zu finden und können bei Bedarf einfach über das <<wfe-packages,Webfrontend>> oder die <<install-packages,Shell>> nachinstalliert werden.
 
+[[streamdev-server]]
+==== Streamdev-Server ====
+Das Streamdev-Server Plugin erlaubt es dem VDR Live-TV an andere VDRs (über das Streamdev-Client Plugin) oder beliebige Clients via HTTP zu streamen.
+
+[NOTE]
+.Konfiguration des Plugins
+=====================================================================
+In der Voreinstellung nach der Installation erlaubt das Plugin nur Zugriffe vom gleichen Rechner.
+Um anderen Clients den Zugriff (und die Steuerung wichtiger Funktionen per SVDRP) zu erlauben müssen zwei Konfigurationsdateien angepasst werden:
+=====================================================================
+

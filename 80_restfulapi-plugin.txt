@@ -15,4 +15,6 @@ Es setzt nicht mehr auf direkte TCP Kommunikation sondern erlaubt die Interaktio
 * Junges Plugin, das teilweise noch nicht den Funktionsumfang von SVDRP (gerade bei direkter Steuerung von Plugins) hat
 * Noch keine große Zahl an Clients, die das Protokoll ausreizen
 
+Die API des Plugins kann man unter folgender Webadresse einsehen: *http://<IP des VDR>:8002/info.html*
+
 
