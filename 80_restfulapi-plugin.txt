@@ -1,7 +1,7 @@
 [[restfulapi]]
 === RestfulAPI-Plugin ===
 
-yaVDR 0.4 bringt das neu entwickelte RestfulAPI-Plugin mit, das als Alternative (oder Ergänzung) zu http://vdr-wiki.de/wiki/index.php/SVDRP[SVDRP] konzipiert ist.
+yaVDR 0.4 bringt das neu entwickelte RestfulAPI-Plugin mit, das als Alternative (oder Ergänzung) zu <<svdrp,SVDRP>> konzipiert ist.
 Es setzt nicht mehr auf direkte TCP Kommunikation sondern erlaubt die Interaktion mit dem VDR über HTTP-Anfragen. Die Antworten des VDR werden in den Formaten HTML, XML oder JSON ausgeliefert.
 
 .Vorteile:
@@ -12,7 +12,7 @@ Es setzt nicht mehr auf direkte TCP Kommunikation sondern erlaubt die Interaktio
 * Auch EPG-Bilder und Kanallogos lassen sich leicht vom VDR abrufen
 
 .Nachteile:
-* Junges Plugin, das teilweise noch nicht den Funktionsumfang von SVDRP (gerade bei direkter Steuerung von Plugins) hat
+* Junges Plugin, das teilweise noch nicht den Funktionsumfang von <<svdrp,SVDRP>> (gerade bei direkter Steuerung von Plugins) hat
 * Noch keine große Zahl an Clients, die das Protokoll ausreizen
 
 Die API des Plugins kann man unter folgender Webadresse einsehen: *http://<IP des VDR>:8002/info.html*

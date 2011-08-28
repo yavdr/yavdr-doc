@@ -14,7 +14,7 @@ chmod
 ****
 
 [[sudo]]
-===== sudo der Super User ====
+===== sudo - Super User =====
 
 Unter Ubuntu ist standardmäßig kein Passwort für den root-Account vergeben. Um dennoch als root Befehle ausführen zu können gibt es das Kommando *sudo*, das Mitgliedern der Gruppe *admin* erlaubt Befehle mit erhöhten Rechten auszuführen.
 

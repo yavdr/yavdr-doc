@@ -39,6 +39,8 @@ include::20_Erste_Schritte.txt[]
 
 include::21_WFE.txt[]
 
+include::25_Config.txt[]
+
 include::30_Plugins.txt[]
 
 include::40_directories.txt[]
@@ -48,12 +50,14 @@ include::40_directories.txt[]
 
 include::50_Remote.txt[]
 
-// TODO: SVDRP
 
 
 include::60_Templates.txt[]
 
 include::70_Dienste.txt[]
+
+// TODO: SVDRP
+include::75_SVDRP.txt[]
 
 include::80_restfulapi-plugin.txt[]
 

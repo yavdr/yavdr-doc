@@ -1,0 +1,23 @@
+[[svdrp]]
+=== SVDRP ===
+
+SVDRP footnote:[Simple VDR Protocol] ermöglicht es über eine einfache TCP-Verbindung auf Port 6419 mit dem VDR zu kommunizieren und ihn zu steuern.
+Nähere Informationen findet man im http://vdr-wiki.de/wiki/index.php/SVDRP[Artikel zu SVDRP im VDR-Wiki]
+
+[CAUTION]
+.Zugriff von anderen Rechnern
+=====================================================================
+Für den Zugriff über SVDRP von anderen Rechnern aus muss die Datei '/etc/vdr/svdrphosts.conf' angepasst werden. Einige Beispiele sind im folgenden aufgeführt:
+=====================================================================
+
+.Beispieleinträge für '/etc/vdr/svdrphosts.conf'
+----
+127.0.0.1       <1>
+192.168.1.115   <2>
+192.168.1.0/24  <3>
+0.0.0.0/0       <4>
+----
+<1> Dieser Eintrag darf nicht entfernt werden, da sonst der VDR mit bestimmten Plugins nicht mehr richtig funktioniert!
+<2> Erlaubt dem Rechner mit der IP 192.168.1.115 den Zugriff
+<3> Erlaubt allen Rechnern, deren IP mit 192.168.1. beginnt den Zugriff
+<4> Erlaubt allen Rechnern unabhängig von ihrer IP den Zugriff (Achtung: damit ist ein ungeschützter Zugriff auf den VDR von außerhalb des eigenen Netzwerks möglich, falls der VDR nicht durch einen Router mit NAT oder eine Firewall gesichert ist!)

@@ -3,14 +3,52 @@ Der VDR selbst konzentriert sich auf die Kernfunktionen DVB-Empfang, das Aufzeic
 Eine gute Übersicht welche Plugins existieren und ob sie mit den unter yaVDR verwendeten VDR-Versionen 1.7.x kompatibel sind, bietet die Seite http://vdr-wiki.de/wiki/index.php/Plugins[Plugins] im VDR-Wiki.
 Die meisten kompatiblen Plugins sind in den yaVDR-Paketquellen zu finden und können bei Bedarf einfach über das <<wfe-packages,Webfrontend>> oder die <<install-packages,Shell>> nachinstalliert werden.
 
+[[streamdev]]
+==== Streamdev-Plugin ====
+Das http://vdr-wiki.de/wiki/index.php/Streamdev-plugin[Streamdev Plugin] erlaubt es dem VDR Live-TV an andere VDRs (über das Streamdev-Client Plugin) oder beliebige Clients via HTTP zu streamen.
+Es teilt sich in <<sreamdev-server,Streamdev-Server>> und <<streamdev-client,Streamdev-Client>> auf.
+
 [[streamdev-server]]
-==== Streamdev-Server ====
-Das Streamdev-Server Plugin erlaubt es dem VDR Live-TV an andere VDRs (über das Streamdev-Client Plugin) oder beliebige Clients via HTTP zu streamen.
+===== Streamdev-Server =====
+
+Das Streamdev-Server Plugin (Paketname *vdr-plugin-streamdev-server*) ist bei yaVDR 0.4 vorinstalliert. Es erlaubt Live-TV übers Netzwerk zu streamen.
 
 [NOTE]
-.Konfiguration des Plugins
+.Zugriff von anderen Rechnern aus
 =====================================================================
 In der Voreinstellung nach der Installation erlaubt das Plugin nur Zugriffe vom gleichen Rechner.
-Um anderen Clients den Zugriff (und die Steuerung wichtiger Funktionen per SVDRP) zu erlauben müssen zwei Konfigurationsdateien angepasst werden:
+Um anderen Clients den Zugriff (und die Steuerung wichtiger Funktionen per SVDRP) zu erlauben müssen wie im folgenden beschrieben zwei Konfigurationsdateien angepasst werden
 =====================================================================
+
+Für den Zugriff über SVDRP (z.B. wenn ein anderer VDR mit <<streamdev-client,Streamdev-Client Plugin>> zugreifen können soll) muss die Datei '/etc/vdr/svdrphosts.conf' wie unter <<svdrp,SVDRP>> beschrieben angepasst werden.
+
+Für den Zugriff auf die von Streamdev-Server bereitgestellten Transportströme muss außerdem die Datei '/etv/vdr/plugins/streamdev-server/streamdevhosts.conf' angepasst werden.
+
+.Beispieleinträge für '/etc/vdr/plugins/streamdev-server/streamdevhosts.conf'
+----
+127.0.0.1       <1>
+192.168.1.115   <2>
+192.168.1.0/24  <3>
+0.0.0.0/0       <4>
+----
+<1> Dieser Eintrag darf nicht entfernt werden, da sonst der VDR mit bestimmten Plugins nicht mehr richtig funktioniert!
+<2> Erlaubt dem Rechner mit der IP 192.168.1.115 den Zugriff
+<3> Erlaubt allen Rechnern, deren IP mit 192.168.1. beginnt den Zugriff
+<4> Erlaubt allen Rechnern unabhängig von ihrer IP den Zugriff (Achtung: Nicht empfohlen, da damit ein ungeschützter Zugriff auf die Kanäle des VDR von außerhalb des eigenen Netzwerks möglich ist, falls der VDR nicht durch einen Router mit NAT oder eine Firewall gesichert ist!)
+
+.TODO
+****
+extremux.sh
+Webinterface Port 3000
+Playlist der Sender
+****
+
+[[streamdev-client]]
+===== Streamdev-Client =====
+Das Streamdev-Client Plugin (Paketname: *vdr-plugin-streamdev-client*) erlaubt einem VDR auf das Streamdev-Server Plugin eines anderen VDR zuzugreifen und somit dessen DVB-Karten zu nutzen. Damit das klappt, müssen die gewünschten Kanäle aus der channels.conf des Servers in die channels.conf auf den Client kopiert werden und auf Server und Client die Verbindungseinstellungen angepasst werden. Es kann über eine Instanz des Streamdev-Clients immer nur ein Transponder übertragen werden.
+
+.TODO
+****
+Konfiguration beschreiben, auf streamdevhosts.conf des Servers verweisen
+****
 

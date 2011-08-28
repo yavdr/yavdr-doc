@@ -91,7 +91,7 @@ Dort hinterlegte Sender können ohne Kanalsuchlauf direkt in die Kanalliste übe
 image:wfe/channelpedia_add_small.png["Kanal hinzufügen"]
 
 [[wfe-remote]]
-===== Hardware: Fernbedienung =====
+===== Hardware: Einstellung der Fernbedienung =====
 .TODO:
 ****
 Symbol hinzufügen
@@ -103,13 +103,16 @@ Symbol hinzufügen
 ****
 Symbol hinzufügen
 ****
+Diese Seite erlaubt es einzustellen wie der Ton durch den VDR und XBMC ausgegeben werden soll. Für komplexere Konfigurationen muss die Konfiguration von <<alsa,alsa>> händisch angepasst werden.
 
 [[wfe-video]]
 ===== Hardware: Anzeigeneinstellungen =====
 .TODO:
 ****
 Symbol hinzufügen
+GraphTFT
 ****
+Hier kann die Auflösung und Nutzung der angeschlossenen Bildschirme eingestellt werden. Außerdem können hier die Deinterlacing-Methoden für HD- und SD-Material konfiguriert werden.
 
 [[wfe-system]]
 ===== System: System =====
@@ -117,22 +120,24 @@ Symbol hinzufügen
 ****
 Symbol hinzufügen
 ****
+Auf dieser Seite kann die Systemsprache gewählt werden und eingestellt werden wie der VDR herunterfährt und aufwacht. Außerdem lässt sich der Timeout für die Anzeige des GRUB-Menü einstellen. 
 
 [[wfe-network]]
 ===== System: Netzwerk =====
 .TODO:
 ****
-Symbol hinzufügen
+Symbol hinzufügen, Bilder hinzufügen, Beispiel hinzufügen
 ****
+Hier können NFS-Freigaben aus dem Netzwerk und die MAC-Adressen von Rechnern, die später über das OSD per WOL footnote:[Wake On LAN] geweckt werden sollen, eingetragen werden.
 
 [[wfe-edit_config]]
 ===== VDR: Konfiguration bearbeiten =====
 .TODO:
 ****
 Symbol hinzufügen
+Auswählbare Dateien auflisten
 ****
-
-
+Hier können Konfigurationsdateien direkt im Browser bearbeitet werden. Aktuell ist die Liste der auswählbaren Dateien noch unvollständig.
 
 [[wfe-packages]]
 ===== System: Pakete =====
@@ -141,9 +146,6 @@ Symbol hinzufügen
 ****
 Symbol hinzufügen
 ****
-
-[[wfe-packages]]
-===== Plugins =====
 
 Über das Webfrontend können Plugins, Addons und andere VDR-bezogene Pakete verwaltet werden.
 image:wfe/plugins.png["Plugins nachinstallieren"]
@@ -156,7 +158,25 @@ image:wfe/plugins_apt.png[APT-Befehle]
 image:wfe/plugin-installation.png["Paketinstallation"]
 
 
-[[system-wfe]]
+[[wfe-system]]
+===== System: System =====
+.TODO:
+****
+Ergänzen
+****
+
+[[wfe-network]]
+===== System: Netzwerk =====
+
+.TODO:
+****
+Symbol hinzufügen
+****
+
+[[wfe-system-settings]]
 ==== System ====
 
-
+.TODO:
+****
+Unterpunkte ergänzen
+****
