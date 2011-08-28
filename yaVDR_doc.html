@@ -11840,7 +11840,7 @@ AAAASUVORK5CYII=" />
 </span></p></div>
 </div>
 <div class="sect4">
-<h5 id="wfe-remote">Hardware: Fernbedienung</h5>
+<h5 id="wfe-remote">Hardware: Einstellung der Fernbedienung</h5>
 <div class="sidebarblock">
 <div class="content">
 <div class="title">TODO:</div>
@@ -11854,14 +11854,17 @@ AAAASUVORK5CYII=" />
 <div class="title">TODO:</div>
 <div class="paragraph"><p>Symbol hinzufügen</p></div>
 </div></div>
+<div class="paragraph"><p>Diese Seite erlaubt es einzustellen wie der Ton durch den VDR und XBMC ausgegeben werden soll. Für komplexere Konfigurationen muss die Konfiguration von <a href="#alsa">alsa</a> händisch angepasst werden.</p></div>
 </div>
 <div class="sect4">
 <h5 id="wfe-video">Hardware: Anzeigeneinstellungen</h5>
 <div class="sidebarblock">
 <div class="content">
 <div class="title">TODO:</div>
-<div class="paragraph"><p>Symbol hinzufügen</p></div>
+<div class="paragraph"><p>Symbol hinzufügen
+GraphTFT</p></div>
 </div></div>
+<div class="paragraph"><p>Hier kann die Auflösung und Nutzung der angeschlossenen Bildschirme eingestellt werden. Außerdem können hier die Deinterlacing-Methoden für HD- und SD-Material konfiguriert werden.</p></div>
 </div>
 <div class="sect4">
 <h5 id="wfe-system">System: System</h5>
@@ -11870,22 +11873,26 @@ AAAASUVORK5CYII=" />
 <div class="title">TODO:</div>
 <div class="paragraph"><p>Symbol hinzufügen</p></div>
 </div></div>
+<div class="paragraph"><p>Auf dieser Seite kann die Systemsprache gewählt werden und eingestellt werden wie der VDR herunterfährt und aufwacht. Außerdem lässt sich der Timeout für die Anzeige des GRUB-Menü einstellen.</p></div>
 </div>
 <div class="sect4">
 <h5 id="wfe-network">System: Netzwerk</h5>
 <div class="sidebarblock">
 <div class="content">
 <div class="title">TODO:</div>
-<div class="paragraph"><p>Symbol hinzufügen</p></div>
+<div class="paragraph"><p>Symbol hinzufügen, Bilder hinzufügen, Beispiel hinzufügen</p></div>
 </div></div>
+<div class="paragraph"><p>Hier können NFS-Freigaben aus dem Netzwerk und die MAC-Adressen von Rechnern, die später über das OSD per WOL <span class="footnote"><br />[Wake On LAN]<br /></span> geweckt werden sollen, eingetragen werden.</p></div>
 </div>
 <div class="sect4">
 <h5 id="wfe-edit_config">VDR: Konfiguration bearbeiten</h5>
 <div class="sidebarblock">
 <div class="content">
 <div class="title">TODO:</div>
-<div class="paragraph"><p>Symbol hinzufügen</p></div>
+<div class="paragraph"><p>Symbol hinzufügen
+Auswählbare Dateien auflisten</p></div>
 </div></div>
+<div class="paragraph"><p>Hier können Konfigurationsdateien direkt im Browser bearbeitet werden. Aktuell ist die Liste der auswählbaren Dateien noch unvollständig.</p></div>
 </div>
 <div class="sect4">
 <h5 id="wfe-packages">System: Pakete</h5>
@@ -11894,9 +11901,6 @@ AAAASUVORK5CYII=" />
 <div class="title">TODO:</div>
 <div class="paragraph"><p>Symbol hinzufügen</p></div>
 </div></div>
-</div>
-<div class="sect4">
-<h5 id="wfe-packages">Plugins</h5>
 <div class="paragraph"><p>Über das Webfrontend können Plugins, Addons und andere VDR-bezogene Pakete verwaltet werden.
 <span class="image">
 <img alt="Plugins nachinstallieren" src="data:image/png;base64,
@@ -13784,9 +13788,30 @@ UHuNANWJKa9TJ9Tbm4vjBEGQJEkQBOOybTxYs9koirLZbAzDqmOA+U5eaApUWFhYWFhosoiiKJqm
 KYoiSbL2M/Pltvn0F0EQFotVmwIxMfDiAsDCwYf5shi9efp/9nbA0c4BZ9EAAAAASUVORK5CYII=" />
 </span></p></div>
 </div>
+<div class="sect4">
+<h5 id="wfe-system">System: System</h5>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">TODO:</div>
+<div class="paragraph"><p>Ergänzen</p></div>
+</div></div>
+</div>
+<div class="sect4">
+<h5 id="wfe-network">System: Netzwerk</h5>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">TODO:</div>
+<div class="paragraph"><p>Symbol hinzufügen</p></div>
+</div></div>
+</div>
 </div>
 <div class="sect3">
-<h4 id="system-wfe">3.5.4. System</h4>
+<h4 id="wfe-system-settings">3.5.4. System</h4>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">TODO:</div>
+<div class="paragraph"><p>Unterpunkte ergänzen</p></div>
+</div></div>
 </div>
 </div>
 <div class="sect2">
@@ -13795,8 +13820,12 @@ KYoiSbL2M/Pltvn0F0EQFotVmwIxMfDiAsDCwYf5shi9efp/9nbA0c4BZ9EAAAAASUVORK5CYII=" />
 Eine gute Übersicht welche Plugins existieren und ob sie mit den unter yaVDR verwendeten VDR-Versionen 1.7.x kompatibel sind, bietet die Seite <a href="http://vdr-wiki.de/wiki/index.php/Plugins">Plugins</a> im VDR-Wiki.
 Die meisten kompatiblen Plugins sind in den yaVDR-Paketquellen zu finden und können bei Bedarf einfach über das <a href="#wfe-packages">Webfrontend</a> oder die <a href="#install-packages">Shell</a> nachinstalliert werden.</p></div>
 <div class="sect3">
-<h4 id="streamdev-server">3.6.1. Streamdev-Server</h4>
-<div class="paragraph"><p>Das Streamdev-Server Plugin erlaubt es dem VDR Live-TV an andere VDRs (über das Streamdev-Client Plugin) oder beliebige Clients via HTTP zu streamen.</p></div>
+<h4 id="streamdev">3.6.1. Streamdev-Plugin</h4>
+<div class="paragraph"><p>Das <a href="http://vdr-wiki.de/wiki/index.php/Streamdev-plugin">Streamdev Plugin</a> erlaubt es dem VDR Live-TV an andere VDRs (über das Streamdev-Client Plugin) oder beliebige Clients via HTTP zu streamen.
+Es teilt sich in <a href="#sreamdev-server">Streamdev-Server</a> und <a href="#streamdev-client">Streamdev-Client</a> auf.</p></div>
+<div class="sect4">
+<h5 id="streamdev-server">Streamdev-Server</h5>
+<div class="paragraph"><p>Das Streamdev-Server Plugin (Paketname <strong>vdr-plugin-streamdev-server</strong>) ist bei yaVDR 0.4 vorinstalliert. Es erlaubt Live-TV übers Netzwerk zu streamen.</p></div>
 <div class="admonitionblock">
 <table><tr>
 <td class="icon">
@@ -13847,17 +13876,160 @@ zKjX661DvHOOJElIkoRSqYT3/vLvRlW15eHCa4VxzdvmpjZDfubzuXeb3vuzqCEixBhbo0NTkyS5
 PAr9L8j/96+U/w3yCoCXW14B8HLLvwDd67nwZIEPdgAAAABJRU5ErkJggg==" />
 </td>
 <td class="content">
-<div class="title">Konfiguration des Plugins</div>
+<div class="title">Zugriff von anderen Rechnern aus</div>
 <div class="paragraph"><p>In der Voreinstellung nach der Installation erlaubt das Plugin nur Zugriffe vom gleichen Rechner.
-Um anderen Clients den Zugriff (und die Steuerung wichtiger Funktionen per SVDRP) zu erlauben müssen zwei Konfigurationsdateien angepasst werden:</p></div>
+Um anderen Clients den Zugriff (und die Steuerung wichtiger Funktionen per SVDRP) zu erlauben müssen wie im folgenden beschrieben zwei Konfigurationsdateien angepasst werden</p></div>
 </td>
 </tr></table>
+</div>
+<div class="paragraph"><p>Für den Zugriff über SVDRP (z.B. wenn ein anderer VDR mit <a href="#streamdev-client">Streamdev-Client Plugin</a> zugreifen können soll) muss die Datei <em>/etc/vdr/svdrphosts.conf</em> wie unter <a href="#svdrp">SVDRP</a> beschrieben angepasst werden.</p></div>
+<div class="paragraph"><p>Für den Zugriff auf die von Streamdev-Server bereitgestellten Transportströme muss außerdem die Datei <em>/etv/vdr/plugins/streamdev-server/streamdevhosts.conf</em> angepasst werden.</p></div>
+<div class="listingblock">
+<div class="title">Beispieleinträge für <em>/etc/vdr/plugins/streamdev-server/streamdevhosts.conf</em></div>
+<div class="content">
+<pre><tt>127.0.0.1       <img alt="1" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAABjSURBVHja
+VY6xDcAwCAS/pPQaLim9QmajdOk2I2SNrMEIlARIoigU8Cek/4e7zdHaWOYOVwaoA6wOCw05Y7FB
+gE0tIWQ+sBcwKM8qoD/wB5wGL8hjfdzWrh01GRp1hInGjDoXwHgsFuzBVLQAAABDdEVYdFNvZnR3
+YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8wMSBjcmlzdHlAbXlzdGljLmVzLmR1cG9u
+dC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUANThhMDcyZTA3MGRhMjJmNjEzNWNiZDNlNDE0NTQ2
+ZjloaiHtAAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30AAAAASUVORK5CYII=" />
+192.168.1.115   <img alt="2" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAAB7SURBVHja
+HY6hFcMwDEQ/NDQsNSwU9Apdo7Cw0CsIBoZmhKzQEQJLDQsFVclHpHu693W429Zr7bu541Pg3kCm
+Y0K75u9TEUPhuGgWU4mQDvieEaSQEnsT6zKPeZY0EUNtrHMCXvYUuSUg0PsMjUSvpysUT6OOSil9
+izp/VNk1YJ8vf6MAAABDdEVYdFNvZnR3YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8w
+MSBjcmlzdHlAbXlzdGljLmVzLmR1cG9udC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUAODBlYWU1
+MjljOTRhN2Y0N2RlY2NmYWRhMjhhY2I5ZGblb7ENAAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30A
+AAAASUVORK5CYII=" />
+192.168.1.0/24  <img alt="3" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAAB4SURBVHja
+JU6rFcNADBM09BqBhl6ltDCwKxQeDOwKB7tGYGCoYaChK6cmlt7TD1W5uap/sgoVBnEXWBTSoOdx
+7gpLDOAVorWC0ABdcBPqwZtx8Muf+DPXJpQ96Nu/LSMYl/n17oCOnplTOrpiwW3sUs4ZJmob5/wA
+Ubg1Y/zrjUwAAABDdEVYdFNvZnR3YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8wMSBj
+cmlzdHlAbXlzdGljLmVzLmR1cG9udC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUAODBiYmRhMjcy
+NmRkYWNlOGFiOGEwMWY1OWRlMmViZGII/Q51AAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30AAAAA
+SUVORK5CYII=" />
+0.0.0.0/0       <img alt="4" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAABzSURBVHja
+HY0hEoUwEEMjkZVYZGVlr1CJxCKRXKPyy28reyVsZeXKsCFi573ZzAQk+x5jaQ6gFQAxIA8XceEN
+ZEN3DkOCH/TobUoSVuAYwSSLyzbvaHWVFJxUmmp+PF+twrLkuXzLwPmZ8+OjtH8KS6pGvuoGNo5b
+6rzDAAAAQ3RFWHRTb2Z0d2FyZQBAKCMpSW1hZ2VNYWdpY2sgNC4yLjggOTkvMDgvMDEgY3Jpc3R5
+QG15c3RpYy5lcy5kdXBvbnQuY29tkbohuAAAACp0RVh0U2lnbmF0dXJlADlmODJmY2FjOWUwMzlj
+YmRiNzIzODBhNDU5MTMyNGY1gLv4dgAAAA50RVh0UGFnZQAxMngxMiswKzCEbbt9AAAAAElFTkSu
+QmCC" /></tt></pre>
+</div></div>
+<div class="colist arabic"><table>
+<tr><td><img alt="1" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAABjSURBVHja
+VY6xDcAwCAS/pPQaLim9QmajdOk2I2SNrMEIlARIoigU8Cek/4e7zdHaWOYOVwaoA6wOCw05Y7FB
+gE0tIWQ+sBcwKM8qoD/wB5wGL8hjfdzWrh01GRp1hInGjDoXwHgsFuzBVLQAAABDdEVYdFNvZnR3
+YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8wMSBjcmlzdHlAbXlzdGljLmVzLmR1cG9u
+dC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUANThhMDcyZTA3MGRhMjJmNjEzNWNiZDNlNDE0NTQ2
+ZjloaiHtAAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30AAAAASUVORK5CYII=" /></td><td>
+Dieser Eintrag darf nicht entfernt werden, da sonst der VDR mit bestimmten Plugins nicht mehr richtig funktioniert!
+</td></tr>
+<tr><td><img alt="2" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAAB7SURBVHja
+HY6hFcMwDEQ/NDQsNSwU9Apdo7Cw0CsIBoZmhKzQEQJLDQsFVclHpHu693W429Zr7bu541Pg3kCm
+Y0K75u9TEUPhuGgWU4mQDvieEaSQEnsT6zKPeZY0EUNtrHMCXvYUuSUg0PsMjUSvpysUT6OOSil9
+izp/VNk1YJ8vf6MAAABDdEVYdFNvZnR3YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8w
+MSBjcmlzdHlAbXlzdGljLmVzLmR1cG9udC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUAODBlYWU1
+MjljOTRhN2Y0N2RlY2NmYWRhMjhhY2I5ZGblb7ENAAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30A
+AAAASUVORK5CYII=" /></td><td>
+Erlaubt dem Rechner mit der IP 192.168.1.115 den Zugriff
+</td></tr>
+<tr><td><img alt="3" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAAB4SURBVHja
+JU6rFcNADBM09BqBhl6ltDCwKxQeDOwKB7tGYGCoYaChK6cmlt7TD1W5uap/sgoVBnEXWBTSoOdx
+7gpLDOAVorWC0ABdcBPqwZtx8Muf+DPXJpQ96Nu/LSMYl/n17oCOnplTOrpiwW3sUs4ZJmob5/wA
+Ubg1Y/zrjUwAAABDdEVYdFNvZnR3YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8wMSBj
+cmlzdHlAbXlzdGljLmVzLmR1cG9udC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUAODBiYmRhMjcy
+NmRkYWNlOGFiOGEwMWY1OWRlMmViZGII/Q51AAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30AAAAA
+SUVORK5CYII=" /></td><td>
+Erlaubt allen Rechnern, deren IP mit 192.168.1. beginnt den Zugriff
+</td></tr>
+<tr><td><img alt="4" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAABzSURBVHja
+HY0hEoUwEEMjkZVYZGVlr1CJxCKRXKPyy28reyVsZeXKsCFi573ZzAQk+x5jaQ6gFQAxIA8XceEN
+ZEN3DkOCH/TobUoSVuAYwSSLyzbvaHWVFJxUmmp+PF+twrLkuXzLwPmZ8+OjtH8KS6pGvuoGNo5b
+6rzDAAAAQ3RFWHRTb2Z0d2FyZQBAKCMpSW1hZ2VNYWdpY2sgNC4yLjggOTkvMDgvMDEgY3Jpc3R5
+QG15c3RpYy5lcy5kdXBvbnQuY29tkbohuAAAACp0RVh0U2lnbmF0dXJlADlmODJmY2FjOWUwMzlj
+YmRiNzIzODBhNDU5MTMyNGY1gLv4dgAAAA50RVh0UGFnZQAxMngxMiswKzCEbbt9AAAAAElFTkSu
+QmCC" /></td><td>
+Erlaubt allen Rechnern unabhängig von ihrer IP den Zugriff (Achtung: Nicht empfohlen, da damit ein ungeschützter Zugriff auf die Kanäle des VDR von außerhalb des eigenen Netzwerks möglich ist, falls der VDR nicht durch einen Router mit NAT oder eine Firewall gesichert ist!)
+</td></tr>
+</table></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">TODO</div>
+<div class="paragraph"><p>extremux.sh
+Webinterface Port 3000
+Playlist der Sender</p></div>
+</div></div>
+</div>
+<div class="sect4">
+<h5 id="streamdev-client">Streamdev-Client</h5>
+<div class="paragraph"><p>Das Streamdev-Client Plugin (Paketname: <strong>vdr-plugin-streamdev-client</strong>) erlaubt einem VDR auf das Streamdev-Server Plugin eines anderen VDR zuzugreifen und somit dessen DVB-Karten zu nutzen. Damit das klappt, müssen die gewünschten Kanäle aus der channels.conf des Servers in die channels.conf auf den Client kopiert werden und auf Server und Client die Verbindungseinstellungen angepasst werden. Es kann über eine Instanz des Streamdev-Clients immer nur ein Transponder übertragen werden.</p></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">TODO</div>
+<div class="paragraph"><p>Konfiguration beschreiben, auf streamdevhosts.conf des Servers verweisen</p></div>
+</div></div>
 </div>
 </div>
 </div>
 <div class="sect2">
 <h3 id="directories">3.7. Verzeichnisstruktur</h3>
-<div class="paragraph"><p>Für <strong>yaVDR</strong> gibt es eine angepasste Verzeichnisstruktur, die es erlaubt lokale und von anderen Computern eingebundene Freigaben zusammenzuführen.</p></div>
+<div class="paragraph"><p>Für <strong>yaVDR</strong> werden verschiedene Dienste und Methoden kombiniert um eine Verzeichnisstruktur zu erzeugen, die es erlaubt lokale und von anderen Computern eingebundene Freigaben zusammenzuführen und gemeinsam im Dateisystem abzubilden.</p></div>
+<div class="paragraph"><p>Für Musik, Filme und Bilder existieren bereits Verzeichnisse unter <em>/srv/</em>, die per NFS und SAMBA im Netzwerk freigegeben sind, die Aufnahmen des VDR liegen unter <em>/srv/vdr/video.00</em> und werden als <strong>recordings</strong> via Samba exportiert (siehe Tabelle)</p></div>
+<div class="tableblock">
+<table rules="all"
+width="90%"
+frame="border"
+cellspacing="0" cellpadding="4">
+<caption class="title">Tabelle 1. Verzeichnisse für Medien in yaVDR</caption>
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<col width="25%" />
+<thead>
+<tr>
+<th align="left" valign="top">Medien     </th>
+<th align="left" valign="top">Pfad                 </th>
+<th align="left" valign="top">SAMBA      </th>
+<th align="left" valign="top">NFS</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left" valign="top"><p class="table header">Bilder</p></td>
+<td align="left" valign="top"><p class="table"><em>/srv/picture</em></p></td>
+<td align="left" valign="top"><p class="table"><strong>picture</strong></p></td>
+<td align="left" valign="top"><p class="table"><em>/srv/picture</em></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table header">Musik</p></td>
+<td align="left" valign="top"><p class="table"><em>/srv/music</em></p></td>
+<td align="left" valign="top"><p class="table"><strong>music</strong></p></td>
+<td align="left" valign="top"><p class="table"><em>/srv/music</em></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table header">Videos</p></td>
+<td align="left" valign="top"><p class="table"><em>/srv/video</em></p></td>
+<td align="left" valign="top"><p class="table"><strong>video</strong></p></td>
+<td align="left" valign="top"><p class="table"><em>/srv/video</em></p></td>
+</tr>
+<tr>
+<td align="left" valign="top"><p class="table header">Aufnahmen</p></td>
+<td align="left" valign="top"><p class="table"><em>/srv/vdr/video.00</em> <span class="footnote"><br />[Bei mehren video.xx-Verzeichnissen entsprechend zusätzlich /srv/vdr/video.01, /srv/vdr/video.02 usw.]<br /></span></p></td>
+<td align="left" valign="top"><p class="table"><strong>recordings</strong></p></td>
+<td align="left" valign="top"><p class="table"><em>/srv/share/vdr</em></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="sidebarblock">
+<div class="content">
+<div class="title">TODO:</div>
+<div class="paragraph"><p>avahi-mounter, NFS per WFE, Samba in fstab usw.</p></div>
+</div></div>
 </div>
 </div>
 </div>
@@ -18304,8 +18476,144 @@ Zeigt den Status des Dienstes an (also ob er gerade aktiv ist oder nicht)
 </div>
 </div>
 <div class="sect2">
-<h3 id="restfulapi">4.4. RestfulAPI-Plugin</h3>
-<div class="paragraph"><p>yaVDR 0.4 bringt das neu entwickelte RestfulAPI-Plugin mit, das als Alternative (oder Ergänzung) zu <a href="http://vdr-wiki.de/wiki/index.php/SVDRP">SVDRP</a> konzipiert ist.
+<h3 id="svdrp">4.4. SVDRP</h3>
+<div class="paragraph"><p>SVDRP <span class="footnote"><br />[Simple VDR Protocol]<br /></span> ermöglicht es über eine einfache TCP-Verbindung auf Port 6419 mit dem VDR zu kommunizieren und ihn zu steuern.
+Nähere Informationen findet man im <a href="http://vdr-wiki.de/wiki/index.php/SVDRP">Artikel zu SVDRP im VDR-Wiki</a></p></div>
+<div class="admonitionblock">
+<table><tr>
+<td class="icon">
+<img alt="Achtung" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAKdUlEQVRoge1Ze1AV1x3+zt279wEi
+DWCYGzRVktqa1MEmmtbWR22ncXxUrTDWV/5IqG2wUAUfmUwSkk6V+EAJCEQC6figwZBqZtRxqukf
+tebRZBpFG1S0hiRErwiaKK977+6eX//YPXt37+UiIJlMZnpmdnb33PP4vt97z2VEhG9yc3zdAO60
+/Z/A192+8QScX8Wifr+fWltbzffU1FT4fD72Vew15ASampqovr4eBw8eNPvGjRuHzMxMmj9//tCT
+IKIhu958801yuVwEoNdr48aNNJT7EdHQEdi/fz/JshwTvLiKioqGlMSQLFJfX0+MMRvQsWNSqXLz
+H2jez78fRWLTpk1DRuKOF6irqyOn02kDOP8XGdTz+VFSP91Hatu79NRvZ0SR2LJly5CQuKPJtbW1
+JEmSDdivHp1AwctHSblYSsqFElLOF5PavIvWZU+LIrF169Y7JjHoibt3744CnzXrIQpeOUbKhVJS
+mkpIPV9MyrnNpJwtIuVSNa15/MdRJLZt23ZHJBjRwIu5N954gxYvXgzOudm3aO5E1L5SBNZ1Hoxr
+INLAyH6HJxVP/WkXtu9+37ZeSUkJVq9ePagQO+BMXFNTEwV+ybxHsPeVIjg6zwOkgSWNhuOuUUBC
+KhxJY0AggDSgpwWbn1mO1csftq1ZUFCA0tLSQZXFA0pkVVVVlJOTA6vWsmY9hF07N0AS4OU48LgR
+WLO+FPFxboxMS8G5hlPYmPMI4jwM1P0Jtj67DJyrKHvtNADdjPPz8+FwOCgvL29gmuivrVVUVESF
+yqxZD1PoyjFSL+7QHbapmJTml+n9EzVRtl676ZekNKwl5VQ+KSfzKHR2E+UutodYxhiVl5cPyCf6
+ZUJlZWWUm5trk/wTi6bgtVdf1M2Gq2DEwUgDNBWhUDBqjfSRwwGoIOEP3c3Y/uxirFw0zibMvLw8
+VFZW9tucbkugoqKCVq1aZQO/YslUVJU+D9bVBIDroLgK4hygEDweybYGY8AD6d8yftfASL+j+2O8
+9NwiPJk51kYiNzcXO3fu7BeJPgkUFxdTbm6ure/JZdNRub0QrOMcGFcBrgLgAHEAGqD2ID7OZZsz
+Ji0RcR6HAV4DkaqPJxXouoSywkz8buF9NhIrV65EVVXVbUnEJHDixAlat26drS9n+U+xo/hZMMNh
+yZA+uAbAIKOGMCJlmG3eA/clAYaJEamGBlRdC6QBXZewo3AhVswfbSORk5ODDz/8sE8SvRLw+/1U
+XV0dBb5MgOe6LUNIEqpOwgCUlOCESw4HuAfG3KX7B2kAGaTJ0Jro77yI8ucX4DfzRtlIHD58GH6/
+PyaJXgk0NjZi79695vuUiffrkr91Vt8cHAwc4FZJGiZEKqDcwsi0ZHP+d749POy8MS7iGtBxARWF
+8/CDsQnm3BdeeAHWj6N+EYhspSVbgI5zYYkZGmAwzIEbwA0tUM9NfO+7aeb89HuGRQBWLcSNZxj3
+zvOYMzk5NpjBEHi99mXD5lXdjqGDJh42h7CEOXhnK3448X5z/shUb1jSpIEM8yFuzOUcjAsNcnR0
+KXdG4MEHH8TEiRPN9z0H3sfRE41m+GNcs9i0LjkGTTcrUoGem5g7/V5z/ohElw4O+jxGYQ3qJqmB
+jN/+cbINtcfCJvPYY4+hr3qtVwI+n49lZmaa71fbbuH3hX/FycbPQKSCoIIMQEQcehjVo5Gw8/F3
+3cSvH03H2HuHY1icQzcvYWKGIMiITMwQwjtnruPpqk9w/ZZq7p2RkYEJEyaAYrCIWY36/X7KyMhA
+W1ub2XfP3Qmo3ZKFaQ+P0gmYIdSoOkU4lWSwxGRAdqHL/xm86k27w0blAw3/PncD6yo/xrsfdZj7
+paSkoLGxESNGjAgDZsxWK8X0AZ/Px44fP460tLAzXrnWgUX5r+PYuxf1mG/Gf80sofWy2YuWbg/+
+uONtPLHhPRw+0WIHL8hbwG95rcUGPiEhAYcOHUJSUhI456YZRWqiz+8BIqLm5mZMmjQJN27cMPsT
+E9zYtWE25k4bYzh3mABIBRwOHPgPx+LH/6yDiXPi6pHZcEpk+I5qmtGpCzdQecCPPUevmevLsowj
+R45gypQpcDgc5mVowKaJmBoQTEePHo2GhgaMGxcuum52BLHsqUOoP3oWgLB9Sz7QgpgxJoThw/SS
+IutnaXBKZEpcgD998Uvs+3ubDbzT6URNTQ0mTZoEVVWhaRo459A0TeCy4etVA+JH8RvnHK2trZgz
+Zw5Onz5tjnPJDrxSOAPLZt1nSVIqwDmIVJw6dx1nLt3A3J/cjZThkhE29cvf3o2KA59ja91lcz3G
+GDZv3oylS5fC7XbD6XTC6XRCkiRIktS7Jm5HQLDXNA3Xr19HVlYWPvjgA4vEGLav+RHmTxsJX4rb
+8AsO4kbOIG6GzTD4HvzlmB/PVH9q2zc/Px/Z2dnwer1wu92QZRkulwuSJEGWZZMEY8wkEGVCVvCC
+AOcciqIgPj4e+/btw9SpU83xqkpYteU9HHm7Bf62rnC2RjikisTFSMPV9m4ceucannvVDn7p0qVY
+uHAhgsEggsEgQqFQlAlZnVm0PjOxIKFpGogIqqrC5XKhuroa06dPt4wDcl78F+qPNeNKe6cRoTjs
+ZYOKK+3dON7wBQrKm2H5pMbMmTOxZMkSBAIB9PT0oKenB4FAAIqiQFEUU4hRRyq3I2AlIZ4553A6
+nSgvL8fs2bNtY9eVNaDub58YmhDZWpe+v70bJ5tu4clt/4WihqU4efJkrFixAkRkAg4Gg1AUBaqq
+muDF/pGtX7WQNXeIZ0mSUFRUhAULFtjGPl3ZiJdev4QrbZ16zUQqrrZ342JLN5ZvaEJ3ICz68ePH
+IycnB5qmmZIW4EOhUJTZWEKo+Rx1KsEYY9Zk4XA4IEmSKXnOuRkVJElCYWEhvF4v6urqzDVK9n2M
+zu4Qnl5+L9q/7MHltgBWbr9kA5+eno7c3FzIsoyI5GrTeCzgosU8VmGMmSGLiEwSsixH2WNBQQEA
+2EhUH/wc7330BaaOH479/2zHtS/CFabP58OaNWvg9Xp1EE4nZFmGLMtwu93wer1wuVy2ECpJko2I
+iTNWJrZGI+HEwi6FisUVCAQQCASwZ88eVFZW9lk9JicnY/369fD5fPB4PCbo+Ph4k4TH44HL5YLX
+64XX6zXH9EKE9aUBRkTEGLNJP1Kd4nI4HMjOzkZ8fDyKi4ttJ3eiJSYmYu3atRg1apQJzuv1wuPx
+wOPxwOFwmEBFHnA6nXC5XGYSiywlbns2SnoDANN0hMNZnS0UCpkaOnPmDN566y20tLSY2ktLS8OM
+GTOQkpICt9uNuLg4M2EJ8CJZSZJkZmFBwkrAWpH2+3BXEBEkRIhTVdVMOCL5qKqKy5cvQ1EUaJoG
+VVWRnKx/Jlpt3eVy2QCKu9C68AFr9o0spwd0Oh1ZYggCIlNaiQktiXdhZgKQABcp3ci7LMtM7B0J
+fsAErJoAYItG1mdr+hfvVlACtHDIXkploYXbHvQOikDEe6/ZmjFmAhf9ZvJxOk2Qol88W4kYz32S
+GNQfHLG+TyMTkAVEr88xQfVnkBg7GAKixSIykDYQsL21/wFkW/B5QqT9lwAAAABJRU5ErkJggg==" />
+</td>
+<td class="content">
+<div class="title">Zugriff von anderen Rechnern</div>
+<div class="paragraph"><p>Für den Zugriff über SVDRP von anderen Rechnern aus muss die Datei <em>/etc/vdr/svdrphosts.conf</em> angepasst werden. Einige Beispiele sind im folgenden aufgeführt:</p></div>
+</td>
+</tr></table>
+</div>
+<div class="listingblock">
+<div class="title">Beispieleinträge für <em>/etc/vdr/svdrphosts.conf</em></div>
+<div class="content">
+<pre><tt>127.0.0.1       <img alt="1" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAABjSURBVHja
+VY6xDcAwCAS/pPQaLim9QmajdOk2I2SNrMEIlARIoigU8Cek/4e7zdHaWOYOVwaoA6wOCw05Y7FB
+gE0tIWQ+sBcwKM8qoD/wB5wGL8hjfdzWrh01GRp1hInGjDoXwHgsFuzBVLQAAABDdEVYdFNvZnR3
+YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8wMSBjcmlzdHlAbXlzdGljLmVzLmR1cG9u
+dC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUANThhMDcyZTA3MGRhMjJmNjEzNWNiZDNlNDE0NTQ2
+ZjloaiHtAAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30AAAAASUVORK5CYII=" />
+192.168.1.115   <img alt="2" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAAB7SURBVHja
+HY6hFcMwDEQ/NDQsNSwU9Apdo7Cw0CsIBoZmhKzQEQJLDQsFVclHpHu693W429Zr7bu541Pg3kCm
+Y0K75u9TEUPhuGgWU4mQDvieEaSQEnsT6zKPeZY0EUNtrHMCXvYUuSUg0PsMjUSvpysUT6OOSil9
+izp/VNk1YJ8vf6MAAABDdEVYdFNvZnR3YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8w
+MSBjcmlzdHlAbXlzdGljLmVzLmR1cG9udC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUAODBlYWU1
+MjljOTRhN2Y0N2RlY2NmYWRhMjhhY2I5ZGblb7ENAAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30A
+AAAASUVORK5CYII=" />
+192.168.1.0/24  <img alt="3" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAAB4SURBVHja
+JU6rFcNADBM09BqBhl6ltDCwKxQeDOwKB7tGYGCoYaChK6cmlt7TD1W5uap/sgoVBnEXWBTSoOdx
+7gpLDOAVorWC0ABdcBPqwZtx8Muf+DPXJpQ96Nu/LSMYl/n17oCOnplTOrpiwW3sUs4ZJmob5/wA
+Ubg1Y/zrjUwAAABDdEVYdFNvZnR3YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8wMSBj
+cmlzdHlAbXlzdGljLmVzLmR1cG9udC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUAODBiYmRhMjcy
+NmRkYWNlOGFiOGEwMWY1OWRlMmViZGII/Q51AAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30AAAAA
+SUVORK5CYII=" />
+0.0.0.0/0       <img alt="4" src="data:image/png;base64,
+iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAABzSURBVHja
+HY0hEoUwEEMjkZVYZGVlr1CJxCKRXKPyy28reyVsZeXKsCFi573ZzAQk+x5jaQ6gFQAxIA8XceEN
+ZEN3DkOCH/TobUoSVuAYwSSLyzbvaHWVFJxUmmp+PF+twrLkuXzLwPmZ8+OjtH8KS6pGvuoGNo5b
+6rzDAAAAQ3RFWHRTb2Z0d2FyZQBAKCMpSW1hZ2VNYWdpY2sgNC4yLjggOTkvMDgvMDEgY3Jpc3R5
+QG15c3RpYy5lcy5kdXBvbnQuY29tkbohuAAAACp0RVh0U2lnbmF0dXJlADlmODJmY2FjOWUwMzlj
+YmRiNzIzODBhNDU5MTMyNGY1gLv4dgAAAA50RVh0UGFnZQAxMngxMiswKzCEbbt9AAAAAElFTkSu
+QmCC" /></tt></pre>
+</div></div>
+<div class="colist arabic"><table>
+<tr><td><img alt="1" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAABjSURBVHja
+VY6xDcAwCAS/pPQaLim9QmajdOk2I2SNrMEIlARIoigU8Cek/4e7zdHaWOYOVwaoA6wOCw05Y7FB
+gE0tIWQ+sBcwKM8qoD/wB5wGL8hjfdzWrh01GRp1hInGjDoXwHgsFuzBVLQAAABDdEVYdFNvZnR3
+YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8wMSBjcmlzdHlAbXlzdGljLmVzLmR1cG9u
+dC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUANThhMDcyZTA3MGRhMjJmNjEzNWNiZDNlNDE0NTQ2
+ZjloaiHtAAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30AAAAASUVORK5CYII=" /></td><td>
+Dieser Eintrag darf nicht entfernt werden, da sonst der VDR mit bestimmten Plugins nicht mehr richtig funktioniert!
+</td></tr>
+<tr><td><img alt="2" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAAB7SURBVHja
+HY6hFcMwDEQ/NDQsNSwU9Apdo7Cw0CsIBoZmhKzQEQJLDQsFVclHpHu693W429Zr7bu541Pg3kCm
+Y0K75u9TEUPhuGgWU4mQDvieEaSQEnsT6zKPeZY0EUNtrHMCXvYUuSUg0PsMjUSvpysUT6OOSil9
+izp/VNk1YJ8vf6MAAABDdEVYdFNvZnR3YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8w
+MSBjcmlzdHlAbXlzdGljLmVzLmR1cG9udC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUAODBlYWU1
+MjljOTRhN2Y0N2RlY2NmYWRhMjhhY2I5ZGblb7ENAAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30A
+AAAASUVORK5CYII=" /></td><td>
+Erlaubt dem Rechner mit der IP 192.168.1.115 den Zugriff
+</td></tr>
+<tr><td><img alt="3" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAAB4SURBVHja
+JU6rFcNADBM09BqBhl6ltDCwKxQeDOwKB7tGYGCoYaChK6cmlt7TD1W5uap/sgoVBnEXWBTSoOdx
+7gpLDOAVorWC0ABdcBPqwZtx8Muf+DPXJpQ96Nu/LSMYl/n17oCOnplTOrpiwW3sUs4ZJmob5/wA
+Ubg1Y/zrjUwAAABDdEVYdFNvZnR3YXJlAEAoIylJbWFnZU1hZ2ljayA0LjIuOCA5OS8wOC8wMSBj
+cmlzdHlAbXlzdGljLmVzLmR1cG9udC5jb22RuiG4AAAAKnRFWHRTaWduYXR1cmUAODBiYmRhMjcy
+NmRkYWNlOGFiOGEwMWY1OWRlMmViZGII/Q51AAAADnRFWHRQYWdlADEyeDEyKzArMIRtu30AAAAA
+SUVORK5CYII=" /></td><td>
+Erlaubt allen Rechnern, deren IP mit 192.168.1. beginnt den Zugriff
+</td></tr>
+<tr><td><img alt="4" src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAwAAAAMCAAAAABzHgM7AAAAAmJLR0QAAKqNIzIAAABzSURBVHja
+HY0hEoUwEEMjkZVYZGVlr1CJxCKRXKPyy28reyVsZeXKsCFi573ZzAQk+x5jaQ6gFQAxIA8XceEN
+ZEN3DkOCH/TobUoSVuAYwSSLyzbvaHWVFJxUmmp+PF+twrLkuXzLwPmZ8+OjtH8KS6pGvuoGNo5b
+6rzDAAAAQ3RFWHRTb2Z0d2FyZQBAKCMpSW1hZ2VNYWdpY2sgNC4yLjggOTkvMDgvMDEgY3Jpc3R5
+QG15c3RpYy5lcy5kdXBvbnQuY29tkbohuAAAACp0RVh0U2lnbmF0dXJlADlmODJmY2FjOWUwMzlj
+YmRiNzIzODBhNDU5MTMyNGY1gLv4dgAAAA50RVh0UGFnZQAxMngxMiswKzCEbbt9AAAAAElFTkSu
+QmCC" /></td><td>
+Erlaubt allen Rechnern unabhängig von ihrer IP den Zugriff (Achtung: damit ist ein ungeschützter Zugriff auf den VDR von außerhalb des eigenen Netzwerks möglich, falls der VDR nicht durch einen Router mit NAT oder eine Firewall gesichert ist!)
+</td></tr>
+</table></div>
+</div>
+<div class="sect2">
+<h3 id="restfulapi">4.5. RestfulAPI-Plugin</h3>
+<div class="paragraph"><p>yaVDR 0.4 bringt das neu entwickelte RestfulAPI-Plugin mit, das als Alternative (oder Ergänzung) zu <a href="#svdrp">SVDRP</a> konzipiert ist.
 Es setzt nicht mehr auf direkte TCP Kommunikation sondern erlaubt die Interaktion mit dem VDR über HTTP-Anfragen. Die Antworten des VDR werden in den Formaten HTML, XML oder JSON ausgeliefert.</p></div>
 <div class="ulist"><div class="title">Vorteile:</div><ul>
 <li>
@@ -18337,7 +18645,7 @@ Auch EPG-Bilder und Kanallogos lassen sich leicht vom VDR abrufen
 <div class="ulist"><div class="title">Nachteile:</div><ul>
 <li>
 <p>
-Junges Plugin, das teilweise noch nicht den Funktionsumfang von SVDRP (gerade bei direkter Steuerung von Plugins) hat
+Junges Plugin, das teilweise noch nicht den Funktionsumfang von <a href="#svdrp">SVDRP</a> (gerade bei direkter Steuerung von Plugins) hat
 </p>
 </li>
 <li>
@@ -18349,7 +18657,7 @@ Noch keine große Zahl an Clients, die das Protokoll ausreizen
 <div class="paragraph"><p>Die API des Plugins kann man unter folgender Webadresse einsehen: <strong>http://&lt;IP des VDR&gt;:8002/info.html</strong></p></div>
 </div>
 <div class="sect2">
-<h3 id="dynamite">4.5. Dynamite-Plugin</h3>
+<h3 id="dynamite">4.6. Dynamite-Plugin</h3>
 <div class="paragraph"><p>Dieses Plugin erlaubt es DVB-Geräte dynamisch in den VDR einzubinden und wieder zu entfernen, ohne dass ein Neustart des VDR notwendig ist. Somit kann der VDR schneller starten, ohne z.B. auf "langsame" USB-TV-Karten zu warten. Sobald diese Initialisiert sind, werden sie basierend auf udev-Regeln nachträglich eingebunden und können genutzt werden.
 Für die Zukunft ist ein optionales automatisches Abschalten von gerade nicht benötigten DVB-Karten geplant um Strom zu sparen und die Lebensdauer der Komponenten zu verlängern.</p></div>
 </div>
@@ -18369,7 +18677,7 @@ chown
 chmod</p></div>
 </div></div>
 <div class="sect3">
-<h4 id="sudo">5.1.1. sudo der Super User ====</h4>
+<h4 id="sudo">5.1.1. sudo - Super User</h4>
 <div class="paragraph"><p>Unter Ubuntu ist standardmäßig kein Passwort für den root-Account vergeben. Um dennoch als root Befehle ausführen zu können gibt es das Kommando <strong>sudo</strong>, das Mitgliedern der Gruppe <strong>admin</strong> erlaubt Befehle mit erhöhten Rechten auszuführen.</p></div>
 </div>
 </div>
@@ -18552,7 +18860,7 @@ Möchte man neue Paketquellen hinzufügen, kann man diese entweder von Hand in d
 <div id="footer">
 <div id="footer-text">
 Version v0.1<br />
-Letzte Änderung 2011-08-27 18:49:54 CEST
+Letzte Änderung 2011-08-28 18:33:49 CEST
 </div>
 </div>
 </body>
