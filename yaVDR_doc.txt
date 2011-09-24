@@ -41,23 +41,26 @@ include::21_WFE.txt[]
 
 include::25_Config.txt[]
 
-include::30_Plugins.txt[]
-
-include::40_directories.txt[]
-
 [[admin-book]]
 == Systembeschreibung ==
 
+include::40_directories.txt[]
+
+
 include::50_Remote.txt[]
-
-
 
 include::60_Templates.txt[]
 
 include::70_Dienste.txt[]
-
-// TODO: SVDRP
+:leveloffset: +1
+include::41_NFS.txt[]
+include::42_SAMBA.txt[]
+:leveloffset: 0
+include::71_Konfigurationsdateien.txt[]
 include::75_SVDRP.txt[]
+
+include::30_Plugins.txt[]
+include::31_Streamdev-Plugin.txt[]
 
 include::80_restfulapi-plugin.txt[]
 

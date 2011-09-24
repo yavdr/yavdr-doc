@@ -1,0 +1,3 @@
+[[config]]
+=== Konfigurationsdateien und Schnittstellen ===
+Das Webfrontend und das Einstellungsmenü des VDR sind in den meisten Fällen ausreichend, um den VDR zu konfigurieren. Für spezielle Anwendungsfälle oder zur Fehlerbehebung ist es aber gut zu wissen, wo man bei der manuellen Konfiguration ansetzen muss.

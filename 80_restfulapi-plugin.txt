@@ -1,5 +1,5 @@
 [[restfulapi]]
-=== RestfulAPI-Plugin ===
+==== RestfulAPI-Plugin ====
 
 yaVDR 0.4 bringt das neu entwickelte RestfulAPI-Plugin mit, das als Alternative (oder Ergänzung) zu <<svdrp,SVDRP>> konzipiert ist.
 Es setzt nicht mehr auf direkte TCP Kommunikation sondern erlaubt die Interaktion mit dem VDR über HTTP-Anfragen. Die Antworten des VDR werden in den Formaten HTML, XML oder JSON ausgeliefert.

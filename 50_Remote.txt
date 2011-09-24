@@ -14,6 +14,7 @@ Bitte schicke den Entwicklern die Konfigurationsdateien für deine noch nicht OO
 damit die Hardware-Unterstützung für die kommenden Versionen verbessert werden kann.
 ======================================================================================
 
+[[eventlirc]]
 ==== Eventlirc ====
 
 yaVDR 0.4 benutzt standardmäßig eventlircd, ein Dienst der dabei hilft die unterschiedlichen Treiber und Eingabegeräte unter einen Hut zu bringen. Es dient sozusagen als Filter, der die Tastendrücke aller konfigurierten Fernbedienungen auswertet, auf Wunsch die Tastencodes vereinheitlicht und an den VDR weiterreicht.
@@ -107,7 +108,7 @@ Repeat delay = 500 ms, repeat period = 33 ms
 ===== Scancodes ermitteln =====
 
 Mit *ir-keytable* kann man auch Tastencodes der Fernbedienung ermitteln, z.B. um zu sehen ob überhaupt Tastendrücke erkannt werden oder um eine Keymap zu erstellen, die zur '/vdr/lib/vdr/remote.conf' des yaVDR passt.
-Da Tastendrücke von eventlircd abgefangen werden, muss dieser Dienst gestoppt sein. Außerdem ist es empfehlenswert den VDR vorher zu <<stop-vdr,stoppen>>, um eine unbeabsichtigte Fehlbedienung zu vermeiden.
+Da Tastendrücke von eventlircd abgefangen werden, muss dieser Dienst <<stop-remoted,gestoppt sein>>. Außerdem ist es empfehlenswert den VDR vorher zu <<stop-vdr,stoppen>>, um eine unbeabsichtigte Fehlbedienung zu vermeiden.
 
 [[pvr350-wok]]
 .Beispielausgabe ohne geladene Keytable

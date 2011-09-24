@@ -91,11 +91,17 @@ Dort hinterlegte Sender können ohne Kanalsuchlauf direkt in die Kanalliste übe
 image:wfe/channelpedia_add_small.png["Kanal hinzufügen"]
 
 [[wfe-remote]]
-===== Hardware: Einstellung der Fernbedienung =====
+===== Hardware: Fernbedienung =====
 .TODO:
 ****
 Symbol hinzufügen
+Abschnitt zu LIRC korrekt?
 ****
+image:wfe/remote.png["Fernbedienung"]
+yaVDR nutzt <<eventlirc,Eventlircd>>, ein Systemdienst, der viele Fernbedienungsempfänger automatisch erkennt und für die mit ihnen ausgelieferte Fernbedienung konfiguriert. Diese Fernbedienungen funktionieren dann ohne weiter Konfiguration, in den Einstellungen des Webfrontends zur Fernbedienung muss nichts angepasst werden.
+
+Für spezielle Empfänger (z.B. die z.B. über die Serielle Schnittstelle angeschlossen sind, X10-Emfpänger) kann Lirc aktiviert werden. Für serielle Empfänger muss außerdem angegeben werden, welche serielle Schnittstelle benutzt werden soll. Auch hier sind für einige Empfänger die jeweiligen Tasten der Fernbedienung vorkonfiguriert. Ist dies nicht der Fall oder wird eine andere Fernbedienung verwendet, muss die '/etc/lirc/lircd.conf' angepasst werden. Dabei ist zu beachten, dass die Tastennamen *namespacekonform* sind und sich an der Benennung in der '/etc/vdr/remote.conf' orientieren. So ist sichergestellt, dass die Fernbedienungstasten sowohl mit dem VDR als auch unter XBMC funktionieren.
+Eingaben von Lircd werden unter Nutzung von uinput (Userland Input) an Eventlircd weitergereicht und werden so wie alle übrigen Tastendrücke von Eventlircd-Eingabegeräten an den VDR weitergegeben.
 
 [[wfe-audio]]
 ===== Hardware: Audio =====
@@ -103,13 +109,13 @@ Symbol hinzufügen
 ****
 Symbol hinzufügen
 ****
-Diese Seite erlaubt es einzustellen wie der Ton durch den VDR und XBMC ausgegeben werden soll. Für komplexere Konfigurationen muss die Konfiguration von <<alsa,alsa>> händisch angepasst werden.
+Diese Seite erlaubt es einzustellen wie der Ton durch den VDR und XBMC ausgegeben werden soll. Für komplexere Konstellationen und mehreren Soundkarten im Rechner muss die Konfiguration von <<alsa,alsa>> ggf. von Hand angepasst werden.
 
 [[wfe-video]]
 ===== Hardware: Anzeigeneinstellungen =====
 .TODO:
 ****
-Symbol hinzufügen
+Symbol hinzufügen, 
 GraphTFT
 ****
 Hier kann die Auflösung und Nutzung der angeschlossenen Bildschirme eingestellt werden. Außerdem können hier die Deinterlacing-Methoden für HD- und SD-Material konfiguriert werden.

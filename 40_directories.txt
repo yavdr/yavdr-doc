@@ -2,7 +2,7 @@
 === Verzeichnisstruktur ===
 Für *yaVDR* werden verschiedene Dienste und Methoden kombiniert um eine Verzeichnisstruktur zu erzeugen, die es erlaubt lokale und von anderen Computern eingebundene Freigaben zusammenzuführen und gemeinsam im Dateisystem abzubilden.
 
-Für Musik, Filme und Bilder existieren bereits Verzeichnisse unter '/srv/', die per NFS und SAMBA im Netzwerk freigegeben sind, die Aufnahmen des VDR liegen unter '/srv/vdr/video.00' und werden als *recordings* via Samba exportiert (siehe Tabelle)
+Für Musik, Filme und Bilder existieren bereits Verzeichnisse unter '/srv/', die per <<nfs,NFS>> und <<samba,SAMBA>> im Netzwerk freigegeben sind, die Aufnahmen des VDR liegen unter '/srv/vdr/video.00' und werden als *recordings* via Samba exportiert (siehe Tabelle)
 
 .Verzeichnisse für Medien in yaVDR
 [cols="h,3*",options="header",width="90%"]

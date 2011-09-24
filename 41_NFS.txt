@@ -1,0 +1,6 @@
+[[nfs]]
+=== NFS ===
+****
+TODO:
+'/etc/exports', Avahi-Mounter -> WFE, Samba-Server
+****

@@ -1,4 +1,4 @@
 [[dynamite]]
-=== Dynamite-Plugin ===
+==== Dynamite-Plugin ====
 Dieses Plugin erlaubt es DVB-Geräte dynamisch in den VDR einzubinden und wieder zu entfernen, ohne dass ein Neustart des VDR notwendig ist. Somit kann der VDR schneller starten, ohne z.B. auf "langsame" USB-TV-Karten zu warten. Sobald diese Initialisiert sind, werden sie basierend auf udev-Regeln nachträglich eingebunden und können genutzt werden.
 Für die Zukunft ist ein optionales automatisches Abschalten von gerade nicht benötigten DVB-Karten geplant um Strom zu sparen und die Lebensdauer der Komponenten zu verlängern.

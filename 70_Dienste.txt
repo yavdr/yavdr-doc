@@ -1,12 +1,13 @@
-=== Dienste des VDR ===
+[[services]]
+=== Dienste von yaVDR ===
 
 Damit yaVDR funktionieren kann, müssen einige Programme als Dienste im Hintergrund laufen, andere werden nur vorrübergehend benötigt, z.B. um Programme mit bestimmten Rechten aufzurufen.
 ****
 .TODO:
-Samba
-NFS
-Avahi
-Wenfrontend
+Samba, 
+NFS, 
+Avahi, 
+Webfrontend
 ****
 
 ==== Upstart ====
@@ -59,16 +60,16 @@ sudo restart vdr
 sudo status vdr
 ----
 
-.remoted
+.eventlircd
 [[start-remoted]]
 .remoted starten
 ----
-sudo start remoted
+sudo start eventlircd
 ----
 [[stop-remoted]]
 .remoted stoppen
 ----
-sudo stop remoted
+sudo stop eventlircd
 ----
 
 [[restart-remoted]]
