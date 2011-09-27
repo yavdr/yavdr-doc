@@ -5874,8 +5874,7 @@ Fernbedienung einrichten
 </div>
 <div class="sidebarblock">
 <div class="content">
-<div class="paragraph"><div class="title">TODO</div><p>Tastenbelegung Tastatur
-Grundlegende Bedienung des OSD</p></div>
+<div class="paragraph"><div class="title">TODO</div><p>Grundlegende Bedienung des OSD</p></div>
 </div></div>
 <div class="sect3">
 <h4 id="system-upgrade">3.4.1. Aktuelle Updates einspielen</h4>
@@ -5947,6 +5946,10 @@ GNQfHLG+TyMTkAVEr88xQfVnkBg7GAKixSIykDYQsL21/wFkW/B5QqT9lwAAAABJRU5ErkJggg==" />
 <div class="sect3">
 <h4 id="_tastaturbelegung">3.4.2. Tastaturbelegung</h4>
 <div class="paragraph"><p>Auch wenn eine Fernbedienung die Bedienung deutlich bequemer macht, ist es nach der Installation oft hilfreich, wenn man zunächst auch mit der Tastatur navigieren kann.</p></div>
+<div class="sidebarblock">
+<div class="content">
+<div class="paragraph"><div class="title">TODO</div><p>Tastenbelegung Tastatur</p></div>
+</div></div>
 <div style="page-break-after:always"></div>
 </div>
 </div>
@@ -19003,7 +19006,40 @@ Playlist der Sender</p></div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="restfulapi">4.6.2. RestfulAPI-Plugin</h4>
+<h4 id="xine-post-atmo">4.6.2. xine-post-atmo Plugin</h4>
+<div class="paragraph"><p>Das Plugin kann über das Paket <strong>libxine-atmo-plugin</strong> <a href="#install-packages">installiert</a> werden.<span class="footnote"><br />[<a href="http://www.die-keils.info/thomas/wordpress/?p=135">http://www.die-keils.info/thomas/wordpress/?p=135</a>]<br /></span></p></div>
+<div class="paragraph"><p>Nun das Frontend entsprechend konfigurieren. Dazu müssen die Templates überladen werden. Bis die orginal-Templates aufgedröselt sind in Teile für Variablen und Teile für den tatsächlichen Start, muss das gesamte Template überladen werden. Dazu die Templates 20_xineliboutput und 25_xine (oder welches man halt braucht) in /usr/share/yavdr/templates/etc/init/vdr-frontend.conf/ kopieren nach /etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/ (Verzeichnis ggfs erstellen):</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>sudo mkdir -p /etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/
+sudo cp /usr/share/yavdr/templates/etc/init/vdr-frontend.conf/2* /etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/</tt></pre>
+</div></div>
+<div class="paragraph"><p>In den Dateien die Variable <strong>XINE&lt;LIBOUTPUT&gt;OPTS</strong> erweitern:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>XINELIBOUTPUTOPTS="--post tvtime:method=use_vo_driver --reconnect --audio=alsa --syslog --silent --tcp"
+XINELIBOUTPUTOPTS="$XINELIBOUTPUTOPTS --post=atmo:driver=classic,driver_param=/dev/ttyUSB0,top=1,bottom=1,left=1,right=1,brightness=150,analyze_size=0,overscan=0,enabled=1"</tt></pre>
+</div></div>
+<div class="paragraph"><p>bzw.</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>XINEOPTS="-G $GEOMETRY -A alsa --config /etc/xine/config --keymap=file:/etc/xine/keymap --post vdr --post vdr_video --post vdr_audio --verbose=2 --no-gui --no-logo --no-splash --deinterlace -pq"
+XINEOPTS="$XINEOPTS --post=atmo:driver=classic,driver_param=/dev/ttyUSB0,top=1,bottom=1,left=1,right=1,brightness=150,analyze_size=0,overscan=0,enabled=1"</tt></pre>
+</div></div>
+<div class="paragraph"><p>Die Templates neu schreiben:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>process-template /etc/init/vdr-frontend.conf</tt></pre>
+</div></div>
+<div class="paragraph"><p>Und nun das Openbox <a href="#Dienste">neu starten</a>:</p></div>
+<div class="listingblock">
+<div class="content">
+<pre><tt>sudo stop openbox
+sudo start openbox</tt></pre>
+</div></div>
+</div>
+<div class="sect3">
+<h4 id="restfulapi">4.6.3. RestfulAPI-Plugin</h4>
 <div class="paragraph"><p>yaVDR 0.4 bringt das neu entwickelte RestfulAPI-Plugin mit, das als Alternative (oder Ergänzung) zu <a href="#svdrp">SVDRP</a> konzipiert ist.
 Es setzt nicht mehr auf direkte TCP Kommunikation sondern erlaubt die Interaktion mit dem VDR über HTTP-Anfragen. Die Antworten des VDR werden in den Formaten HTML, XML oder JSON ausgeliefert.</p></div>
 <div class="ulist"><div class="title">Vorteile:</div><ul>
@@ -19048,7 +19084,7 @@ Noch keine große Zahl an Clients, die das Protokoll ausreizen
 <div class="paragraph"><p>Die API des Plugins kann man unter folgender Webadresse einsehen: <strong>http://&lt;IP des VDR&gt;:8002/info.html</strong></p></div>
 </div>
 <div class="sect3">
-<h4 id="dynamite">4.6.3. Dynamite-Plugin</h4>
+<h4 id="dynamite">4.6.4. Dynamite-Plugin</h4>
 <div class="paragraph"><p>Dieses Plugin erlaubt es DVB-Geräte dynamisch in den VDR einzubinden und wieder zu entfernen, ohne dass ein Neustart des VDR notwendig ist. Somit kann der VDR schneller starten, ohne z.B. auf "langsame" USB-TV-Karten zu warten. Sobald diese Initialisiert sind, werden sie basierend auf udev-Regeln nachträglich eingebunden und können genutzt werden.
 Für die Zukunft ist ein optionales automatisches Abschalten von gerade nicht benötigten DVB-Karten geplant um Strom zu sparen und die Lebensdauer der Komponenten zu verlängern.</p></div>
 </div>
@@ -19252,7 +19288,7 @@ Möchte man neue Paketquellen hinzufügen, kann man diese entweder von Hand in d
 <div id="footer">
 <div id="footer-text">
 Version v0.1<br />
-Letzte Änderung 2011-09-24 19:24:48 CEST
+Letzte Änderung 2011-09-27 22:34:41 CEST
 </div>
 </div>
 </body>
