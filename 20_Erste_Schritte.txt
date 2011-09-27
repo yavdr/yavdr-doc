@@ -15,7 +15,6 @@ Nach der Installation startet yaVDR mit drei vorkonfigurierten Internet-TV Kanä
 
 ****
 .TODO
-Tastenbelegung Tastatur
 Grundlegende Bedienung des OSD
 ****
 
@@ -38,4 +37,8 @@ sudo apt-get update && sudo apt-get dist-upgrade
 
 Auch wenn eine Fernbedienung die Bedienung deutlich bequemer macht, ist es nach der Installation oft hilfreich, wenn man zunächst auch mit der Tastatur navigieren kann.
 
+****
+.TODO
+Tastenbelegung Tastatur
+****
 

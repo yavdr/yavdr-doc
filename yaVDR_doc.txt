@@ -61,6 +61,7 @@ include::75_SVDRP.txt[]
 
 include::30_Plugins.txt[]
 include::31_Streamdev-Plugin.txt[]
+include::39_xine-post-atmo.txt[]
 
 include::80_restfulapi-plugin.txt[]
 

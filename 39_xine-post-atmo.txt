@@ -1,0 +1,37 @@
+[[xine-post-atmo]]
+==== xine-post-atmo Plugin ====
+
+Das Plugin kann über das Paket *libxine-atmo-plugin* <<install-packages,installiert>> werden.footnote:[http://www.die-keils.info/thomas/wordpress/?p=135]
+
+Nun das Frontend entsprechend konfigurieren. Dazu müssen die Templates überladen werden. Bis die orginal-Templates aufgedröselt sind in Teile für Variablen und Teile für den tatsächlichen Start, muss das gesamte Template überladen werden. Dazu die Templates 20_xineliboutput und 25_xine (oder welches man halt braucht) in /usr/share/yavdr/templates/etc/init/vdr-frontend.conf/ kopieren nach /etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/ (Verzeichnis ggfs erstellen):
+
+----
+sudo mkdir -p /etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/
+sudo cp /usr/share/yavdr/templates/etc/init/vdr-frontend.conf/2* /etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/
+----
+
+In den Dateien die Variable *XINE<LIBOUTPUT>OPTS* erweitern:
+----
+XINELIBOUTPUTOPTS="--post tvtime:method=use_vo_driver --reconnect --audio=alsa --syslog --silent --tcp"
+XINELIBOUTPUTOPTS="$XINELIBOUTPUTOPTS --post=atmo:driver=classic,driver_param=/dev/ttyUSB0,top=1,bottom=1,left=1,right=1,brightness=150,analyze_size=0,overscan=0,enabled=1"
+----
+
+bzw.
+
+----
+XINEOPTS="-G $GEOMETRY -A alsa --config /etc/xine/config --keymap=file:/etc/xine/keymap --post vdr --post vdr_video --post vdr_audio --verbose=2 --no-gui --no-logo --no-splash --deinterlace -pq"
+XINEOPTS="$XINEOPTS --post=atmo:driver=classic,driver_param=/dev/ttyUSB0,top=1,bottom=1,left=1,right=1,brightness=150,analyze_size=0,overscan=0,enabled=1"
+----
+Die Templates neu schreiben:
+
+----
+process-template /etc/init/vdr-frontend.conf
+----
+
+Und nun das Openbox <<Dienste,neu starten>>:
+
+----
+sudo stop openbox
+sudo start openbox
+----
+
