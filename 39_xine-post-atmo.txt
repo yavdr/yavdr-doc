@@ -3,14 +3,28 @@
 
 Das Plugin kann über das Paket *libxine-atmo-plugin* <<install-packages,installiert>> werden.footnote:[http://www.die-keils.info/thomas/wordpress/?p=135]
 
+////
+Ohriginal :P
 Nun das Frontend entsprechend konfigurieren. Dazu müssen die Templates überladen werden. Bis die orginal-Templates aufgedröselt sind in Teile für Variablen und Teile für den tatsächlichen Start, muss das gesamte Template überladen werden. Dazu die Templates 20_xineliboutput und 25_xine (oder welches man halt braucht) in /usr/share/yavdr/templates/etc/init/vdr-frontend.conf/ kopieren nach /etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/ (Verzeichnis ggfs erstellen):
 
-----
-sudo mkdir -p /etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/
-sudo cp /usr/share/yavdr/templates/etc/init/vdr-frontend.conf/2* /etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/
-----
+Besser
+////
 
-In den Dateien die Variable *XINE<LIBOUTPUT>OPTS* erweitern:
+[[atmo-config]]
+.Konfiguration
+
+Um das Plugin nutzen zu können, müssen die Start-Argumente von xine bzw. vdr-sxfe in der Konfigurationsdatei '/etc/init/vdr-frontend.conf' angepasst werden. Diese Datei ist <<template,getemplated>> und sollte daher nicht direkt bearbeitet werden. Stattdessen muss der für das jeweilige Frontend passende Template-Teil ('20_xineliboutput' für *vdr-sxfe* und '25_xine' für *xine*) aus '/usr/share/yavdr/templates/etc/init/vdr-frontend.conf/' nach '/etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/' kopiert und die Variable *XINELIBOUTPUTOPTS* bzw. *XINEOPTS* darin entsprechend angepasst werden. Zum Schluss wird die Konfigurationsdatei neu aus den Templates erzeugt.
+
+Im Folgenden ist das ganze Schritt für Schritt beschrieben:
+
+----
+sudo mkdir -p /etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/ <1>
+sudo cp /usr/share/yavdr/templates/etc/init/vdr-frontend.conf/2* /etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/ <2>
+----
+<1> Erstellt den Ordner für benutzerdefinierte Template-Teile
+<2> Kopiert die nötigen Template-Teile
+
+In den Dateien die Variable *XINE(LIBOUTPUT)OPTS* erweitern:
 ----
 XINELIBOUTPUTOPTS="--post tvtime:method=use_vo_driver --reconnect --audio=alsa --syslog --silent --tcp"
 XINELIBOUTPUTOPTS="$XINELIBOUTPUTOPTS --post=atmo:driver=classic,driver_param=/dev/ttyUSB0,top=1,bottom=1,left=1,right=1,brightness=150,analyze_size=0,overscan=0,enabled=1"
@@ -22,13 +36,14 @@ bzw.
 XINEOPTS="-G $GEOMETRY -A alsa --config /etc/xine/config --keymap=file:/etc/xine/keymap --post vdr --post vdr_video --post vdr_audio --verbose=2 --no-gui --no-logo --no-splash --deinterlace -pq"
 XINEOPTS="$XINEOPTS --post=atmo:driver=classic,driver_param=/dev/ttyUSB0,top=1,bottom=1,left=1,right=1,brightness=150,analyze_size=0,overscan=0,enabled=1"
 ----
-Die Templates neu schreiben:
+
+Die Konfigurationsdatei aus den Templates neu <<about-templates,erstellen>>:
 
 ----
 process-template /etc/init/vdr-frontend.conf
 ----
 
-Und nun das Openbox <<Dienste,neu starten>>:
+Und zuletzt Openbox <<Dienste,neu starten>>:
 
 ----
 sudo stop openbox

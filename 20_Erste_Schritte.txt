@@ -24,11 +24,12 @@ Grundlegende Bedienung des OSD
 [CAUTION]
 .yaVDR immer möglichst aktuell halten
 =====================================================================
-yaVDR ist eine "stark entwickelte" Distribution, für die häufig Updates erscheinen. Viele "alte" Fehler und Probleme lassen sich dadurch vermeiden, dass man regelmäßig sein System auf den neuesten Stand bringt.
+yaVDR ist eine "stark entwickelte" Distribution, für die häufig Updates erscheinen. Viele "alte" Fehler und Probleme lassen sich vermeiden wenn man regelmäßig sein System auf den neuesten Stand bringt.
 
-Gerade *bevor* man darüber nachdenkt eine Support-Anfrage im http://www.vdr-portal.de[Forum] zu stellen, sollte man überprüfen, ob der Fehler auch nach dem Einspielen der aktuellen Pakete und einem anschließenden Neustart noch auftritt.
+Gerade *bevor* man darüber nachdenkt eine Support-Anfrage im http://www.vdr-portal.de[Forum] zu stellen, sollte man überprüfen, ob der Fehler auch nach dem Einspielen der aktuellen Updates und einem anschließenden Neustart noch auftritt.
 =====================================================================
 
+.Update des Systems
 ----
 sudo apt-get update && sudo apt-get dist-upgrade
 ----

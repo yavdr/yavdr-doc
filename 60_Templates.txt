@@ -1,5 +1,5 @@
 [[template]]
-=== Das yaVDR Template-System ===
+=== Das Template-System ===
 
 //////////////////////////////////////////////////////////////////////
 Ist dieser Abschnitt überhaupt sinnvoll?
@@ -21,6 +21,7 @@ Um dennoch Veränderungen an Konfigurationsdateien vorzunehmen wurde die Möglic
 
 Alle *Custom-Templates* müssen unterhalb des Ordners '/etc/yavdr/templates_custom/' abgelegt werden. Benutzerdefinierte Vorlagen in diesem Ordner werden bei Paketupdates nicht verändert.
 
+[[about-templates]]
 [TIP]
 .Wo befinden sich die Templates?
 =====================================================================================

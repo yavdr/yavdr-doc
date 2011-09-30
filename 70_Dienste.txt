@@ -61,24 +61,24 @@ sudo status vdr
 ----
 
 .eventlircd
-[[start-remoted]]
-.remoted starten
+[[start-eventlircd]]
+.eventlircd starten
 ----
 sudo start eventlircd
 ----
-[[stop-remoted]]
-.remoted stoppen
+[[stop-eventlircd]]
+.eventlircd stoppen
 ----
 sudo stop eventlircd
 ----
 
-[[restart-remoted]]
-.remoted neu starten
+[[restart-eventlircd]]
+.eventlircd neu starten
 ----
-sudo restart remoted
+sudo restart eventlircd
 ----
-[[status-remoted]]
-.Status von remoted anzeigen
+[[status-eventlircd]]
+.Status von eventlircd anzeigen
 ----
-sudo status remoted
+sudo status eventlircd
 ----
