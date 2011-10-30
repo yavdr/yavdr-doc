@@ -5,6 +5,7 @@ Dokumentation für yaVDR
 :Revision: v0.1
 :Date:     Juli 2011
 :encoding: UTF-8
+:lang: de
 :version: yaVDR 0.4
 :doctype: book
 
@@ -67,11 +68,14 @@ include::80_restfulapi-plugin.txt[]
 
 include::81_dynamite-plugin.txt[]
 
+include::98_Debugging.txt[]
+
 :leveloffset: -1
 
 include::101_Linux.txt[]
 
 :leveloffset: 0
+
 
 
 include::99_FAQ.txt[]

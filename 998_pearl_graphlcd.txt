@@ -1,0 +1,303 @@
+Pearl Display von heikoh73
+////
+-Das Display muß gehackt werden. - Wirklich?
+////
+Tipps:
+* Der Hack muss nicht zwingen auf dem Rechner ausgeführt werden an dem das Display später betrieben werden soll. Die dpfhack-0.12devel.tgz wird zum Betrieb mit vdr-plugin-graphlcd nicht benötigt.
+* Einige User haben berichtet, dass das Hacking bei Ihnen nur funktioniert, wenn das Display an einem USB-Hub hängt. Bei mir gings auch so.
+* Auf keine Fall das dem Display beiliegende USB-Kabel beim Hacken verwenden! Das ist Schrott!
+
+Eine ausführliche Anleitung zum Hacken gibts http://geekparadise.de/2011/04/digitaler-bilderrahmen-von-pearl-als-statusdisplay-fur-dockstar/[hier].
+
+Für den Dauerbetrieb des Displays würde ich dringend raten den Billig-Akku (der sowieso schon im Eimer ist) auszubauen. Anleitung dazu gibts hier.
+Danach im Menü des Displays "Diashow" aktivieren, dann geht das Display nach ein paar Minuten automatisch in den hackfin-Modus.
+
+Anleitung siehe hier:
+Display anschliessen und Menü am display klicken und dort auf Computer verbinden gehen.
+
+Ich brauchte folgende Paket:
+	
+libtool automake autoconf zlib1g-dev libssl-dev python-dev libc6 libusb-dev libibus-dev subversion libgd2-noxpm-dev sdcc libgd2-noxpm
+
+----
+wget http://tech.section5.ch/files/dpfhack-0.12devel.tgz
+tar xfvz dpfhack-0.12devel.tgz
+cd dpf
+make
+cd fw
+dmesg
+----
+
+(Mit dmesg schaut Ihr nach welches Device es ist.
+Dort sollte nachdem anstecken sowas wie sg2 Type 5 stehen.)
+
+	
+----
+python hackit.py /dev/sgX
+----
+
+(X=gefundenes Device per dmesg)
+dann Display von USB trennen und wieder verbinden und ca. 2 Sekunden Menütaste auf dem Display drücken
+Danach sollte der Bildschirm auf dem Display wie in Bild 1 aussehen.
+
+Schlägt der Hack fehl so liegt es wahrscheinlich an der Datei fw/profiles.py
+Dort findet man diesen Eintrag:
+	
+----
+(’20090504′, ‘Mar 26 2010\xff\xff\xff\xff\xff’, ‘ProcTbl5′ )
+----
+
+Diesen sollte man in folgendes ändern. Bzw. sollte beim Hack etwas schiefgehen erhält man die passende Ausgabe.
+Mein Modell wurde wohl 1 Tag später gebaut.
+	
+----
+(’20090504′, ‘Mar 27 2010\xff\xff\xff\xff\xff’, ‘ProcTbl5′ )
+----
+
+
+Stand 09.10.2011
+-yaVDR 0.4 muß auf testing Pakete geupdatet(dist-upgrade) werden.
+
+Schritte:
+Bitte die sourcen anpassen:
+Datei: /etc/apt/sources.list.d/yavdr.list
+am Ende folgendes einfügen sofern diese nicht schon vorhanden sind:
+	
+Quellcode
+1
+2
+3
+4
+5
+6
+deb http://ppa.launchpad.net/yavdr/testing-vdr/ubuntu natty main
+deb http://ppa.launchpad.net/yavdr/testing-xbmc/ubuntu natty main
+deb http://ppa.launchpad.net/yavdr/testing-yavdr/ubuntu natty main
+deb-src http://ppa.launchpad.net/yavdr/testing-vdr/ubuntu natty main
+deb-src http://ppa.launchpad.net/yavdr/testing-xbmc/ubuntu natty main
+deb-src http://ppa.launchpad.net/yavdr/testing-yavdr/ubuntu natty main
+
+
+////
+Danach in der Console: 
+	
+----
+apt-get update
+apt-get upgrade
+apt-get dist-upgrade
+----
+////
+Danach das System auf den aktuellen Stand bringen.
+
+-Es müssen folgende Pakete installiert werden:
+	
+Quellcode
+1
+apt-get install vdr-plugin-graphlcd
+
+In der Datei /etc/vdr/plugins/plugin.graphlcd.conf
+gehört folgendes:
+	
+Quellcode
+1
+-c /etc/graphlcd.conf -d ax206dpf -s touchcol
+
+
+	
+----
+apt-get install graphlcd-tools
+----
+
+(wenn man testen möchte)
+
+Testen geht dann z.B. so:
+	
+Quellcode
+1
+showpic -c /etc/graphlcd.conf -d ax206dpf -u -i /root/dpf/fw/vdr-plugin-graphlcd-0.3.0+git20110829/graphlcd/logos/channels/SBS6_l.glcd
+
+(siehe Bild2)
+
+ich mußte danach nochmal ein
+	
+Quellcode
+1
+apt-get upgrade
+
+machen.
+
+
+-Falls Probleme auftauchen:
+1. sofern eine Ausgabe auf dem Display mit showpic möglich ist, aber mit dem VDR nicht.
+Schauen ob es eine udev Regel gibt.
+(Pfad: /etc/udev/rules.d/)
+Gibt es diese nicht so könnt ihr die angehängt Datei nehmen.
+
+2. wenn es immernoch nicht geht nach einem Neustart.
+In der Konsole:
+	
+Quellcode
+1
+ ls -lR /dev/bus/usb/
+
+dort sollte das Device sich finden lassen und man sieht welche Rechte es hat.
+Bei mir war es dann später so das trotz Regel es so aussah:
+crw-rw---- 1 root uucp 189, 642 2011-10-09 21:45 003
+Meine udev Regel wurde ignoriert.
+Ich habe dann uucp dem vdr hinzugefügt.
+einfach in der Konsole folgendes eingeben:
+	
+Quellcode
+1
+usermod -G uucp vdr
+
+
+3. bitte kontrolliert auch ob in der /etc/graphlcd.conf Datei der Treiberabschnitt [ax206dpf] vorhanden ist.
+(wenn nicht sind falsche Versionen installiert!Dann bauen wir es selbst)
+
+Wenn alles nichts hilft bauen wir es selbst:
+
+	
+Quellcode
+1
+2
+apt-get source graphlcd-base
+ cd graphlcd-base-0.1.9+git20110829
+
+(kann sich verändern daher wenns nicht geht dann dir machen und schauen)
+	
+Quellcode
+1
+ dpkg-buildpackage -tc
+
+(schlug bei mir fehl ich mußte erst folgendes installieren:
+	
+Quellcode
+1
+ apt-get install libfreetype6-dev pkg-config libusb-dev debhelper
+)
+wenn dpkg-buildpackage durchgelaufen ist:
+	
+Quellcode
+1
+2
+ cd ..
+ dpkg -i *.deb
+(das installiert die benötigten Pakete)
+
+Du brauchst zusätzlich zum graphlcd-base zur Sicherheit auch noch den vdr-plugin-graphlcd. Vorgehen wie bei graphlcd-base, also apt-get source .., dpkg-buildpackage .., dpkg -i ..
+Wenn du dir nicht sicher bist, was alles an Abhängigkeiten zum Bauen gebraucht wird, mach einfach vorher ein
+
+	
+Quellcode
+1
+apt-get build-dep graphlcd-base vdr-plugin-graphlcd
+
+und dann nochmal rebooten...
+Ich hoffe ich konnte helfen.
+Mir ist wärendessen einmal das graphlcd-plugin verloren gegangen.
+(ich mußte es nochmals installieren!)
+Das größte Problem war aber ganz klar die udev Geschichte!
+Also wenn showpic geht und vdr Ausgabe am Display nicht dann ist es udev.
+
+Am Ende sollte es wie in Bild3 sein.
+
+
+Sofern man mehre Displays verwenden möchte als 1 Großes so muß man die Datei
+/etc/graphlcd.conf anpassen:
+	
+Quellcode
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+The following parameters are for multi-display setups only (see "Example multi-display setups").
+
+Horizontal
+Sets the number of displays in horizontal direction.
+ Possible values if Vertical=1: 1, 2, 3, 4
+                 if Vertical=2: 1, 2
+ Default value: 1
+
+Vertical
+ Sets the number of displays in vertical direction.
+ Possible values if Horizontal=1: 1, 2, 3, 4
+                 if Horizontal=2: 1, 2
+ Default value: 1
+
+Flip
+ Rotates a single displays output by 180 degrees. This might be useful, if
+ some displays are mounted upside-down.
+ Possible values for every display : 'y', 'n'
+ Default value: 'nnnn'
+
+
+Example multi-display setups
+----------------------------
+'#' = position of USB-connector
+
+Portrait=y      Portrait=n          Portrait=n      Portrait=n          
+Horizontal=2    Horizontal=2        Horizontal=1    Horizontal=2
+Vertical=1      Vertical=1          Vertical=3      Vertical=2
+Flip=nn         Flip=ny             Flip=nyn        Flip=nyny
+
++-+  +-+        +---+  +---+        +---+           +---+  +---+
+| |  | |      # +---+  +---+#      #+---+          #+---+  +---+#
++-+  +-+          1      2            1               1      2
+ #    #                             +---+           +---+  +---+
+ 1    2                             +---+#         #+---+  +---+#
+                                      2               3      4
+                                    +---+
+                                   #+---+ 
+                                      3
+
+
+
+udev-regel:
+
+.60-libglcddrivers.rules
+----
+#
+# all displays / modules supported by graphlcd-base
+#
+# Futaba DM140-GINK VFD displays, incl. activity 5xx
+ATTRS{idVendor}=="040b", ATTRS{idProduct}=="7001", GROUP="vdr", MODE="0660"
+ATTRS{idVendor}=="1509", ATTRS{idProduct}=="925d", GROUP="vdr", MODE="0660"
+# AX206DPF-based picture frames (modified firmware)
+ATTRS{idVendor}=="1908", ATTRS{idProduct}=="0102", GROUP="vdr", MODE="0660"
+----

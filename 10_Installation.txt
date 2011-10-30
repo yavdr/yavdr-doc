@@ -30,7 +30,7 @@ Um Sprache und Zeit auszuwählen wird der Standort des Systems abgefragt:
 
 image:./installation/02_standortwahl.png[]
 
-Aufgrund eines Bugs im Installer von Ubuntu 11.04 Natty Nahrwal ist es empfehlenswert die Tastenbelegung selbst zu wählen anstatt sie automatisch bestimmen zu lassen:
+Aufgrund eines Bugs im Installer von Ubuntu 11.04 Natty Narwhal ist es empfehlenswert die Tastenbelegung selbst zu wählen anstatt sie automatisch bestimmen zu lassen:
 
 image:./installation/03_tastenerkennung.png[]
 

@@ -1,6 +1,10 @@
 [[samba]]
 === SAMBA ===
+
+http://de.wikipedia.org/wiki/Samba_(Software)[Samba] bildet die von Windows bekannten Drucker- und Dateifreigaben nach. Aufgrund der guten Unterstützung dieses Protokolls in nahezu allen gängigen Betriebssystemen ist es gut geeignet um von Windows-, OS X- oder Linux-Systemen aus auf die <<directories,Medienverzeichnisse>> des yaVDR übers Netzwerk zuzugreifen.
+
+Die Konfigurationsdateien befinden sich unter '/etc/samba/smb.conf', die voreingestellten <<directories,Freigaben>> des yaVDR sind in der Datei '/etc/samba/smb.conf.yavdr' hinterlegt.
 ****
 TODO:
-'/etc/samba/smb.conf','/etc/samba/smb.conf.yavdr', Beispielfreigabe erklären
+Beispielfreigabe erklären
 ****

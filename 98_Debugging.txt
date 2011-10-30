@@ -1,0 +1,15 @@
+[[debugging]]
+=== Debugging ===
+
+Wenn der VDR abstürzt ohne dass die Ursache aus dem syslog hervorgeht, kann man ein weitergehendes Debugging aktivieren um die Fehlerursache mittels Backtrace einzugrenzen.
+
+Es müssen dazu die Pakete *vdr-dbg* und *gdb* <<install-packages,installiert>> werden und die '/etc/default/vdr' um einen Eintrag für vdr-dbg erweitert werden:
+
+----
+sudo su
+echo "DAEMON=/usr/bin/vdr-dbg" >> /etc/default/vdr 
+restart vdr
+exit
+----
+
+Beim nächsten Crash des VDR sollte in '/var/log/vdr/' ein Backtrace des Segfaults erstellt werden.

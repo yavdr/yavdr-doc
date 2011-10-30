@@ -9,7 +9,7 @@ Für Musik, Filme und Bilder existieren bereits Verzeichnisse unter '/srv/', die
 |==========================================================
 |Medien     |Pfad                 |SAMBA      |NFS
 |Bilder     |'/srv/picture'       |*picture*    |'/srv/picture'
-|Musik      |'/srv/music'         |*music*      |'/srv/music'
+|Musik      |'/srv/audio'         |*audio*      |'/srv/audio'
 |Videos     |'/srv/video'         |*video*      |'/srv/video'
 |Aufnahmen  |'/srv/vdr/video.00' footnote:[Bei mehren video.xx-Verzeichnissen entsprechend zusätzlich /srv/vdr/video.01, /srv/vdr/video.02 usw.]  |*recordings* |'/srv/share/vdr'
 |==========================================================

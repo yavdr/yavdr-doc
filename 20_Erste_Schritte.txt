@@ -8,7 +8,7 @@ Nach der Installation startet yaVDR mit drei vorkonfigurierten Internet-TV Kanä
 =====================================================================
 .Drei Punkte müssen abgearbeitet werden um yaVDR nach einer Neuinstallation sinnvoll nutzen zu können:
 - <<system-upgrade,aktuelle Updates einspielen>>
-- Senderliste erstellen
+- Senderliste erstellen, z.B. mittels <<wfe-channels,Channelpedia>> im Webfrontend
 - Fernbedienung einrichten
 =====================================================================
 
@@ -38,8 +38,33 @@ sudo apt-get update && sudo apt-get dist-upgrade
 
 Auch wenn eine Fernbedienung die Bedienung deutlich bequemer macht, ist es nach der Installation oft hilfreich, wenn man zunächst auch mit der Tastatur navigieren kann.
 
+.Tastaturbelegung in yaVDR
+[cols="h,2*",options="header",width="90%"]
+|=========================================
+|*Taste*     |*Funktion*   |*Anmerkung*
+|*m*         |*Menü*       |
+|*Backspace*  |*Exit*       |Schließt das aktive Menü bzw. kehrt zum Übergeordneten Menü zurück
+|*Enter*      |*Ok*         |Außerhalb des OSD-Menüs: kleine Info-Anzeige Jetzt & Nächste Sendung
+|*Pfeil Auf*  |*Nach oben*  |Außerhalb des OSD-Menüs: *Kanal hoch*
+|*Pfeil Ab*   |*Nach unten* |Außerhalb des OSD-Menüs: *Kanal runter*
+|*Pfeil links*|*Nach links* |Außerhalb des OSD-Menüs Wechsel der Kanalgruppe
+|*Pfeil rechts*|*Nach rechts*|Außerhalb des OSD-Menüs Wechsel der Kanalgruppe
+|*i*          |*Info*       |Öffnet die Informationen zu einem Listenelement (z.B. Aufnahme, EPG-Eintrag, Timer)
+|*p*          |*Power*      |VDR herunterfahren, das <<wfe-lifeguard,Lifeguard-addon>> oder anstehende Timer können den Vorgang abbrechen bzw. verzögern.
+|*F1*         |*Rot*        |Die Belegung der Taste *"Rot"* wird jeweils im OSD eingeblendet.
+|*F2*         |*Grün*       |Die Belegung der Taste *"Grün"* wird jeweils im OSD eingeblendet.
+|*F3*         |*Gelb*       |Die Belegung der Taste *"Gelb"* wird jeweils im OSD eingeblendet.
+|*F4*         |*Blau*       |Die Belegung der Taste *"Blau"* wird jeweils im OSD eingeblendet.
+|*F5*         |*Zurückspulen*|
+|*F6*         |*Vorspulen*  |
+|*F10*        |*Mute*       |Schaltet den Ton aus oder ein
+|*F11*        |*Leiser*     |
+|*F12*        |*Lauter*     |
+|*Zifferntasten*|Ziffern 0-9|
+|==========================================================
+
 ****
 .TODO
-Tastenbelegung Tastatur
+Bedienung des VDR analog zu http://vdr-wiki.de/wiki/index.php/Benutzerhandbuch
 ****
 

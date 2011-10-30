@@ -4,9 +4,8 @@
 Damit yaVDR funktionieren kann, müssen einige Programme als Dienste im Hintergrund laufen, andere werden nur vorrübergehend benötigt, z.B. um Programme mit bestimmten Rechten aufzurufen.
 ****
 .TODO:
-Samba, 
-NFS, 
-Avahi, 
+Samba,  
+Avahi-Mounter, 
 Webfrontend
 ****
 

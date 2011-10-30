@@ -68,17 +68,24 @@ das heisst nur neuere DVB Treiber benutzen rc-core
 * Um die Vorteile der Lösung mit Eventlircd zu nutzen, braucht man eine Standardbelegung auf die man die Tasten normalisieren kann, dadurch kommt dann die Anlernfunktion des VDR nicht mehr zum tragen. Wenn das Gerät noch nicht unterstützt wird, bedeuteutet dies unter Umständen ein etwas mühsames manuelles Anpassen bis die Tasten der eigenen Fernbedienung auf die yaVDR-Team mitgelieferte Belegung für Lirc in der '/var/lib/vdr/remote.conf' passt. 
 * Um in den Genuß zu kommen Lirc wie oben beschrieben nutzen zu können, müssen die Tasten in der lircd.conf entsprechend der Regeln der Inputgeräte benannt werden. Bei Lirc heisst das Namespace-konform benannt sein. Sinnvoll wäre hier natürlich eine Benennung entsprechend unserer Standardbelegung. 
 
-Bei der yaVDR-Standardbelegung haben sich die Entwickler an der http://www.linuxtv.org/wiki/index.php/Remote_Controllers[Dokumentation von linux-media] (Tabelle am Ende der Seite) orientiert und benutzen diese als Referenz.
-[CAUTION]
-.Abweichende Belegung vom Desktop-Standard
-=====================================================================
-Die unter yaVDR verwendeten Tasten-Namen weichen von den z.B. für GNOME-Anwendungen verwendeten Tasten ab, so dass diese nicht ohne weiteres mit allen Tasten über die Fernbedienungn steuerbar sind. Ob sich das im Laufe der Entwicklung von yaVDR ändern wird, ist noch unklar.
-=====================================================================
+Bei der yaVDR-Standardbelegung haben sich die Entwickler an der http://www.linuxtv.org/wiki/index.php/Remote_Controllers[Dokumentation von linux-media] (Tabelle am Ende der Seite) orientiert und benutzen diese als Referenz, eine Zuordnung von VDR-Taste und Tastenname kann man sich hier ansehen: https://bugs.yavdr.com/projects/1/wiki/IR_Integration_04#Eventmapping[neue IR-Integration für yaVDR 0.4]
 
 [[remote.conf]]
 ===== remote.conf =====
 
+[CAUTION]
+.Keine Änderungen an der remote.conf!
+=====================================================================
+yaVDR ist auf eine standardisierte remote.conf angewiesen, damit die Fernbedienungen richtig funktionieren. Das hat zur Folge, dass die Tastennamen in den Lirc-Konfigurationsdateien, den Keytables von ir-core und den von Eventlircd direkt angesprochenen Geräten *Namespace-konform* zur remote.conf sein müssen.
+Die Anpassung des Mappings ist im folgenden Beschrieben.
+=====================================================================
+
 Die remote.conf liegt unter /var/lib/vdr/remote.conf und ist eine <<template, getemplatete>> Datei. Sie sollte möglichst nicht verändert werden, und gibt vor wie die von den Fernbedienungen gelieferten Tastennamen lauten sollten. Die Benennung ist gleichzeitig auf die XBMC-Konfiguration abgestimmt, so dass auch XBMC ohne weitere Anpassung seiner Keymaps bedienbar sein sollte.
+[NOTE]
+.Eventmapping
+=====================================================================
+Unter https://bugs.yavdr.com/projects/1/wiki/IR_Integration_04#Eventmapping kann man sich die Zuordnung von Event und Funktion in der 'remote.conf' noch einmal genauer ansehen
+=====================================================================
 
 [[evmaps]]
 ===== evmaps =====
@@ -273,7 +280,7 @@ http://wiki.ubuntuusers.de/udev[udev] ist ein Dienst, der es erlaubt Hardware dy
 [[udev-rules]]
 ===== udev-Regeln =====
 
-Über Regeln in der Datei https://github.com/yavdr/yavdr-remote/blob/master/udev/98-eventlircd.rules['/lib/udev/98-eventlircd.rules'] kann festgelegt werden, welche Konfiguration eventlircd für angeschlossene USB-Fernbedienungen lädt.
+Über Regeln in der Datei https://github.com/yavdr/yavdr-remote/blob/master/udev/98-eventlircd.rules['/lib/udev/rules.d/98-eventlircd.rules'] kann festgelegt werden, welche Konfiguration eventlircd für angeschlossene USB-Fernbedienungen lädt.
 
 .Beispiel für einen Eintrag in '/lib/udev/98-eventlircd.rules'
 ----
@@ -376,11 +383,62 @@ lirc_parallel
 lircd interne userspace treiber
 noch ein paar andere [...]
 Ich: Ok, danke - dann werde ich die noch als Beispiele aufnehmen. Zur Konfigurationshilfe (mangels passender Hardware kann ich da leider nicht alles ausprobieren): Wenn der Nutzer noch nicht weiß wie sein Empfänger eingebunden ist, wird er aber höchstens lirc_ttusbir unter den automatisch geladenen Modulen finden und lirc_serial und lirc_parallel muss er von Hand oder über das Webfrontend in der lircd-Konfiguration einstellen.::
-steffenbpunkt: genau
-den Namen des lirc Gerätes is in eventlircd fest eingebunden, devinput wurde wohl in Anlehnung an die lircd.conf des devinput Modus von lircd gewählt. Das es nur einen Namen gibt ist zumindest für XBMC sinnvoll, da XBMC diesen Namen auswertet.
+steffenbpunkt: genau, der Name des lirc Gerätes is in eventlircd fest eingebunden, devinput wurde wohl in Anlehnung an die lircd.conf des devinput Modus von lircd gewählt. Das es nur einen Namen gibt ist zumindest für XBMC sinnvoll, da XBMC diesen Namen auswertet.
 
 ****
 
+[[Serial-Remote]]
+==== LIRC Empfänger ====
+
+[[lirc_serial]]
+===== Serielle Empfänger =====
+
+Serielle Empfänger wie z.B. der Atric-Einschalter oder Homebrew-Empfänger lassen sich leider schlecht automatisch vorkonfigurieren, da sie mit beliebigen Fernbedienungen benutzt werden können. Trotzdem lassen sie sich in yaVDR mit wenig Aufwand zusammen mit <<lirc,LIRC>> einrichten.
+
+.Einstellungen im Webfrontend
+Im Abschnitt <<wfe-remote,Fernbedienung>> des yaVDR-Webfrontend setzt man das Häkchen bei Lirc-Unterstützung und wählt den geeigneten Empfänger aus der Liste.
+Für Atric-Einschalter ist dies der Eintrag "*Home-brew (16x50 UART compatible serial port)*". Außerdem muss noch die Serielle Schnittstelle angegeben werden, über die der Empfänger angeschlossen ist. Die Nummerierung orientiert sich normalerweise an den Angaben im Handbuch des Mainboards.
+
+.Anpassen der lircd.conf
+Im nächsten Schritt muss dann noch eine passende lircd.conf nach '/etc/lirc/lircd.conf' kopiert werden. Die dort verwendeten Tastennamen sollten sich an der <<remote.conf, remote.conf>> orientieren, da die Fernbedienung dann sowohl mit dem VDR als auch unter XBMC ohne weitere Konfiguration verwendet werden kann.
+
+.Beispiel alte lircd.conf zu neuer lircd.conf
+
+.yaVDR 0.3 bzw. "alte" lircd.conf
+----
+[...]
+begin codes
+          Up                   0x1794
+          Down                 0x1795
+          Ok                   0x17A5
+          left                 0x1796
+          right                0x1797
+          info                 0x179B
+[...]
+----
+
+.yaVDR 0.4
+----
+[...]
+begin codes
+          KEY_UP                   0x1794
+          KEY_DOWN                 0x1795
+          KEY_OK                   0x17A5
+          KEY_LEFT                 0x1796
+          KEY_RIGHT                0x1797
+          KEY_INFO                 0x179B
+[...]
+----
+
+Nach einem <<restart-eventlircd,Neustart von eventlircd>> kann man die für den seriellen Empfänger konfigurierte Fernbedienung benutzen.
+
+==== X10-Fernbedienungen ====
+Treten bei X10-Fernbedienungen doppelte Tastendrücke auf, so muss noch die Modul-Option "keychange=1" für das Modul ati_remote gesetzt werden:
+
+./etc/modprobe.d/ati_remote.conf
+----
+options ati_remote keychange=1
+----
 
 ==== Noch nicht unterstützte Fernbedienungen ====
 
@@ -509,21 +567,4 @@ Für diese Fernbedienung werden also zwei Eventgeräte angelegt.
 * Informationen über den Empfänger sammeln  (lsusb/lspci, dmesg, cat '/proc/input/devices', evtest, lsmod
 * UDEV-Regel-Erstellung beschreiben
 ****
-
-[[Serial-Remote]]
-==== LIRC Empfänger ====
-
-[[lirc_serial]]
-===== Serielle Empfänger =====
-
-Serielle Empfänger wie z.B. der Atric-Einschalter oder Homebrew-Empfänger lassen sich leider schlecht automatisch vorkonfigurieren, da sie mit beliebigen Fernbedienungen benutzt werden können. Trotzdem lassen sie sich in yaVDR mit wenig Aufwand zusammen mit <<lirc,LIRC>> einrichten.
-
-.Einstellungen im Webfrontend
-Im Abschnitt <<wfe-remote,Fernbedienung>> des yaVDR-Webfrontend setzt man das Häkchen bei Lirc-Unterstützung und wählt den geeigneten Empfänger aus der Liste.
-Für Atric-Einschalter ist dies der Eintrag "*Home-brew (16x50 UART compatible serial port)*". Außerdem muss noch die Serielle Schnittstelle angegeben werden, über die der Empfänger angeschlossen ist. Die Nummerierung orientiert sich normalerweise an den Angaben im Handbuch des Mainboards.
-
-.Anpassen der lircd.conf
-Im nächsten Schritt muss dann noch eine passende lircd.conf nach '/etc/lirc/lircd.conf' kopiert werden. Die dort verwendeten Tastennamen sollten sich an der <<remote.conf, remote.conf>> orientieren, da die Fernbedienung dann sowohl mit dem VDR als auch unter XBMC ohne weitere Konfiguration verwendet werden kann.
-
-Nach einem <<restart-eventlircd,Neustart von eventlircd>> kann man die für den seriellen Empfänger konfigurierte Fernbedienung benutzen.
 
