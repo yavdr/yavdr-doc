@@ -1,5 +1,17 @@
 == Häufig gestellte Fragen footnote:[http://vdr-wiki.de/wiki/index.php/YaVDR/FAQ] ==
 http://vdr-wiki.de/wiki/index.php/YaVDR/FAQ
+
+Hier ensteht eine Sammlung der am häufigsten im http://www.vdr-portal.de gestellten Fragen. Sie wird mit der Zeit wachsen und hoffentlich zeitlich nah an den Stand der Entwicklung von yaVDR angepasst werden.
+
+[[qa-remote]]
+=== Fernbedienung ===
+
+[qanda]
+Ich  habe einen Lirc-Empfänger und steige von yaVDR 0.3 auf 0.4 um - kann ich die Konfigurationsdateien einfach kopieren?::
+  Nein. In yaVDR 0.4 sollte die remote.conf nicht mehr verändert werden. Die hardware.conf für Lircd wird über das <<wfe-remote,Webfrontend erzeugt>>. Wichtig ist, dass die Tastennamen in der lircd.conf so angepasst werden, dass sie *Namespace-konform* sind - d.h. sie müssen mit den Tastennamen in der Spalte "Event" in dieser Tabelle übereinstimmen: https://bugs.yavdr.com/projects/1/wiki/IR_Integration_04#Eventmapping
+Wenn ich eine Taste auf der Fernbedienung drücke, werden doppelte Tastendrücke im VDR ausgeführt - wie kann ich das ändern?::
+Bis eine Lösung für eventlircd verfügbar ist, die die Anpassung des Repeat-Filters von <<eventlircd,Eventlircd>> erlaubt (siehe oneiric-Pakete im main PPA), bitte eines dieser eventlircd-Pakete verwenden und abstimmen wie groß der Minimale Abstand zwischen zwei Tastendrücken sein muss: http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/108430-umfrage-zu-eventlircd-einstellung-des-repeat-filters/
+
 ////
 === Grundlagen ===
 [quanda]

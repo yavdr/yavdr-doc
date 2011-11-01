@@ -154,7 +154,7 @@ Die Keymap wird dann unter einem möglichst aussagekräftigen Namen in '/etc/rc_
 
 ===== Keymap laden =====
 
-.Damit die Keytable auch automatisch geladen wird, muss eine Regel in '/etc/rc_maps.conf' für die Fernbedienung erstellt werden.
+.Damit die Keytable auch automatisch geladen wird, muss eine Regel in '/etc/rc_maps.cfg' für die Fernbedienung erstellt werden.
 ----
 # driver        table                           file
 ir-kbd-i2c <1>    *                               /etc/rc_keymaps/pvr350
@@ -162,6 +162,12 @@ ir-kbd-i2c <1>    *                               /etc/rc_keymaps/pvr350
 <1> Den Treiber haben wir wie weiter oben beschrieben mittels <<ir-keytable-pvr350,*sudo ir-keytable*>> ermittelt.
 
 Zu Testzwecken kann man Einstellungen für per ir-core eingebundene Geräte auch von Hand laden oder zurücksetzen. 
+
+[NOTE]
+.Wie wird die rc_maps.cfg ausgewertet?
+=====================================================================
+Dazu wird eine udev-Regel in /lib/udev/rules.d/40-ir-keytable.rules benutzt, die gemäß den Regeln in der /etc/rc_maps.cfg die dort eingestellten Keymaps lädt (ir-keytable -a /etc/rc_maps.cfg).
+=====================================================================
 
 .Manuelles Laden einer Keymap durch ir-keytable
 ----
@@ -282,7 +288,7 @@ http://wiki.ubuntuusers.de/udev[udev] ist ein Dienst, der es erlaubt Hardware dy
 
 Über Regeln in der Datei https://github.com/yavdr/yavdr-remote/blob/master/udev/98-eventlircd.rules['/lib/udev/rules.d/98-eventlircd.rules'] kann festgelegt werden, welche Konfiguration eventlircd für angeschlossene USB-Fernbedienungen lädt.
 
-.Beispiel für einen Eintrag in '/lib/udev/98-eventlircd.rules'
+.Beispiel für einen Eintrag in '/lib/udev/rules.d/98-eventlircd.rules'
 ----
 ENV{ID_VENDOR_ID}=="0419", ENV{ID_MODEL_ID}=="0001", \                      <1>
   ENV{eventlircd_enable}="true",\                                           <2>
@@ -337,7 +343,8 @@ and the attributes from one single parent device.
 
 ==== irw ====
 
-Wenn lircd oder eventlircd <<status-remoted,gestartet>> sind, zeigt der Befehl *irw* die vom VDR erkannten Tastendrücke an. Die Ausgabe der erkannten Tastendrücke kann per *STRG + c* <<control-c,abgebrochen>> werden.
+Wenn eventlircd <<status-remoted,gestartet>> ist, zeigt der Befehl *sudo irw* die vom VDR erkannten Tastendrücke an. Die Ausgabe der erkannten Tastendrücke kann per *STRG + c* <<control-c,abgebrochen>> werden.
+*irw* kann auch auf den Sockets von lircd lauschen, wenn man ihm den Pfad zu diesem als Argument übergibt.
 
 .irw bei eventlircd mit einer Hama MCE Remote
 ----
@@ -353,17 +360,25 @@ user@yavdr:~$ sudo irw
 
 .irw für lircd am Beispiel eines Atric-Empfängers footnote:[http://www.atric.de/IR-Einschalter/index.php] mit Hauppauge A415-HPG-WE Fernbedienung
 ----
-user@yavdr:~$ sudo irw
+# PID von lircd bestimmen
+user@yavdr:~$ sudo pidof lircd
+765
+user@yavdr:~$ sudo irw /var/run/lirc/lircd.765
 <1>               <2>  <3>      <4>
 0000000000001794 00 KEY_UP hvr4000-2
 0000000000001794 01 KEY_UP hvr4000-2
 0000000000001795 00 KEY_UP hvr4000-2
 0000000000001795 01 KEY_UP hvr4000-2
+
+# Falls man sicher ist, dass nur eine lircd-Instanz läuft geht auch dieser Befehl:
+sudo irw /var/run/lirc/lircd.$(pidof lircd)
 ----
 <1> Tastencode
 <2> 00=Taste gedrückt 01=Taste losgelassen
 <3> Name der Taste
 <4> Benutzte Fernbedienung aus der lircd.conf für die Tastenzuordnung
+
+.irw 
 
 
 [[lirc]]
@@ -431,6 +446,18 @@ begin codes
 ----
 
 Nach einem <<restart-eventlircd,Neustart von eventlircd>> kann man die für den seriellen Empfänger konfigurierte Fernbedienung benutzen.
+Die Tasten-Ausgabe von Lircd kann unter '/var/run/lirc/lircd.<PID>' mittels irw ausgelesen werden.
+
+[[lirc_igor]]
+===== Igor USB =====
+
+Für die Igor USB-Empfänger muss lediglich eine passende Namespace-konforme Lircd.conf nach /etc/lirc/ kopiert werden. Über eine udev-Regel wird automatisch ein passender lircd-Prozess gestartet und dessen Ausgabe von eventlircd ausgewertet. Der Socket von Lircd liegt typischerweise unter '/var/run/lirc/lircd-lirc0' und kann mittels <<irw>> auf Funktion überprüft werden.
+
+[CAUTION]
+.Cave Einstellungen zur Fernbedienung im Webfrontend!
+=====================================================================
+Bei Igor USB-Empfängern darf lircd nicht für den Igor über das Webfrontend aktiviert und eingerichtet werden, da sonst zwei lircd-Prozesse gestartet werden, die sich gegenseitig blockieren und die Funktion der Fernbedienung verhindern!
+=====================================================================
 
 ==== X10-Fernbedienungen ====
 Treten bei X10-Fernbedienungen doppelte Tastendrücke auf, so muss noch die Modul-Option "keychange=1" für das Modul ati_remote gesetzt werden:
