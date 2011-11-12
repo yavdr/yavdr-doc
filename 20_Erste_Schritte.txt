@@ -9,14 +9,8 @@ Nach der Installation startet yaVDR mit drei vorkonfigurierten Internet-TV Kanä
 .Drei Punkte müssen abgearbeitet werden um yaVDR nach einer Neuinstallation sinnvoll nutzen zu können:
 - <<system-upgrade,aktuelle Updates einspielen>>
 - Senderliste erstellen, z.B. mittels <<wfe-channels,Channelpedia>> im Webfrontend
-- Fernbedienung einrichten
+- <<Remote-HOWTO,Fernbedienung einrichten>> falls sie nicht direkt nach der Installation wie gewünscht funktioniert
 =====================================================================
-
-
-****
-.TODO
-Grundlegende Bedienung des OSD
-****
 
 [[system-upgrade]]
 ==== Aktuelle Updates einspielen ====
@@ -34,9 +28,15 @@ Gerade *bevor* man darüber nachdenkt eine Support-Anfrage im http://www.vdr-por
 sudo apt-get update && sudo apt-get dist-upgrade
 ----
 
-==== Tastaturbelegung ====
+[[vdr-guide]]
+==== Bedienung des VDR ====
 
-Auch wenn eine Fernbedienung die Bedienung deutlich bequemer macht, ist es nach der Installation oft hilfreich, wenn man zunächst auch mit der Tastatur navigieren kann.
+Um die grundlegende Bedienung und die Konfigurationsmöglichkeiten des VDR über das OSD footnote:[On Screen Display] kennenzulernen empfiehlt es sich das Benutzerhandbuch zu lesen: http://vdr-wiki.de/wiki/index.php/Benutzerhandbuch
+
+[[keyboard-table]]
+===== Tastaturbelegung =====
+
+Auch wenn eine Fernbedienung die Bedienung deutlich bequemer macht, ist es nach der Installation oft hilfreich wenn man yaVDR auch mit der Tastatur bedienen kann.
 
 .Tastaturbelegung in yaVDR
 [cols="h,2*",options="header",width="90%"]
@@ -60,11 +60,110 @@ Auch wenn eine Fernbedienung die Bedienung deutlich bequemer macht, ist es nach 
 |*F10*        |*Mute*       |Schaltet den Ton aus oder ein
 |*F11*        |*Leiser*     |
 |*F12*        |*Lauter*     |
-|*Zifferntasten*|Ziffern 0-9|
+|*Zifferntasten*|*Ziffern 0-9*|
 |==========================================================
 
-****
-.TODO
-Bedienung des VDR analog zu http://vdr-wiki.de/wiki/index.php/Benutzerhandbuch
-****
+[[Remote-HOWTO]]
+===== Konfiguration der Fernbedienung =====
+
+Kein VDR wäre komplett ohne die Möglichkeit ihn bequem per Fernbedienung zu steuern.
+yaVDR 0.4 unterstützt ein breites Spektrum von Eingabegeräten, sowohl Infrarot- als auch Funk-Fernbedienungen. Falls die eigene Fernbedienung OOTB zufriedenstellend funktioniert kann man den folgenden Abschnitt überspringen. Wer keine Fernbedienungs-Empfänger Kombination hat, die OOTB funktioniert oder einfach verstehen will wie die Einbindung der Fernbedienungen in yaVDR funktioniert sollte einen Blick auf das Kapitel zur <<eventlirc,Fernbedienung und Eventlircd>> und zur <<remote.conf,remote.conf>> in dieser Dokumentation werfen.
+
+Falls nicht alle Tasten wie erwartet funktionieren oder gar keine Tastendrücke beim VDR ankommen, konnte die Fernbedienung nicht automatisch durch yaVDR konfiguriert werden. Wie man dann weiter verfährt ist im Folgenden beschrieben:
+
+[TIP]
+.Anfragen im VDR-Portal
+=====================================================================
+Für eine Support-Anfrage im http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/[Forum] ist es sinnvoll gleich ein paar Informationen über seinen Empfänger zu sammeln und die Ausgaben der hier in den einzelnen Schritten gezeigten Befehle gleich mit zu posten. 
+====================================================================
+
+[WARNING]
+.s2-liplianin-dkms
+=====================================================================
+Außerdem sollte man sicherstellen, dass das Paket *s2-liplianin-dkms* nicht installiert ist, da u.U. *eventlircd* und *ir-keytable* ansonsten (Stand 08.11.11) nicht richtig funktionieren. Im Zweifelsfall sollte man das Paket *v4l-dvb-dkms* <<install-packages,installieren>>, da es zum einen aktuellere Treiber und im Quellcode aktualisierte Keymaps einspielt und zum anderen *s2-liplianin-dkms* sicher verdrängt.
+=====================================================================
+
+Im Folgenden ein kurzer Leitfaden, der dabei hilft notwendige Informationen über den verwendeten Empfänger zu sammeln. Dies erleichtert die Suche im Internet und hilft dabei Support-Anfragen im http://vdr-portal.de oder beim Hinzufügen der eigenen Konfiguration zur yaVDR-Konfigurationssammlung im https://bugs.yavdr.com/projects/yavdr/issues[Bug- & Feature-Tracker von yaVDR] mit sinnvollen Informationen zu versehen.
+
+Je nach Empfänger empfehlen sich unterschiedliche Herangehensweisen bei der Konfiguration. Um den Aufwand zu verringern folgt man am besten den nachfolgenden Links zum eigenen Empfänger.
+
+.Wie ist der Empfänger angeschlossen?
+* Via <<USB-Remote,USB>>
+* Via <<TV-Card-Remote, TV-Karte>>
+* Via <<Serial-Remote, Serielle Schnittstelle>>
+
+.Besonderheiten für bestimmte Fernbedienungen bzw. Empfänger
+* <<X10,X10-Empfänger>>
+* <<lirc_serial,Atric-Einschalter>>
+* <<lirc_igor,Igor-USB Empfänger>>
+
+.Andere Probleme
+* Doppelte Tastendrücke, siehe <<qa-remote-repeat,FAQ>>
+* Taste muss bei X10-Fernbedienung doppelt gedrückt werden: <<X10,X10-Empfänger>>
+
+[[USB-Remote]]
+===== USB-Empfänger und USB-DVB-Sticks =====
+
+[NOTE]
+=====================================================================
+Im folgenden sind alle Befehle mit den relevanten Ausgaben am Beispiel einer "Hama MCE Remote Control"beschrieben, die OOTB von yaVDR unterstützt wird, sich aber gut als Beispiel eignet.
+=====================================================================
+
+Um zu sehen, welche USB-Geräte Linux momentan erkannt hat, kann man den Befehl lsusb benutzen. Er gibt Hinweise auf Hersteller und Typ der angeschlossenen Geräte.
+
+[[lsusb]]
+.lsusb
+----
+user@yavdr:~$ lsusb
+		       <1>    <2>   <3>
+Bus 002 Device 003: ID 05a4:9881 Ortek Technology, Inc.  <4>
+Bus 002 Device 002: ID 80ee:0021  
+Bus 002 Device 001: ID 1d6b:0001 Linux Foundation 1.1 root hub
+Bus 001 Device 001: ID 1d6b:0002 Linux Foundation 2.0 root hub
+----
+<1> Hersteller-ID
+<2> Produkt-ID	
+<3> Bezeichnung
+<4> Hama MCE Remote
+
+Ruft man *dmesg* direkt nach dem Einstecken eines USB-Gerätes auf, sieht man, ob Linux für das Gerät Treiber geladen und Geräte angelegt hat.
+[[dmesg]]
+.dmesg
+----
+user@yavdr:~$ dmesg
+[...]
+[ 7178.064139] usb 2-2: new full speed USB device using ohci_hcd and address 3
+[ 7178.535387] input: HID 05a4:9881 as /devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.0/input/input5
+[ 7178.535645] generic-usb 0003:05A4:9881.0002: input,hidraw1: USB HID v1.10 Keyboard [HID 05a4:9881] on usb-0000:00:06.0-2/input0 <1>
+[ 7178.574745] input: HID 05a4:9881 as /devices/pci0000:00/0000:00:06.0/usb2/2-2/2-2:1.1/input/input6
+[ 7178.574885] generic-usb 0003:05A4:9881.0003: input,hidraw2: USB HID v1.10 Mouse [HID 05a4:9881] on usb-0000:00:06.0-2/input1 <1>
+----
+<1> Wie man sehen kann werden zwei Eingabegeräte (Fernbedienung + Mausfunktion) erkannt.
+
+Für weitere Informationen dazu wie die Fernbedienung eingebunden wird schaut man sich die vom System erkannten Eingabegeräte an: <<cat-proc,cat /proc/bus/input/devices>> und folgt abhängig von der Ausgabe den dort verlinkten Abschitten der Dokumentation
+
+[[TV-Card-Remote]]
+===== Fernbedienungen von internen TV-Karten =====
+
+Empfänger, die in TV-Karten eingebaut sind, werden normalerweise über rc-core eingebunden und mittels <<ir-keytable, ir-keytable>> konfiguriert. Für einige Geräte gelten Ausnahmen von dieser Regel.
+Als Erstes sollte man also überprüfen, ob ein entsprechendes rc-core Gerät erkannt wurde:
+
+.Erkanntes rc-core Gerät
+----
+user@yavdr:~$ sudo ir-keytable
+Found /sys/class/rc/rc0/ (/dev/input/event3) with:
+	Driver ir-kbd-i2c, table rc-rc5-tv
+	Supported protocols: RC-5
+	Enabled protocols:                  
+Repeat delay = 500 ms, repeat period = 33 ms       
+----
+
+Die weitere Konfiguration ist im Abschnitt der Anleitung zu <<ir-keytable, ir-keytable>> beschrieben.
+
+.Falls kein derartiges Gerät erkannt wurde, taucht diese Ausgabe auf:
+----
+user@yavdr:~$ sudo ir-keytable
+Couldn't find any node at /sys/class/rc/rc*.
+----
+Um herauszufinden, ob und wie die Fernbedienung eingebunden wird schaut man sich die vom System erkannten Eingabegeräte an: <<cat-proc,cat /proc/bus/input/devices>>
 

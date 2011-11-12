@@ -1,0 +1,97 @@
+=== iVDR ===
+
+http://i-vdr.de/[iVDR] ist ein für iOS-Geräte optimiertes Webinterface für den VDR. Es erlaubt die Bedienung (EPG, Timer, Aufnahmeverwaltung, Fernbedienung) und das Streamen von Live-TV und Aufnahmen.
+
+Zur Nutzung des CGI-Skripts unter yaVDR 0.4 sind folgende Pakete notwendig:
+
+==== Perl-Bibliotheken ====
+* *libxml-simple-perl*
+* *libhtml-parser-perl*
+
+==== Web-Server ====
+* *lighttpd*
+
+Außerdem muss noch die Verarbeitung von CGI-Skripten aktiviert werden:
+----
+sudo lighty-enable-mod cgi 
+----
+
+[NOTE]
+.Wahl des Webservers
+=====================================================================
+Prinzipiell kann man jeden Webserver benutzen, der die Ausführung von Perl-CGI-Skripten erlaubt. Eine Alternative zu http://www.lighttpd.net/[lighttpd] ist z.B. http://httpd.apache.org/[Apache]. Aufgrund des geringeren Ressourcen-Verbrauchs wird in dieser Anleitung lighttp genutzt.
+=====================================================================
+Da yaVDR bereits einen eigenen sehr schlanken Webserver mitbringt (libtntnet), der auf Port 80 lauscht, muss lighttp noch so konfiguriert werden, dass es nicht mit diesem kollidiert. Dazu muss noch der *server.port* auf einen anderen Port (Standard ist 80) eingestellt werden. 
+
+.'/etc/lighttpd/lighttp.conf'
+----
+server.modules = (
+        "mod_access",
+        "mod_alias",
+        "mod_compress",
+        "mod_redirect",
+        "mod_rewrite",
+)
+
+server.document-root        = "/var/www"
+server.upload-dirs          = ( "/var/cache/lighttpd/uploads" )
+server.errorlog             = "/var/log/lighttpd/error.log"
+server.pid-file             = "/var/run/lighttpd.pid"
+server.username             = "www-data"
+server.groupname            = "www-data"
+server.port                 = 8080
+
+index-file.names            = ( "index.php", "index.html",
+                                "index.htm", "default.htm",
+                               " index.lighttpd.html" )
+
+url.access-deny             = ( "~", ".inc" )
+
+static-file.exclude-extensions = ( ".php", ".pl", ".fcgi" )
+
+## Use ipv6 if available
+#include_shell "/usr/share/lighttpd/use-ipv6.pl"
+
+dir-listing.encoding        = "utf-8"
+server.dir-listing          = "enable"
+
+compress.cache-dir          = "/var/cache/lighttpd/compress/"
+compress.filetype           = ( "application/x-javascript", "text/css", "text/html", "text/plain" )
+
+include_shell "/usr/share/lighttpd/create-mime.assign.pl"
+include_shell "/usr/share/lighttpd/include-conf-enabled.pl"
+----
+
+Damit das Perl-Skript richtig ausgeführt werden kann, sollte man noch die Ausführung von Perl-Skripts im Ordner '/usr/bin/cgi-bin/' erlauben:
+
+.'/etc/lighttpd/conf-enabled/10-cgi.conf'
+----
+server.modules += ( "mod_cgi" )
+alias.url += ( "/cgi-bin/" => "/usr/lib/cgi-bin/" )
+$HTTP["url"] =~ "^/cgi-bin/" {
+        cgi.assign = ( "" => "" )
+}
+----
+
+==== iVDR installieren ====
+
+Zur Installation bitte der http://i-vdr.de/node/44[Anleitung] auf der Projektseite folgen. Den Link zur jeweils aktuellsten Version findet man auf der http://i-vdr.de/node/12[Downloadseite].
+
+
+==== Streaming mit iVDR ====
+.TODO
+****
+Kompilieren der benötigten Programe fürs Streaming unter yaVDR 0.4
+****
+
+.benötigte Pakete zum Kompilieren der Programme fürs Streaming
+----
+# Abhängigkeiten installieren
+sudo apt-get build-dep x264 ffmpeg
+# Pakete zum Bauen
+sudo apt-get install subversion git-core checkinstall yasm libxfixes-dev 
+# Pakete für Codecs 
+sudo apt-get install libmp3lame-dev libfaac-dev libfaad-dev libxvidcore-dev libx264-dev libopencore-amrnb-dev libopencore-amrwb-dev 
+yasm libavcodec-dev libavformat-dev libavutil-dev libfaac-dev libfaad-dev libmp3lame-dev libxvidcore-dev libbz2-dev libtheora-dev subversion git-core libmp3lame-dev libfaac-dev libfaad-dev libxvidcore-dev libx264-dev libopencore-amrnb-dev libopencore-amrwb-dev subversion git-core checkinstall libxfixes-dev 
+----
+

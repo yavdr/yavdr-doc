@@ -97,13 +97,13 @@ Wir wollen nun ein Custom-Template für das Standard-Template '30_regular-days' 
 Dazu erstellen wir einen entsprechenden Ordner in dem Verzeichnis für die Custom-Templates und kopieren das Standard-Template, dass wir anpassen wollen dorthin (da die anderen Templates nicht geänderd werden sollen, benötigen wir sie nicht als Custom-Templates, und sie dürfen daher auch weiterhin durch zukünftige Updates überschrieben werden):
 
 -----------------------------------------
-user@yavdr04:~$ sudo mkdir -p /etc/yavdr/templates_custom/etc/vdr/vdr-addon-acpiwakeup
-user@yavdr04:~$ sudo cp /usr/share/yavdr/templates/etc/vdr/vdr-addon-acpiwakeup.conf/30_regular-days /etc/yavdr/templates_custom/etc/vdr/vdr-addon-acpiwakeup/30_regular-days
+user@yavdr04:~$ sudo mkdir -p /etc/yavdr/templates_custom/etc/vdr/vdr-addon-acpiwakeup.conf
+user@yavdr04:~$ sudo cp /usr/share/yavdr/templates/etc/vdr/vdr-addon-acpiwakeup.conf/30_regular-days /etc/yavdr/templates_custom/etc/vdr/vdr-addon-acpiwakeup.conf/30_regular-days
 -----------------------------------------
 
 Jetzt passen wir mit dem Text-Editor unserer Wahl dieses Custom-Template an und ändern es so ab, dass der VDR jeden Abend um 19:45 aufwacht:
 -----------------------------------------
-user@yavdr04:~$ sudo nano /etc/yavdr/templates_custom/etc/vdr/vdr-addon-acpiwakeup/30_regular-days
+user@yavdr04:~$ sudo nano /etc/yavdr/templates_custom/etc/vdr/vdr-addon-acpiwakeup.conf/30_regular-days
 -----------------------------------------
 
 -----------------------------------------
