@@ -9,7 +9,6 @@ Hier ensteht eine Sammlung der am häufigsten im http://www.vdr-portal.de gestel
 [qanda]
 Was bedeutet *Namespace-konform*?::
   In yaVDR dürfen aufgrund der Nutzung von Eventlircd nur bestimmte Tastennamen verwendet werden. Das bedeutet dass sie mit den Tastennamen in der Spalte "Event" in dieser Tabelle übereinstimmen  müssen: https://bugs.yavdr.com/projects/1/wiki/IR_Integration_04#Eventmapping Wie man Tastennamen von noch nicht richtig vorkonfigurierten Fernbedienung anpassen kann, steht in der <<remote-guide,Hilfe zur Einrichtung der Fernbedienung>>, dem Abschnitt zu <<ir-keytable,ir-keytable>>, <<Serial-Remote,Lirc>> und den <<evmaps,Evmaps>>.
-[[qa-remote-repeat]]
 Ich  habe einen <<Serial-Remote,Lirc-Empfänger>> und steige von yaVDR 0.3 auf 0.4 um - kann ich die Konfigurationsdateien einfach kopieren?::
   Nein. In yaVDR 0.4 sollte die remote.conf nicht mehr verändert werden. Die hardware.conf für Lircd wird über das <<wfe-remote,Webfrontend erzeugt>>. Wichtig ist, dass die Tastennamen in der lircd.conf so angepasst werden, dass sie *Namespace-konform* sind.
 Wenn ich eine Taste auf der Fernbedienung drücke, werden doppelte Tastendrücke im VDR ausgeführt - wie kann ich das ändern?::

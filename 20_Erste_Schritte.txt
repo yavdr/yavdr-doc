@@ -98,7 +98,7 @@ Je nach Empfänger empfehlen sich unterschiedliche Herangehensweisen bei der Kon
 * <<lirc_igor,Igor-USB Empfänger>>
 
 .Andere Probleme
-* Doppelte Tastendrücke, siehe <<qa-remote-repeat,FAQ>>
+* Doppelte Tastendrücke, siehe <<qa-remote,FAQ>>
 * Taste muss bei X10-Fernbedienung doppelt gedrückt werden: <<X10,X10-Empfänger>>
 
 [[USB-Remote]]

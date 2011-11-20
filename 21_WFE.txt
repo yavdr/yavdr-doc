@@ -127,6 +127,22 @@ GraphTFT
 ****
 Hier kann die Auflösung und Nutzung der angeschlossenen Bildschirme eingestellt werden. Außerdem können hier die Deinterlacing-Methoden für HD- und SD-Material konfiguriert werden.
 
+[[wfe-graphtft]]
+.GraphTFT
+Das GraphTFT-Plugin erlaubt es Statusinformationen und das Menü des VDR auf einem zweiten angeschlossenen Bildschirm auszugeben.
+
+[NOTE]
+.GraphTFT Aktivieren
+=====================================================================
+Momentan ist die Konfiguration eines zweiten Bildschirms in yaVDR noch etwas tricky. Hier ein Weg der am ehesten zum Erfolg führt:
+
+* Monitore neu erkennen lassen ("Rescan Displays")
+* Neustart, damit die Reihenfolge der Anzeigen sicher stimmt
+* Dualscreen einrichten
+* Graphtft mit anhaken und dabei Auflösung und Wiederholrate des GraphTFT-Bildschirms von Hand festlegen
+* Falls die Reihenfolge noch nicht stimmt primären und sekundären Monitor festlegen
+=====================================================================
+
 [[wfe-system]]
 ===== System: System =====
 .TODO:
@@ -170,21 +186,6 @@ image:wfe/plugins_apt.png[APT-Befehle]
 
 image:wfe/plugin-installation.png["Paketinstallation"]
 
-
-[[wfe-system]]
-===== System: System =====
-.TODO:
-****
-Ergänzen
-****
-
-[[wfe-network]]
-===== System: Netzwerk =====
-
-.TODO:
-****
-Symbol hinzufügen
-****
 
 [[wfe-system-settings]]
 ==== System ====
