@@ -292,7 +292,15 @@ B: KEY=ffffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffff fffff
 [[ir-keytable]]
 ==== ir-keytable ====
 
-ir-keytable gibt Auskunft über das angelegte Inputdevice('/dev/input/eventX'), das verwendete Protokoll und den verwendeten Treiber für IR-Eingabegeräte, die *rc-core* bzw. das Treibermodul *ir-core* verwenden.
+ir-keytable gibt Auskunft über das angelegte Inputdevice('/dev/input/eventX'), das verwendete Protokoll und den verwendeten Treiber für IR-Eingabegeräte, die *rc-core* bzw. das Treibermodul *ir-core* verwenden. Außerdem ist das Programm dafür zuständig Tastenbelegungen zu laden, die nicht dem vorgegebenen Stand in den rc-core Treibern entsprechen.
+
+[CAUTION]
+.Anpassung der Tastenbelegung für rc-core Empfänger
+=====================================================================
+Im Gegensatz zu Empfängern, die als Tastatur erkannt werden, deren Tastenbelegung nur mittels evmaps geändert werden kann, macht es für rc-core Empfänger keinen Sinn die Tastenbelegung über evmaps zu ändern. Sinnvoller ist es eine angepasste Keytable zu <<ir-keytable_keymap,erstellen>> und diese über eine Regel in der '/etc/rc_maps.cfg' beim Start <<ir-keytable-load,automatisch laden>> zu lassen.
+
+Falls bereits alle Tasten eine Ausgabe mit definiertem Namen liefern, hilft das http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/109471-hilfsskript-f%C3%BCr-rc-core-empf%C3%A4nger/[hier gepostete Skript] eine benutzerdefinierte Keytable zu erstellen und laden zu lassen, deren Tastennamen und -belegung man dann sicher vor eventuellen Updates der bei yaVDR mitgelieferten Keytables anpassen kann.
+=====================================================================
 
 [[ir-keytable-pvr350]]
 .Beispiel für eine Hauppauge PVR350 mit IR-Empfänger:
@@ -339,24 +347,27 @@ Testing events. Please, press CTRL-C to abort.
 Passend zur eigenen Fernbedienung kann man sich nun eine Keymap erstellen, dabei muss der scancode in eine Hexadezimalzahl übertragen und der Taste eine Funktion zugewiesen werden.
 Aus *scancode = 3d* wird also *0x003d*, aus *scancode = 01* wird *0x0001* usw.
 
-Die Keymap wird dann unter einem möglichst aussagekräftigen Namen in '/lib/udev/rc_keymaps/' gespeichert, wo auch bereits vom yaVDR-Team definierte Keymaps liegen.
+Die Keymap wird dann am besten unter einem möglichst aussagekräftigen Namen unter '/etc/rc_keymaps/' gespeichert, wo sie keine Gefahr läuft von mit yaVDR-Updates ausgelieferten Keytables überschrieben zu werden. Die von yaVDR mitgelieferten Keytables liegen unter '/lib/udev/rc_keymaps/' und können als Vorlage für angepasste Keytables verwendet werden.
 
-.'/lib/udev/rc_keymaps/' (Auszug)
+.'/lib/udev/rc_keymaps/pvr350' (Auszug)
 ----
 # Keymap for Hauppauge PVR350 and A415-HPG-WE remote control
-0x003b |KEY_SETUP
-0x003d |KEY_POWER2
-0x0001 |KEY_1
-0x0002 |KEY_2
-0x0003 |KEY_3
+0x003b KEY_SETUP
+0x003d KEY_POWER2
+0x0001 KEY_1
+0x0002 KEY_2
+0x0003 KEY_3
 [...]
 ----
 
+[[ir-keytable-load]]
 ===== Keymap laden =====
 
-.Damit die Keytable auch automatisch geladen wird, muss eine Regel in '/etc/rc_maps.cfg' für die Fernbedienung erstellt werden.
+Damit die Keytable auch automatisch geladen wird, muss eine Regel in '/etc/rc_maps.cfg' für die Fernbedienung erstellt werden. Da die Datei <<template,getemplated>> ist, sollte man ein entsprechendes Custom-Template für die eigene erstellen, um ein Überschreiben der Regel durch Updates von yaVDR zu vermeiden.
+
+.'/etc/rc_maps.cfg'
 ----
-# driver        table                           file
+# driver          table                           file
 ir-kbd-i2c <1>    *                               /etc/rc_keymaps/pvr350
 ----
 <1> Den Treiber haben wir wie weiter oben beschrieben mittels <<ir-keytable-pvr350,*sudo ir-keytable*>> ermittelt.
@@ -636,12 +647,12 @@ begin codes
 ----
 [...]
 begin codes
-          ||KEY_UP                   0x1794
-          ||KEY_DOWN                 0x1795
-          ||KEY_OK                   0x17A5
-          ||KEY_LEFT                 0x1796
-          ||KEY_RIGHT                0x1797
-          ||KEY_INFO                 0x179B
+          KEY_UP                   0x1794
+          KEY_DOWN                 0x1795
+          KEY_OK                   0x17A5
+          KEY_LEFT                 0x1796
+          KEY_RIGHT                0x1797
+          KEY_INFO                 0x179B
 [...]
 ----
 

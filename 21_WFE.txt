@@ -92,10 +92,10 @@ image:wfe/channelpedia_add_small.png["Kanal hinzufügen"]
 
 [[wfe-remote]]
 ===== Hardware: Fernbedienung =====
+
 .TODO:
 ****
 Symbol hinzufügen
-Abschnitt zu LIRC korrekt?
 ****
 image:wfe/remote.png["Fernbedienung"]
 

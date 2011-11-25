@@ -54,11 +54,7 @@ Nun kann die Zeitzone eingestellt werden:
 
 image:./installation/08_zeitzonenvorschlag.png[]
 
-Im nächsten Schritt kann man konfigurieren, wie die verbaute(n) Festplatten genutzt werden sollen. Die Root-Partition sollte mindestens 3 GB groß sein, damit genug Platz für die Installation weiterer Pakete bleibt ist eine Größe von 8 - 20 GB empfehlenswert. Alle lokalen Mediendateien sollten später unter /srv/vdr liegen. Dies ist der bei yaVDR voreingestellte Ort, an dem später Aufnahmen abgelegt werden und an dem XBMC Medien in den entsprechenden Unterverzeichnissen erwartet. Näheres zu dem Thema findet sich im Kapitel
-****
-.TODO:
- *Verzeichnisse von yaVDR*.
-****
+Im nächsten Schritt kann man konfigurieren, wie die verbaute(n) Festplatten genutzt werden sollen. Die Root-Partition sollte mindestens 3 GB groß sein, damit genug Platz für die Installation weiterer Pakete bleibt ist eine Größe von 8 - 20 GB empfehlenswert. Alle lokalen Mediendateien sollten später unter /srv/vdr liegen. Dies ist der bei yaVDR voreingestellte Ort, an dem später Aufnahmen abgelegt werden und an dem XBMC Medien in den entsprechenden Unterverzeichnissen erwartet. Näheres zu dem Thema findet sich im Abschnitt <<directories,*Verzeichnissstruktur*>> von yaVDR.
 
 Daher kann man entweder den Installer automatisch die Festplatte aufteilen lassen ("*Geführt - verwende vollständige Festplatte*"), wodurch neben der SWAP-Partition der restliche Platz für Root verwendet wird (siehe folgender Screenshot) oder manuell eine kleine Partition für */* erstellen und den Verbleibenen Platz (oder auch eine zweite Festplatte mit hoher Kapazität) unter /srv einhängen. Als Dateisystem eignet sich z.B. ext4.
 

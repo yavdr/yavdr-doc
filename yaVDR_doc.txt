@@ -2,8 +2,8 @@ Dokumentation für yaVDR
 =======================
 :Author:   seahawk1986
 :Email:    seahawk986@hotmail.com
-:Revision: v0.1
-:Date:     Juli 2011
+:Revision: v0.2
+:Date:     November 2011
 :encoding: UTF-8
 :lang: de
 :version: yaVDR 0.4
@@ -46,7 +46,7 @@ include::25_Config.txt[]
 == Systembeschreibung ==
 
 include::40_directories.txt[]
-
+include::43_Repositories.txt[]
 
 include::50_Remote.txt[]
 
@@ -56,6 +56,7 @@ include::70_Dienste.txt[]
 :leveloffset: +1
 include::41_NFS.txt[]
 include::42_SAMBA.txt[]
+
 :leveloffset: 0
 include::71_Konfigurationsdateien.txt[]
 include::75_SVDRP.txt[]
@@ -81,6 +82,4 @@ include::101_Linux.txt[]
 include::99_FAQ.txt[]
 
 include::100_Troubleshooting.txt[]
-
-//include::50_Callouts.txt[]
 

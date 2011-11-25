@@ -17,26 +17,35 @@ Um anderen Clients den Zugriff (und die Steuerung wichtiger Funktionen per SVDRP
 
 Für den Zugriff über SVDRP (z.B. wenn ein anderer VDR mit <<streamdev-client,Streamdev-Client Plugin>> zugreifen können soll) muss die Datei '/etc/vdr/svdrphosts.conf' wie unter <<svdrp,SVDRP>> beschrieben angepasst werden.
 
-Für den Zugriff auf die von Streamdev-Server bereitgestellten Transportströme muss außerdem die Datei '/etv/vdr/plugins/streamdev-server/streamdevhosts.conf' angepasst werden.
+Für den Zugriff auf die von Streamdev-Server bereitgestellten Transportströme muss außerdem die Datei '/etv/vdr/plugins/streamdev-server/streamdevhosts.conf' angepasst werden. Diese Datei ist unter yaVDR 0.4 <<template,getemplated>>.
 
 .Beispieleinträge für '/etc/vdr/plugins/streamdev-server/streamdevhosts.conf'
 ----
 127.0.0.1       <1>
 192.168.1.115   <2>
 192.168.1.0/24  <3>
-0.0.0.0/0       <4>
+192.168.0.0/16  <4>
+0.0.0.0/0       <5>
 ----
 <1> Dieser Eintrag darf nicht entfernt werden, da sonst der VDR mit bestimmten Plugins nicht mehr richtig funktioniert!
 <2> Erlaubt dem Rechner mit der IP 192.168.1.115 den Zugriff
-<3> Erlaubt allen Rechnern, deren IP mit 192.168.1. beginnt den Zugriff
-<4> Erlaubt allen Rechnern unabhängig von ihrer IP den Zugriff (Achtung: Nicht empfohlen, da damit ein ungeschützter Zugriff auf die Kanäle des VDR von außerhalb des eigenen Netzwerks möglich ist, falls der VDR nicht durch einen Router mit NAT oder eine Firewall gesichert ist!)
+<3> Erlaubt allen Rechnern, mit der IP 192.168.1.xxx den Zugriff
+<4> Erlaubt allen Rechnern in einem http://de.wikipedia.org/wiki/Netzklasse#.C3.9Cbersicht_der_Netzklassen[Class C Netzwerk] (also mit IP 192.168.xxx.xxx, Standardeinstellung in yaVDR 0.4) den Zugriff auf den Streamdev-Server.
+<5> Erlaubt allen Rechnern unabhängig von ihrer IP den Zugriff (Achtung: Nicht empfohlen, da damit ein ungeschützter Zugriff auf die Kanäle des VDR von außerhalb des eigenen Netzwerks möglich ist, falls der VDR nicht durch einen Router mit NAT oder eine Firewall gesichert ist!)
 
 .TODO
 ****
 extremux.sh
-Webinterface Port 3000
-Playlist der Sender
 ****
+
+Der Streamdev-Server stellt auf Port 3000 eine Webinterface mit Links zu den von ihm angeboteten Streams bereit. Unter http://<IP_des_VDR>:3000/channels.m3u kann man eine Playlist mit allen Sendern herunterladen. Ein geeigneter Stream-Client ist z.B. der http://videolan.org[VLC Media Player].
+
+[TIP]
+.Radio-Sender streamen
+=====================================================================
+Möchte man Radio-Sender streamen, sollte man als Übertragungsformat unbedingt "ES" footnote:[**E**lementary **S**tream, siehe http://en.wikipedia.org/wiki/Elementary_stream] wählen.
+Ein Beispiellink zum Stream sieht dann z.B. so aus: http://<IP_DES_VDR>:3000/ES/C-1-1093-28457
+=====================================================================
 
 [[streamdev-client]]
 ===== Streamdev-Client =====
