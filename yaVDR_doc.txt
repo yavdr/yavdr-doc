@@ -2,6 +2,8 @@ Dokumentation für yaVDR
 =======================
 :Author:   seahawk1986
 :Email:    seahawk986@hotmail.com
+:Revision: v0.1
+:Date:     Juni 2011
 :Revision: v0.2
 :Date:     November 2011
 :encoding: UTF-8

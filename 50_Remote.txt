@@ -159,7 +159,7 @@ Alle Tastendrücke, die an Eventlirc weitergereicht werden, können durch Übers
 
 .Beispiel für die Syntax in einer evmap:
 ----
-|KEY_PROG1	=|KEY_MENU #Ich bin ein Kommentar
+KEY_PROG1	= KEY_MENU #Ich bin ein Kommentar
 ----
 Hier wird das Tasten-Event *|KEY_PROG1* umbenannt. Der VDR empfängt dadurch das Lirc-Event *|KEY_MENU*
 
@@ -560,9 +560,9 @@ Wenn eventlircd <<status-remoted,gestartet>> ist, zeigt der Befehl *sudo irw* di
 .irw bei eventlircd mit einer Hama MCE Remote
 ----
 user@yavdr:~$ sudo irw
-<1> <2> <3>       <4>
-67 0 |KEY_UP devinput
-6c 0 |KEY_DOWN devinput
+<1> <2>  <3>       <4>
+67 0 KEY_UP   devinput
+6c 0 KEY_DOWN devinput
 ----
 <1> Tastencode
 <2> Tastendruck 0=Event
@@ -576,10 +576,10 @@ user@yavdr:~$ sudo pidof lircd
 765
 user@yavdr:~$ sudo irw /var/run/lirc/lircd.765
 <1>               <2>  <3>      <4>
-0000000000001794 00 |KEY_UP hvr4000-2
-0000000000001794 01 |KEY_UP hvr4000-2
-0000000000001795 00 |KEY_UP hvr4000-2
-0000000000001795 01 |KEY_UP hvr4000-2
+0000000000001794 00 KEY_UP hvr4000-2
+0000000000001794 01 KEY_UP hvr4000-2
+0000000000001795 00 KEY_UP hvr4000-2
+0000000000001795 01 KEY_UP hvr4000-2
 
 # Falls man sicher ist, dass nur eine lircd-Instanz läuft geht auch dieser Befehl:
 sudo irw /var/run/lirc/lircd.$(pidof lircd)
