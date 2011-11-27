@@ -33,11 +33,6 @@ Für den Zugriff auf die von Streamdev-Server bereitgestellten Transportströme 
 <4> Erlaubt allen Rechnern in einem http://de.wikipedia.org/wiki/Netzklasse#.C3.9Cbersicht_der_Netzklassen[Class C Netzwerk] (also mit IP 192.168.xxx.xxx, Standardeinstellung in yaVDR 0.4) den Zugriff auf den Streamdev-Server.
 <5> Erlaubt allen Rechnern unabhängig von ihrer IP den Zugriff (Achtung: Nicht empfohlen, da damit ein ungeschützter Zugriff auf die Kanäle des VDR von außerhalb des eigenen Netzwerks möglich ist, falls der VDR nicht durch einen Router mit NAT oder eine Firewall gesichert ist!)
 
-.TODO
-****
-extremux.sh
-****
-
 Der Streamdev-Server stellt auf Port 3000 eine Webinterface mit Links zu den von ihm angeboteten Streams bereit. Unter http://<IP_des_VDR>:3000/channels.m3u kann man eine Playlist mit allen Sendern herunterladen. Ein geeigneter Stream-Client ist z.B. der http://videolan.org[VLC Media Player].
 
 [TIP]
@@ -45,6 +40,12 @@ Der Streamdev-Server stellt auf Port 3000 eine Webinterface mit Links zu den von
 =====================================================================
 Möchte man Radio-Sender streamen, sollte man als Übertragungsformat unbedingt "ES" footnote:[**E**lementary **S**tream, siehe http://en.wikipedia.org/wiki/Elementary_stream] wählen.
 Ein Beispiellink zum Stream sieht dann z.B. so aus: http://<IP_DES_VDR>:3000/ES/C-1-1093-28457
+=====================================================================
+
+[TIP]
+.extremux.sh
+=====================================================================
+Um externremux.sh nutzen zu können, muss das Paket *mencoder* <<install-packages,nachinstalliert>> werden.
 =====================================================================
 
 [[streamdev-client]]

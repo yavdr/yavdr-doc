@@ -2,12 +2,13 @@
 === Verzeichnisstruktur ===
 Für *yaVDR* werden verschiedene Dienste und Methoden kombiniert um eine Verzeichnisstruktur zu erzeugen, die es erlaubt lokale und von anderen Computern eingebundene Freigaben zusammenzuführen und gemeinsam im Dateisystem abzubilden.
 
-Für Musik, Filme und Bilder existieren bereits Verzeichnisse unter '/srv/', die per <<nfs,NFS>> und <<samba,SAMBA>> im Netzwerk freigegeben sind, die Aufnahmen des VDR liegen unter '/srv/vdr/video.00' und werden als *recordings* via Samba exportiert (siehe Tabelle)
+Für lokal abgelegte Musik, Filme und Bilder existieren bereits Verzeichnisse unter '/srv/', die per <<nfs,NFS>> und <<samba,SAMBA>> im Netzwerk freigegeben sind, die Aufnahmen des VDR liegen unter '/srv/vdr/video.00' und werden als *recordings* via Samba exportiert (siehe Tabelle)
 
-.Verzeichnisse für Medien in yaVDR
+[[standard-dir]]
+.Verzeichnisse für lokale Medien in yaVDR
 [cols="h,3*",options="header",width="90%"]
 |==========================================================
-|Medien     |Pfad                 |SAMBA      |NFS
+|Kategorie     |Pfad                 |SAMBA      |NFS
 |Bilder     |'/srv/picture'       |*picture*    |'/srv/picture'
 |Musik      |'/srv/audio'         |*audio*      |'/srv/audio'
 |Videos     |'/srv/video'         |*video*      |'/srv/video'
@@ -18,3 +19,30 @@ Für Musik, Filme und Bilder existieren bereits Verzeichnisse unter '/srv/', die
 ****
 avahi-mounter, NFS per WFE, Samba in fstab usw.
 ****
+
+[[avahi-mounter]]
+==== Avahi-mounter ====
+
+Der Avahi-Mounter ist ein Python-Skript, das nach Avahi-Announcements für Freigaben im Netzwerk sucht und diese - falls eine gültige Service-Konfiguration existiert - automatisch zusammen mit den lokalen Medien unter '/media/<Kategorie>/<Ort der Dateien>' einbindet. Für Rechner mit yaVDR 0.4 geschieht das automatisch für alle <<standard-dir,lokalen Standardverzeichnisse>>.
+
+Möchte man also sowohl lokale als auch über das Netzwerk eingebundene Dateien für VDR-Plugins oder XBMC nutzen, empfiehlt es sich als Standard-Verzeichnis '/media/<Kategorie>/' zu wählen.
+
+.Beispiel für die Dateistruktur unter '/media/' auf einem yaVDR 0.4 System, das Verzeichnisse von einem weiteren Rechner mit yaVDR 0.4 im Netzwerk mit dem Namen "VDR" automatisch eingebunden hat. Wie man sieht sind die lokal abgelegten Medien jeweils über einen Ordner "local" verlinkt.
+----
+/media
+├── Bilder
+│   ├── local -> /srv/picture
+│   └── VDR
+├── cdrom
+├── Musik
+│   ├── local -> /srv/audio
+│   └── VDR
+├── Record
+├── Sonstige
+└── Video
+    ├── local -> /srv/video
+    └── VDR
+
+/srv/vdr/video.00/
+└── VDR
+----
