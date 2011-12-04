@@ -3,9 +3,11 @@
 
 image:logo-yavdr.png["yaVDR-Logo"]
 
-Diese Dokumentation soll die Bedienung und Interna eines yaVDR-Systems erklären und dem Nutzer dabei helfen, sich mit den Besonderheiten, die yaVDR von einem normalen Ubuntu unterscheiden, vertraut zu machen. Es ist bewusst keine Einführung in die Grundlagen der Bedienung von (Ubuntu) Linux. Daher wird dem Neueinsteiger empfohlen sich mit Hilfe von entsprechender Literatur oder Online-Quellen wie dem sehr umfangreichen http://wiki.ubuntuusers.de/Startseite[Ubuntu Users Wiki] einzulesen. Auch für den VDR kann an dieser Stelle nicht jedes Detail erklärt werden - eine gute Anlaufstelle zu weiterführenden Informationen ist das http://vdr-wiki.de[VDR-Wiki].
+Diese Dokumentation soll die Bedienung und Interna eines yaVDR-Systems erklären und dem Nutzer dabei helfen, sich mit den Besonderheiten, die yaVDR von einem normalen Ubuntu unterscheiden, vertraut zu machen. Es ist bewusst keine Einführung in die Grundlagen der Bedienung von (Ubuntu) Linux. Daher wird dem Neueinsteiger empfohlen sich mit Hilfe von entsprechender Literatur oder Online-Quellen wie dem sehr umfangreichen http://wiki.ubuntuusers.de/Startseite[Ubuntu Users Wiki] einzulesen. Auch für den VDR und für XBMC kann an dieser Stelle nicht jedes Detail erklärt werden - gute Anlaufstellen für weiterführende Informationen sind das http://vdr-wiki.de[VDR-Wiki] und das http://wiki.xbmc.org/index.php?title=Main_Page[XBMC-Wiki]
 
 Wann immer die Beschreibung von Befehlen, Funktionen oder Abläufen den Rahmen dieser Dokumentation sprengen würde, wird daher auf entsprechende Artikel verlinkt. Auch doppelte Ausführungen zum selben Themas werden wo immer es geht vermieden und stattdessen auf die entsprechende Stelle in der Dokumentation verlinkt.
+
+Diese Dokumentation gibt es auch als http://yavdr.org/documentation/de/yaVDR_doc.pdf[PDF-] und als http://yavdr.org/documentation/de/yaVDR_doc.html["All-in-one"] Version
 
 === Lizenz ===
 

@@ -1,0 +1,7 @@
+////
+[appendix]
+Skripte und Konfigurationsdateien
+-------
+Hier entsteht eine Sammlung von besonderen Konfigurationsdateien und Hilfsskripten, die es noch nicht in die yaVDR-Distribution geschafft haben, aber für einige von Nutzen sein könnten.
+-------
+////

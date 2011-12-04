@@ -313,7 +313,7 @@ Found /sys/class/rc/rc0/ (/dev/input/event3) with:      <1>
 Repeat delay = 500 ms, repeat period = 33 ms       
 ----
 <1> Die Fernbedienung wurde unter '/dev/input/event3' eingebunden
-<2> Der verwendete Treiber ist *ir-kbd-i2c*, (die von ir-core geladene Keytable rc-rc5-tv muss noch abgeändert werden, damit alle Tasten korrekt funktionieren)
+<2> Der verwendete Treiber ist *ir-kbd-i2c*, die von ir-core geladene Keytable heißt rc-rc5-tv. Mit diesen Informationen 
 <3> Das unterstützte Protokoll ist http://de.wikipedia.org/wiki/RC-5[*RC-5*]
 
 ===== geladene Keymap(s) auslesen =====
@@ -349,9 +349,9 @@ Aus *scancode = 3d* wird also *0x003d*, aus *scancode = 01* wird *0x0001* usw.
 
 Die Keymap wird dann am besten unter einem möglichst aussagekräftigen Namen unter '/etc/rc_keymaps/' gespeichert, wo sie keine Gefahr läuft von mit yaVDR-Updates ausgelieferten Keytables überschrieben zu werden. Die von yaVDR mitgelieferten Keytables liegen unter '/lib/udev/rc_keymaps/' und können als Vorlage für angepasste Keytables verwendet werden.
 
-.'/lib/udev/rc_keymaps/pvr350' (Auszug)
+.Beispiel für eine selbst definierte Keytable, die unter '/etc/rc_keymaps/pvr350' gespeichert würde (Auszug)
 ----
-# Keymap for Hauppauge PVR350 and A415-HPG-WE remote control
+# table rc-rc5-tv, type RC-5 <1>
 0x003b KEY_SETUP
 0x003d KEY_POWER2
 0x0001 KEY_1
@@ -359,18 +359,52 @@ Die Keymap wird dann am besten unter einem möglichst aussagekräftigen Namen un
 0x0003 KEY_3
 [...]
 ----
+<1> Die erste Zeile der Keytable sollte den Namen der Keytable sowie den verwendeten Protokoll-Typ (hier RC-5) enthalten.
+
+[CAUTION]
+.Kommentare in den Keymaps
+=====================================================================
+ir-keytable akzeptiert keine reinen Kommentarzeilen. Wird eine Kopfzeile verwendet, die Keytable-Name und Fernbedienungsprotokoll angibt, so muss darauf geachtet werden, dass für beide Parameter erlaubte Werte eingetragen sind.
+
+.*Falsch* wäre also:
+----
+# table rc-rc5-tv, type  <1>
+# Ich bin ein Kommentar  <2>
+0x003b KEY_SETUP
+0x003d KEY_POWER2
+0x0001 KEY_1
+0x0002 KEY_2
+0x0003 KEY_3
+[...]
+----
+<1> Kein Protokolltyp angegeben
+<2> reine Kommentarzeilen sind nicht erlaubt
+
+.*Korrekt* geht es so:
+----
+# table rc-rc5-tv, type RC-5 <1>
+0x003b KEY_SETUP # Ich bin ein Kommentar <2>
+0x003d KEY_POWER2
+0x0001 KEY_1
+0x0002 KEY_2
+0x0003 KEY_3
+----
+<1> Vollständige Angabe des Namens der Keytable und des verwendeten Protokolls
+<2> Kommentare hinter der Tastendefinition sind erlaubt
+
+=====================================================================
 
 [[ir-keytable-load]]
 ===== Keymap laden =====
 
-Damit die Keytable auch automatisch geladen wird, muss eine Regel in '/etc/rc_maps.cfg' für die Fernbedienung erstellt werden. Da die Datei <<template,getemplated>> ist, sollte man ein entsprechendes Custom-Template für die eigene erstellen, um ein Überschreiben der Regel durch Updates von yaVDR zu vermeiden.
+Damit die Keytable auch automatisch geladen wird, muss eine Regel in '/etc/rc_maps.cfg' für die Fernbedienung erstellt werden. Da die Datei <<template,getemplated>> ist, sollte man ein entsprechendes Custom-Template für die eigene Einträge erstellen, um ein Überschreiben der Regel durch Updates von yaVDR zu vermeiden.
 
 .'/etc/rc_maps.cfg'
 ----
 # driver          table                           file
-ir-kbd-i2c <1>    *                               /etc/rc_keymaps/pvr350
+<1> ir-kbd-i2c      rc-rc5-tv                       /etc/rc_keymaps/pvr350
 ----
-<1> Den Treiber haben wir wie weiter oben beschrieben mittels <<ir-keytable-pvr350,*sudo ir-keytable*>> ermittelt.
+<1> Den Treiber und den Namen der Keytable haben wir wie weiter oben beschrieben mittels <<ir-keytable-pvr350,*sudo ir-keytable*>> ermittelt.
 
 Zu Testzwecken kann man Einstellungen für per ir-core eingebundene Geräte auch von Hand laden oder zurücksetzen. 
 
@@ -510,6 +544,13 @@ ENV{ID_VENDOR_ID}=="0419", ENV{ID_MODEL_ID}=="0001", \                      <1>
 <3> Lädt die <<evmaps,evmap>> für das Gerät. In diesem Fall entsteht nach Einsetzen der Umgebungsvariablen der Name "03_0419_0001.evmap", demnach wird '/etc/event|LIRC.d/03_0419_0001.evmap' als Keymap geladen.
 
 
+[CAUTION]
+.Sonderfälle
+=====================================================================
+In einigen Fällen kann mittels Vendor-ID und Model-ID nicht zuverlässig zwischen bestimmten Empfängern unterschieden werden (z.B. X10-Empfänger).
+Hier werden weitere udev-Attribute ausgewertet. Die für diese Empfänger angepassten udev-Regeln sind unter '/lib/udev/rules.d/98-eventlircd-names.conf' zu finden.
+=====================================================================
+
 [[udev-tools]]
 ===== udev-Crashkurs =====
 
@@ -599,7 +640,7 @@ sudo irw /var/run/lirc/lircd.$(pidof lircd)
 ****
 * lircd.conf, hardware.conf
 * Beispielhardware lirc_ttusbir, lirc_parallel, lircd interne userspace treiber usw.
-
+////
 Chat-Auszug:
 
 [qanda]
@@ -610,7 +651,7 @@ lircd interne userspace treiber
 noch ein paar andere [...]
 Ich: Ok, danke - dann werde ich die noch als Beispiele aufnehmen. Zur Konfigurationshilfe (mangels passender Hardware kann ich da leider nicht alles ausprobieren): Wenn der Nutzer noch nicht weiß wie sein Empfänger eingebunden ist, wird er aber höchstens lirc_ttusbir unter den automatisch geladenen Modulen finden und lirc_serial und lirc_parallel muss er von Hand oder über das Webfrontend in der lircd-Konfiguration einstellen.::
 steffenbpunkt: genau, der Name des lirc Gerätes is in eventlircd fest eingebunden, devinput wurde wohl in Anlehnung an die lircd.conf des devinput Modus von lircd gewählt. Das es nur einen Namen gibt ist zumindest für XBMC sinnvoll, da XBMC diesen Namen auswertet.
-
+////
 ****
 
 [[Serial-Remote]]
@@ -680,11 +721,30 @@ options ati_remote keychange=1
 ----
 
 [NOTE]
+.Keymapping für X10-Empfänger
+=====================================================================
+Die Tastennamen für X10-Empfäger können in den <<evmaps,evmaps>> '/etc/eventlircd.d/03_0bc7_0006.evmap' bzw. '/etc/eventlircd.d/03_0bc7_0006.pollin.evmap' angepasst werden.
+Die udev-Regeln, die für die Aktivierung der jeweiligen Keymap zuständig sind stehen in der '/lib/udev/rules.d/98-eventlircd-names.conf':
+
+.'/lib/udev/rules.d/98-eventlircd-names.conf'
+----
+ATTRS{name}=="X10 Wireless Technology Inc USB Receiver", \
+  ENV{eventlircd_enable}="true", \
+  ENV{eventlircd_evmap}="03_0bc7_0006.evmap"
+
+ATTRS{name}=="X10 WTI RF receiver", \
+  ENV{eventlircd_enable}="true", \
+  ENV{eventlircd_evmap}="03_0bc7_0006_pollin.evmap"
+---- 
+=====================================================================
+
+/////
+[NOTE]
 .X10-Fernbedienungen mit Scrollrad
 =====================================================================
 Momentan unterstützt das standardmäßig von yaVDR 0.4 genutzte Treibermodul ati-remote das Scrollrad bestimmter X10-Fernbedienungen nicht. In diesem Fall muss das Modul geblacklistet werden und der Empfänger über das Webfrontend für die Nutzung von Lirc konfiguriert werden.
 =====================================================================
-
+////
 ////
 
 .<<evtest, evtest>>
