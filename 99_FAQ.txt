@@ -13,6 +13,11 @@ Ich  habe einen <<Serial-Remote,Lirc-Empfänger>> und steige von yaVDR 0.3 auf 0
   Nein. In yaVDR 0.4 sollte die remote.conf nicht mehr verändert werden. Die hardware.conf für Lircd wird über das <<wfe-remote,Webfrontend erzeugt>>. Wichtig ist, dass die Tastennamen in der lircd.conf so angepasst werden, dass sie *Namespace-konform* sind.
 Wenn ich eine Taste auf der Fernbedienung drücke, werden doppelte Tastendrücke im VDR ausgeführt - wie kann ich das ändern?::
 Bis eine Lösung für eventlircd verfügbar ist, die die Anpassung des Repeat-Filters von <<eventlirc,Eventlircd>> erlaubt (siehe oneiric-Pakete im main PPA), bitte eines dieser eventlircd-Pakete verwenden und abstimmen wie groß der minimale Abstand zwischen zwei Tastendrücken sein muss: http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/108430-umfrage-zu-eventlircd-einstellung-des-repeat-filters/
+[CAUTION]
+.Bug bei Verwendung von --uinput
+=====================================================================
+Leider scheinen aktuelle Lirc-Versionen unter einem Bug bei der Übergabe von Tastendrücken bei Verwendung von *--uinput* zu leiden - es kommen dann doppelte Tastendrücke am Eventgerät an (die Tastendrücke an eigentlichen Lircd-Socket hingegen sind in Ordnung). Ein Workaround ist http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/p1039488-0-4-xbmc-einfacher-tastendruck-doppelte-eingabe/#post1039488[hier für über das WFE konfigurierte] und http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/p1039542-0-4-xbmc-einfacher-tastendruck-doppelte-eingabe/#post1039542[hier für per udev-Regel eingebundene USB-Lirc-Empfänger] im Forum beschrieben und wird voraussichtlich seinen Weg in die nächste yaVDR-Version finden. 
+=====================================================================
 
 
 

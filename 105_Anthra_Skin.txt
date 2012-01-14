@@ -1,0 +1,51 @@
+[[anthra]]
+=== Anpassen der Anthra-Skins ===
+
+Die Anthra-Skins bieten einige Darstellungsoptionen, die nicht über das text2skin-Einstellungsmenü erreichbar sind. Um sie zu nutzen ist es notwendig die Skin-Datei zu bearbeiten oder das Paket mit den veränderten Einstellungen neu zu kompilieren.
+
+Der generelle Ablauf zum Rekompilieren eines Pakets ist dabei folgendermaßen:
+
+Als erstes müssen die zum Bauen benötigten Pakete installiert werden. Dies geschieht über *apt-get build-dep*
+
+----
+sudo apt-get build-dep <paketname>
+
+# Beispiel für vdr-skin-anthra-1920fse:
+sudo apt-get build-dep vdr-skin-anthra-1920fse
+----
+
+Die Quelldateien selbst kann man sich mittels *apt-get source* in das Verzeichnis, in dem man sich gerade befindet herunterladen:
+
+----
+sudo apt-get source vdr-skin-anthra-1920fse
+----
+
+Nun wechselt man in das Quellverzeichnis und passt die *Make.config* den eigenen Wünschen entsprechend an.
+
+----
+cd vdr-skin-anthra-1920fse*
+nano Make.config
+----
+
+Damit das zu erstellende Paket nicht beim nächsten Update überschrieben wird, erhöhen wir seine Versionsnummer.
+
+----
+dch -i
+----
+
+Beim ersten Aufruf kann der gewünschte Editor zum Bearbeiten der Datei gewählt werden.
+Hier am besten kurz die getätigten Änderungen in der Zeile mit dem Sternchen beschreiben und ggf. den Paketnamen in der obersten Zeile anpassen.
+
+Nun wird das Paket gebaut:
+
+----
+dpkg-buildpackage -tc -us # Falls man einen gültigen LaunchPad-Account hat und dort einen Schlüssel zur Signierung des Paketes hinterlegt hat, kann man das Paket natürlich auch signieren (das Argument *-uc* entfällt dann).
+----
+
+Das erstellte Paket liegt nun im übergeordneten Ordner. Es kann mittels *dpkg -i* installiert werden:
+
+----
+cd ..
+sudo dpkg -i vdr-skin-anthra-1920fse_<Versionsnummer>_all.deb
+----
+

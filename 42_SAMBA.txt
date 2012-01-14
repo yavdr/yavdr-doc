@@ -3,8 +3,12 @@
 
 http://de.wikipedia.org/wiki/Samba_(Software)[Samba] bildet die von Windows bekannten Drucker- und Dateifreigaben nach. Aufgrund der guten Unterstützung dieses Protokolls in nahezu allen gängigen Betriebssystemen ist es gut geeignet um von Windows-, OS X- oder Linux-Systemen aus auf die <<directories,Medienverzeichnisse>> des yaVDR übers Netzwerk zuzugreifen.
 
-Die Konfigurationsdateien befinden sich unter '/etc/samba/smb.conf', die voreingestellten <<directories,Freigaben>> des yaVDR sind in der Datei '/etc/samba/smb.conf.yavdr' hinterlegt.
-****
-TODO:
-Beispielfreigabe erklären
-****
+Die Konfigurationsdateien befinden sich unter '/etc/samba/smb.conf', die die voreingestellten <<directories,Freigaben>> des yaVDR aus den folgenden Dateien bezieht (über "include" eingebunden):
+
+* '/etc/samba/smb.conf.yavdr.audio' für Audiodateien
+* '/etc/samba/smb.conf.yavdr.custom' für benutzerdefinierte Freigaben
+* '/etc/samba/smb.conf.yavdr.picture' für Bilder
+* '/etc/samba/smb.conf.yavdr.recordings' für Aufnahmen
+* '/etc/samba/smb.conf.yavdr.video' für Videos
+
+Eigene Freigaben kann man z.B. in der 'smb.conf.yavdr.custom' definieren. Wie ein solcher Eintrag aussehen muss  und welche Optionen es dabei gibt, kann man in den Wiki-Artikelm zum http://wiki.ubuntuusers.de/Samba_Server[Samba-Server] und zur http://wiki.ubuntuusers.de/Samba_Server/smb.conf[smb.conf] auf http://www.ubuntuusers.de nachlesen.

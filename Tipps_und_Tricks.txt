@@ -1,0 +1,27 @@
+[[tipps]]
+== Tipps und Tricks ==
+
+[[umask]]
+=== Zugriffsrechte für Aufnahmen ===
+Für bestimmte Anwendungsfälle ist es praktisch, wenn auch andere User Schreibrechte für die vom VDR erstellten Aufnahmen haben (z.B. weil man dann Projektdaten für Schnittprogramme direkt im Aufnahmeordner ablegen kann).
+Eine mögliche Lösung ist die fraglichen User der Gruppe *vdr* hinzuzufügen und die umask, mit der Dateien vom VDR erstellt werden anzupassen.
+
+.Hinzufügen eines Users zur Gruppe *vdr*
+----
+sudo adduser <username> vdr
+----
+
+.umask für den VDR anpassen
+Folgende Zeile muss dann noch (am besten über ein <<template,custom Template>>) in die '/etc/default/vdr' eingefügt werden:
+
+----
+umask 002
+----
+
+[[samba_win]]
+=== Samba und Windows ===
+Unter Windows sind bestimmte Zeichen in Dateinamen nicht zulässig (z.B. "!",":" usw.) - diese tauchen allerdings gerne mal in Sendungstiteln auf und so werden diese dann beim Zugriff auf die per SAMBA freigegebenen Aufnahmeverzeichnisse des VDR nicht korrekt angezeigt. Um die Verwendung der Problematischen Zeichen in den Ordnernamen zu unterbinden kann man die VDR mit der Option *--vfat* starten. Dazu muss (am besten per <<template,custom Template>>) die Zeile für die VDR-Optionen in der '/etc/default/vdr' angepasst werden:
+
+----
+OPTIONS="-w 0 --vfat"
+----

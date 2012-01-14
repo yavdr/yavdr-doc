@@ -85,5 +85,9 @@ include::99_FAQ.txt[]
 
 include::100_Troubleshooting.txt[]
 
+include::Tipps_und_Tricks.txt[]
+
+include::105_Anthra_Skin.txt[]
+
 include::999_Anhang.txt[]
 

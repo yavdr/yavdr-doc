@@ -122,8 +122,7 @@ Diese Seite erlaubt es einzustellen wie der Ton durch den VDR und XBMC ausgegebe
 ===== Hardware: Anzeigeneinstellungen =====
 .TODO:
 ****
-Symbol hinzufügen, 
-GraphTFT
+Symbol hinzufügen
 ****
 Hier kann die Auflösung und Nutzung der angeschlossenen Bildschirme eingestellt werden. Außerdem können hier die Deinterlacing-Methoden für HD- und SD-Material konfiguriert werden.
 
@@ -164,9 +163,17 @@ Hier können NFS-Freigaben aus dem Netzwerk und die MAC-Adressen von Rechnern, d
 .TODO:
 ****
 Symbol hinzufügen
-Auswählbare Dateien auflisten
 ****
-Hier können Konfigurationsdateien direkt im Browser bearbeitet werden. Aktuell ist die Liste der auswählbaren Dateien noch unvollständig.
+
+Hier können Konfigurationsdateien direkt im Browser bearbeitet werden. Aktuell können folgende Konfigurations-Dateien über das Webfrontend bearbeitet werden:
+
+* '/etc/lirc/lircd.conf'
+* '/etc/vdr/diseq.conf'
+* '/var/lib/vdr/remote.conf'
+* '/var/lib/vdr/channels.conf'
+* '/var/lib/vdr/.xbmc/userdata/Lircmap.xml'
+
+
 
 [[wfe-packages]]
 ===== System: Pakete =====
@@ -192,5 +199,25 @@ image:wfe/plugin-installation.png["Paketinstallation"]
 
 .TODO:
 ****
-Unterpunkte ergänzen
+Unterpunkte ausführen
 ****
+===== Befehle =====
+
+* Switch temporarily to second screen
+* Reboot computer
+* Kill XBMC
+* Set XBMC defaults
+* Restart VDR
+
+===== Diagnosewerkzeuge =====
+
+* System information
+* System log files
+* XBMC crash log
+* LIRC configuration
+* VDR configuration
+* Xorg server
+* Sound (ALSA)
+* Package information
+* yaVDR database
+

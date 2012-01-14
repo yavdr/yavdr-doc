@@ -32,7 +32,13 @@ Eventlircd erkennt Eingabegeräte über <<udev,udev>>, auch wenn sie erst nach d
 
 Um welche Geräte es sich kümmern soll, erkennt eventlircd anhand von Attributen, welche man den Geräten bei der Initialisierung über <<udev-rules,udev-Regeln>> mitgeben kann. Für manche Geräte funktioniert das schon in der Standardkonfiguration (rc-core, Eingabegeräte die das yaVDR-Team selber besitzt, Konfigurationen die an das yaVDR-Team weitergegeben wurden). 
 
-Lircd footnote:[Der LIRC-Daemon] kann man über den Switch footnote:[Das Startargument] --uinput footnote:[User Level Input Subsystem - eine Schnittstelle, um Eingaben aus dem Userland an den Kernel zu übermitteln] anweisen seine Tastendrücke an ein Gerät unter '/etc/input/'  zu übergeben. Damit kann dann lircd parallel zu anderen Eingabegeräten gestartet werden und es ist so theoretisch auch möglich mehrere Instanzen von lircd für verschiedene Geräte mit unterschiedlicher Konfiguration gleichzeitig starten. Die Ausgabe erfolgt nach Verarbeitung durch Eventlircd für die Anwendungen dann so, als würde sie von einem einzigen Gerät stammen.
+Lircd footnote:[Der LIRC-Daemon] kann man über den Switch footnote:[Das Startargument] --uinput footnote:[User Level Input Subsystem - eine Schnittstelle, um Eingaben aus dem Userland an den Kernel zu übermitteln] anweisen seine Tastendrücke an ein Gerät unter '/etc/input/'  zu übergeben. Damit kann dann lircd parallel zu anderen Eingabegeräten gestartet werden und es ist so theoretisch auch möglich mehrere Instanzen von lircd für verschiedene Geräte mit unterschiedlicher Konfiguration gleichzeitig starten. 
+[CAUTION]
+.Bug bei Verwendung von --uinput
+=====================================================================
+Leider scheinen aktuelle Lirc-Versionen unter einem Bug bei der Übergabe von Tastendrücken bei Verwendung von *--uinput* zu leiden - es kommen dann doppelte Tastendrücke am Eventgerät an (die Tastendrücke an eigentlichen Lircd-Socket hingegen sind in Ordnung). Ein Workaround ist http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/p1039488-0-4-xbmc-einfacher-tastendruck-doppelte-eingabe/#post1039488[hier für über das WFE konfigurierte] und http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/p1039542-0-4-xbmc-einfacher-tastendruck-doppelte-eingabe/#post1039542[hier für per udev-Regel eingebundene USB-Lirc-Empfänger] im Forum beschrieben und wird voraussichtlich seinen Weg in die nächste yaVDR-Version finden. 
+=====================================================================
+Die Ausgabe erfolgt nach Verarbeitung durch Eventlircd für die Anwendungen dann so, als würde sie von einem einzigen Gerät stammen.
 
 Da manche Geräte eindeutig erkannt werden können (zum Beispiel USB Geräte), kann man diese über <<udev-rules,udev-Regeln>> mit der für das jeweilige Geräte richtigen Konfiguration automatisch einbinden. Die Konfigurationen für all diese Geräte kann man alle gleichzeitig auf dem System haben, da durch udev nur die Konfiguration für angeschlossene Geräte aktiviert wird.
 
@@ -86,9 +92,9 @@ Die remote.conf liegt unter /var/lib/vdr/remote.conf und ist eine <<template, ge
 Die Zuordnung von Funktion im VDR und Tastennamen sieht bei yaVDR 0.4 so aus:
 
 .Namespace-konforme Tastennamen in yaVDR
-[cols="3*",options="header"]
+[cols="2s,2s,4e",options="header"]
 |=========================================
-|*VDR-intern*     |*durch Eventlircd gelieferter Tastenname*|*Beschreibung*
+|*remote.conf*     |*Tastenname durch Eventlircd*|*Beschreibung*
 |LIRC.Up 	|KEY_UP 	|Nach oben
 |LIRC.Down 	|KEY_DOWN 	|Nach unten
 |LIRC.Menu 	|KEY_MENU 	|Menü
@@ -110,7 +116,7 @@ Die Zuordnung von Funktion im VDR und Tastennamen sieht bei yaVDR 0.4 so aus:
 |LIRC.7 	|KEY_7 	|Ziffer 7
 |LIRC.8 	|KEY_8 	|Ziffer 8
 |LIRC.9 	|KEY_9 	|Ziffer 9
-|LIRC.Info 	|KEY_INFO 	|Info zur aktuellen Sendung/gewähltem Menüeintrag
+|LIRC.Info 	|KEY_INFO 	|Info zum aktuellen Objekt
 |LIRC.Play 	|KEY_PLAY 	|Play
 |LIRC.Pause |KEY_PAUSE 	|Pause
 |LIRC.Stop 	|KEY_STOP 	|Stop
@@ -161,7 +167,7 @@ Alle Tastendrücke, die an Eventlirc weitergereicht werden, können durch Übers
 ----
 KEY_PROG1	= KEY_MENU #Ich bin ein Kommentar
 ----
-Hier wird das Tasten-Event *|KEY_PROG1* umbenannt. Der VDR empfängt dadurch das Lirc-Event *|KEY_MENU*
+Hier wird das Tasten-Event *KEY_PROG1* umbenannt. Der VDR empfängt dadurch das Lirc-Event *KEY_MENU*
 
 ===== Informationen über den Empfänger sammeln =====
 
@@ -293,7 +299,7 @@ B: KEY=ffffffffffffffff ffffffffffffffff ffffffffffffffff ffffffffffffffff fffff
 ==== ir-keytable ====
 
 ir-keytable gibt Auskunft über das angelegte Inputdevice('/dev/input/eventX'), das verwendete Protokoll und den verwendeten Treiber für IR-Eingabegeräte, die *rc-core* bzw. das Treibermodul *ir-core* verwenden. Außerdem ist das Programm dafür zuständig Tastenbelegungen zu laden, die nicht dem vorgegebenen Stand in den rc-core Treibern entsprechen.
-
+[[rc-core_keys]]
 [CAUTION]
 .Anpassung der Tastenbelegung für rc-core Empfänger
 =====================================================================
@@ -630,17 +636,17 @@ sudo irw /var/run/lirc/lircd.$(pidof lircd)
 <3> Name der Taste
 <4> Benutzte Fernbedienung aus der lircd.conf für die Tastenzuordnung
 
-.irw 
 
 
+////
 [[lirc]]
-==== lirc ====
+==== Lirc ====
 
 .TODO:
 ****
 * lircd.conf, hardware.conf
 * Beispielhardware lirc_ttusbir, lirc_parallel, lircd interne userspace treiber usw.
-////
+
 Chat-Auszug:
 
 [qanda]
@@ -651,8 +657,9 @@ lircd interne userspace treiber
 noch ein paar andere [...]
 Ich: Ok, danke - dann werde ich die noch als Beispiele aufnehmen. Zur Konfigurationshilfe (mangels passender Hardware kann ich da leider nicht alles ausprobieren): Wenn der Nutzer noch nicht weiß wie sein Empfänger eingebunden ist, wird er aber höchstens lirc_ttusbir unter den automatisch geladenen Modulen finden und lirc_serial und lirc_parallel muss er von Hand oder über das Webfrontend in der lircd-Konfiguration einstellen.::
 steffenbpunkt: genau, der Name des lirc Gerätes is in eventlircd fest eingebunden, devinput wurde wohl in Anlehnung an die lircd.conf des devinput Modus von lircd gewählt. Das es nur einen Namen gibt ist zumindest für XBMC sinnvoll, da XBMC diesen Namen auswertet.
-////
 ****
+////
+
 
 [[Serial-Remote]]
 ==== LIRC Empfänger ====
@@ -736,6 +743,12 @@ ATTRS{name}=="X10 WTI RF receiver", \
   ENV{eventlircd_enable}="true", \
   ENV{eventlircd_evmap}="03_0bc7_0006_pollin.evmap"
 ---- 
+=====================================================================
+
+[CAUTION]
+.Änderung durch linux-media-dkms
+=====================================================================
+Nach Installation des Paketes *linux-media-dkms* werden die X10-Empfänger nicht mehr als tastaturartige Eingabegeräte erkannt, sondern durch ein neues Treibermodul (das ebenfalls den Namen *ati_remote* trägt) als <<ir-keytable,rc-core Gerät>> eingebunden. Dementsprechend sollte die <<rc-core_keys,Anpassung der Tastennamen>> dann über eigene Keytables erfolgen.
 =====================================================================
 
 /////

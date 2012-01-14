@@ -6,28 +6,30 @@ Für lokal abgelegte Musik, Filme und Bilder existieren bereits Verzeichnisse un
 
 [[standard-dir]]
 .Verzeichnisse für lokale Medien in yaVDR
-[cols="h,3*",options="header",width="90%"]
+[cols="s,s,s,s",options="header",width="90%"]
 |==========================================================
-|Kategorie     |Pfad                 |SAMBA      |NFS
-|Bilder     |'/srv/picture'       |*picture*    |'/srv/picture'
-|Musik      |'/srv/audio'         |*audio*      |'/srv/audio'
-|Videos     |'/srv/video'         |*video*      |'/srv/video'
-|Aufnahmen  |'/srv/vdr/video.00' footnote:[Bei mehren video.xx-Verzeichnissen entsprechend zusätzlich /srv/vdr/video.01, /srv/vdr/video.02 usw.]  |*recordings* |'/srv/share/vdr'
+|Kategorie     |Pfad              |NFS          |SAMBA      
+|Bilder     |'/srv/picture'       |'/srv/picture'|*picture*    
+|Musik      |'/srv/audio'         |'/srv/audio' |*audio*      
+|Videos     |'/srv/video'         |'/srv/video' |*video*      
+|Aufnahmen  |'/srv/vdr/video.00' footnote:[Bei mehren video.xx-Verzeichnissen entsprechend zusätzlich /srv/vdr/video.01, /srv/vdr/video.02 usw.]  |'/srv/share/vdr' |*recordings* 
 |==========================================================
 
 .TODO:
 ****
-avahi-mounter, NFS per WFE, Samba in fstab usw.
+Samba in fstab usw.
 ****
 
 [[avahi-mounter]]
-==== Avahi-mounter ====
+==== Avahi-Mounter ====
 
 Der Avahi-Mounter ist ein Python-Skript, das nach Avahi-Announcements für Freigaben im Netzwerk sucht und diese - falls eine gültige Service-Konfiguration existiert - automatisch zusammen mit den lokalen Medien unter '/media/<Kategorie>/<Ort der Dateien>' einbindet. Für Rechner mit yaVDR 0.4 geschieht das automatisch für alle <<standard-dir,lokalen Standardverzeichnisse>>.
 
 Möchte man also sowohl lokale als auch über das Netzwerk eingebundene Dateien für VDR-Plugins oder XBMC nutzen, empfiehlt es sich als Standard-Verzeichnis '/media/<Kategorie>/' zu wählen.
 
-.Beispiel für die Dateistruktur unter '/media/' auf einem yaVDR 0.4 System, das Verzeichnisse von einem weiteren Rechner mit yaVDR 0.4 im Netzwerk mit dem Namen "VDR" automatisch eingebunden hat. Wie man sieht sind die lokal abgelegten Medien jeweils über einen Ordner "local" verlinkt.
+Beispiel für die Dateistruktur unter '/media/' auf einem yaVDR 0.4 System, das Verzeichnisse von einem weiteren Rechner mit yaVDR 0.4 im Netzwerk mit dem Namen "VDR" automatisch eingebunden hat. Wie man sieht sind die lokal abgelegten Medien jeweils über einen Ordner "local" verlinkt:
+
+.Ausgabe von tree
 ----
 /media
 ├── Bilder
@@ -42,7 +44,12 @@ Möchte man also sowohl lokale als auch über das Netzwerk eingebundene Dateien 
 └── Video
     ├── local -> /srv/video
     └── VDR
-
+    
 /srv/vdr/video.00/
 └── VDR
 ----
+
+[[nfs_mount]]
+==== NFS Freigaben mounten ====
+
+Unter yaVDR gibt es mehrere Möglichkeiten NFS-Freigaben zu mounten. Wie man Freigaben auf einem Server announciert, die per <<avahi-mounter,Avahi-Mounter>> eingebunden werden kann man in http://www.yavdr.org/tutorials/mounting-nfs-shares-via-vdr-addon-avahi-mounter/[diesem Artikel auf yavdr.org] nachlesen. Verzeichnisse, die Aufnahmen enthalten können über das Webfrontend unter dem Punkt <<wfe-network,Netzwerk>> eingebunden werden.

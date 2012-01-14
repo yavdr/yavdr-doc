@@ -1,7 +1,7 @@
 [[dfatmo]]
 ==== dfatmo Plugin ====
 
-Das Programm dfatmo und das dazugehörige Plugin für den VDR können über die Pakete *dfatmo libxine-dfatmo-plugin* <<install-packages,installiert>> werden.footnote:[http://www.die-keils.info/thomas/wordpress/?p=135]
+Das Programm dfatmo und das dazugehörige Plugin für den VDR können über die Pakete *dfatmo* und *libxine-dfatmo-plugin* <<install-packages,installiert>> werden.footnote:[http://www.die-keils.info/thomas/wordpress/?p=135]
 
 ////
 Ohriginal :P
@@ -11,7 +11,7 @@ Besser
 ////
 
 [[atmo-config]]
-.Konfiguration
+===== Konfiguration =====
 
 Um das Plugin nutzen zu können, müssen die Start-Argumente von xine bzw. vdr-sxfe in der Konfigurationsdatei '/etc/init/vdr-frontend.conf' angepasst werden. Diese Datei ist <<template,getemplated>> und sollte daher nicht direkt bearbeitet werden. Stattdessen muss der für das jeweilige Frontend passende Template-Teil ('20_xineliboutput' für *vdr-sxfe* und '25_xine' für *xine*) aus '/usr/share/yavdr/templates/etc/init/vdr-frontend.conf/' nach '/etc/yavdr/templates_custom/etc/init/vdr-frontend.conf/' kopiert und die Variable *XINELIBOUTPUTOPTS* bzw. *XINEOPTS* darin entsprechend angepasst werden. Zum Schluss wird die Konfigurationsdatei neu aus den Templates erzeugt.
 
@@ -50,3 +50,12 @@ sudo stop openbox
 sudo start openbox
 ----
 
+===== Ein/Ausschalten mit der Fernbedienung =====
+Um das Atmolight per Fernbedienung schalten zu können, wurde die Taste KEY_BRIGHTNESS_CYCLE reserviert. Damit vdr-sxfe auf die Taste reagieren kann, muss es zwischen Eventlircd und VDR auf Tastendrücke lauschen.
+Die Variable *XINELIBOUTPUTOPTS* muss dann noch um die Hotkey-Unterstützung und den Socket von Eventlircd erweitert werden:
+
+----
+--hotkeys --lirc=/var/run/lirc/lircd
+----
+
+In der '/etc/init/vdr.conf' muss das Start-Argument *--lircd=$LIRC* entfernt werden.

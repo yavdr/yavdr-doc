@@ -45,15 +45,17 @@ Ein Beispiellink zum Stream sieht dann z.B. so aus: http://<IP_DES_VDR>:3000/ES/
 [TIP]
 .extremux.sh
 =====================================================================
-Um externremux.sh nutzen zu können, muss das Paket *mencoder* <<install-packages,nachinstalliert>> werden.
+Um die externremux.sh nutzen zu können, muss das Paket *mencoder* <<install-packages,nachinstalliert>> werden.
 =====================================================================
 
 [[streamdev-client]]
 ===== Streamdev-Client =====
 Das Streamdev-Client Plugin (Paketname: *vdr-plugin-streamdev-client*) erlaubt einem VDR auf das Streamdev-Server Plugin eines anderen VDR zuzugreifen und somit dessen DVB-Karten zu nutzen. Damit das klappt, müssen die gewünschten Kanäle aus der channels.conf des Servers in die channels.conf auf den Client kopiert werden und auf Server und Client die Verbindungseinstellungen angepasst werden. Es kann über eine Instanz des Streamdev-Clients immer nur ein Transponder übertragen werden.
 
+Standardmäßig dürfen alle Clients in Class-C Netzwerken (IP-Bereicht 192.168.xxx.xxx) auf den Streamdev-Server zugreifen. Falls man den Zugriff genauer steuern oder auf andere Adressbereiche erweitern möchte, muss man dies in der '/etc/vdr/plugins/streamdev-server/streamdevhosts.conf' entsprechend konfigurieren (siehe oben).
+
 .TODO
 ****
-Konfiguration beschreiben, auf streamdevhosts.conf des Servers verweisen
+Konfigurationsoptionen des Plugins beschreiben, evtl. externremux.sh
 ****
 
