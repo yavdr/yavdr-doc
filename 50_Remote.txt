@@ -357,7 +357,7 @@ Die Keymap wird dann am besten unter einem möglichst aussagekräftigen Namen un
 
 .Beispiel für eine selbst definierte Keytable, die unter '/etc/rc_keymaps/pvr350' gespeichert würde (Auszug)
 ----
-# table rc-rc5-tv, type RC-5 <1>
+# table rc-rc5-tv, type: RC-5 <1>
 0x003b KEY_SETUP
 0x003d KEY_POWER2
 0x0001 KEY_1
@@ -388,7 +388,7 @@ ir-keytable akzeptiert keine reinen Kommentarzeilen. Wird eine Kopfzeile verwend
 
 .*Korrekt* geht es so:
 ----
-# table rc-rc5-tv, type RC-5 <1>
+# table rc-rc5-tv, type: RC-5 <1>
 0x003b KEY_SETUP # Ich bin ein Kommentar <2>
 0x003d KEY_POWER2
 0x0001 KEY_1

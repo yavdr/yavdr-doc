@@ -25,3 +25,13 @@ Unter Windows sind bestimmte Zeichen in Dateinamen nicht zulässig (z.B. "!",":"
 ----
 OPTIONS="-w 0 --vfat"
 ----
+
+==== Symbolische Links ====
+Verwendet man mehrere Aufnahmeverzeichnisse für den VDR (z.B. zusätzlich /srv/vdr/video.01 usw.) oder bindet Ordner selbt über symbolische Links ein, muss die '/etc/samba/smb.conf' (am besten per <<template,custom Template>>) um drei Optionen erweitert werden, damit man auch über Samba-Freigaben darauf zugreifen kann:
+
+----
+# Follow Symlinks
+   unix extensions = no
+   follow symlinks= yes
+   wide links= yes
+----
