@@ -20,7 +20,9 @@ umask 002
 
 [[samba_win]]
 === Samba und Windows ===
-Unter Windows sind bestimmte Zeichen in Dateinamen nicht zulässig (z.B. "!",":" usw.) - diese tauchen allerdings gerne mal in Sendungstiteln auf und so werden diese dann beim Zugriff auf die per SAMBA freigegebenen Aufnahmeverzeichnisse des VDR nicht korrekt angezeigt. Um die Verwendung der Problematischen Zeichen in den Ordnernamen zu unterbinden kann man die VDR mit der Option *--vfat* starten. Dazu muss (am besten per <<template,custom Template>>) die Zeile für die VDR-Optionen in der '/etc/default/vdr' angepasst werden:
+
+==== Ordnernamen im Aufnahmeverzeichnis ====
+Unter Windows sind bestimmte Zeichen in Dateinamen nicht zulässig (z.B. "!",":" usw.) - diese tauchen allerdings gerne mal in Sendungstiteln auf und so werden diese dann beim Zugriff auf die per SAMBA freigegebenen Aufnahmeverzeichnisse des VDR nicht korrekt angezeigt. Um die Verwendung der problematischen Zeichen in den Ordnernamen zu unterbinden kann man die VDR mit der Option *--vfat* starten. Dazu muss (am besten per <<template,custom Template>>) die Zeile für die VDR-Optionen in der '/etc/default/vdr' angepasst werden:
 
 ----
 OPTIONS="-w 0 --vfat"
