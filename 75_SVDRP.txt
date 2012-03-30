@@ -5,6 +5,7 @@ SVDRP footnote:[Simple VDR Protocol] ermöglicht es über eine einfache TCP-Verb
 Nähere Informationen findet man im http://vdr-wiki.de/wiki/index.php/SVDRP[Artikel zu SVDRP] im VDR-Wiki.
 Die Kommunikation von Client und Server mittels SVDRP erfolgt unter anderem bei VDR-Plugins wie remotetimers, epgsync und streamdev-client - möchte man diese nutzen ist es notwendig, den Zugriff auf den Server wie im Folgenden beschrieben zu erlauben.
 
+[[svdrp-config]]
 [NOTE]
 .Zugriff von anderen Rechnern
 =====================================================================
@@ -16,9 +17,11 @@ Für den Zugriff über SVDRP von anderen Rechnern aus muss die Datei '/etc/vdr/s
 127.0.0.1       <1>
 192.168.1.115   <2>
 192.168.1.0/24  <3>
+192.168.1.0/16  <4>
 0.0.0.0/0       <4>
 ----
 <1> Dieser Eintrag darf nicht entfernt werden, da sonst der VDR mit bestimmten Plugins nicht mehr richtig funktioniert!
 <2> Erlaubt dem Rechner mit der IP 192.168.1.115 den Zugriff
 <3> Erlaubt allen Rechnern, deren IP mit 192.168.1. beginnt den Zugriff
-<4> Erlaubt allen Rechnern unabhängig von ihrer IP den Zugriff (Achtung: damit ist ein ungeschützter Zugriff auf den VDR von außerhalb des eigenen Netzwerks möglich, falls der VDR nicht durch einen Router mit NAT footnote:[http://de.wikipedia.org/wiki/Network_Address_Translation[Network Address Translation]] oder eine Firewall gesichert ist!)
+<4> Erlaubt allen Rechnern, deren IP mit 192.168. beginnt den Zugriff (entspricht Class C Subnetzen)
+<5> Erlaubt allen Rechnern unabhängig von ihrer IP den Zugriff (Achtung: damit ist ein ungeschützter Zugriff auf den VDR von außerhalb des eigenen Netzwerks möglich, falls der VDR nicht durch einen Router mit NAT footnote:[http://de.wikipedia.org/wiki/Network_Address_Translation[Network Address Translation]] oder eine Firewall gesichert ist!)

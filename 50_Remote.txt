@@ -32,7 +32,7 @@ Eventlircd erkennt Eingabegeräte über <<udev,udev>>, auch wenn sie erst nach d
 
 Um welche Geräte es sich kümmern soll, erkennt eventlircd anhand von Attributen, welche man den Geräten bei der Initialisierung über <<udev-rules,udev-Regeln>> mitgeben kann. Für manche Geräte funktioniert das schon in der Standardkonfiguration (rc-core, Eingabegeräte die das yaVDR-Team selber besitzt, Konfigurationen die an das yaVDR-Team weitergegeben wurden). 
 
-Lircd footnote:[Der LIRC-Daemon] kann man über den Switch footnote:[Das Startargument] --uinput footnote:[User Level Input Subsystem - eine Schnittstelle, um Eingaben aus dem Userland an den Kernel zu übermitteln] anweisen seine Tastendrücke an ein Gerät unter '/etc/input/'  zu übergeben. Damit kann dann lircd parallel zu anderen Eingabegeräten gestartet werden und es ist so theoretisch auch möglich mehrere Instanzen von lircd für verschiedene Geräte mit unterschiedlicher Konfiguration gleichzeitig starten. 
+Lircd footnote:[Der LIRC-Daemon] kann man über den Switch footnote:[Das Startargument] --uinput footnote:[User Level Input Subsystem - eine Schnittstelle, um Eingaben aus dem Userland an den Kernel zu übermitteln] anweisen seine Tastendrücke an ein Gerät unter '/etc/input/'  zu übergeben. Damit kann dann lircd parallel zu anderen Eingabegeräten gestartet werden und es ist so theoretisch auch möglich mehrere Instanzen von lircd für verschiedene Geräte mit unterschiedlicher Konfiguration gleichzeitig starten. Für USB-Lirc Empfänger wird über eine udev-Regel in '/lib/udev/rules.d/98-lircd.rules' und dem lircd_helper eine Instanz des Lirc-Daemon gestartet und die in der udev-Regel angegebenen Treiber und lircd.conf benutzt. Für diese Empfänger ist keine Konfiguration über das Webfrontend erforderlich. Weitere noch nicht OOTB unterstützte Lirc-Empfänger sollten entsprechend über ergänzende  udev-Regeln nachgepflegt werden.
 [CAUTION]
 .Bug bei Verwendung von --uinput
 =====================================================================
@@ -161,7 +161,7 @@ Die Zuordnung von Funktion im VDR und Tastennamen sieht bei yaVDR 0.4 so aus:
 evmaps sollten nur für Geräte angelegt werden, die keine andere Möglichkeit bieten die Tastennamen zu verändern. Für Lirc- und rc-core-Geräte sollte man vorzugsweise eine entsprechene Konfigurationsdatei (<<Serial-Remote,lircd.conf>> bzw. <<ir-keytable_keymap,Keymap>>) zur korrekten Belegung der Tasten erstellen.
 =====================================================================
 
-Alle Tastendrücke, die an Eventlirc weitergereicht werden, können durch Übersetzungstabellen, die sogenannten https://bugs.yavdr.com/projects/yavdr-remote/repository/revisions/master/show/evmaps[evmaps] footnote:[Eventmaps] noch verändert werden, bevor sie an den VDR übergeben werden. Sie befinden sich unter '/etc/event|LIRC.d/' und sind entweder nach dem Gerätenamen, dem Treiber (z.B. 'ircore.evmap' für Geräte, die mit *rc-core* als Treiber arbeiten) oder nach der Produkt- und Hersteller-ID aus ihrer <<udev-rules,udev-Regel>> benannt.
+Alle Tastendrücke, die an Eventlirc weitergereicht werden, können durch Übersetzungstabellen, die sogenannten https://bugs.yavdr.com/projects/yavdr-remote/repository/revisions/master/show/evmaps[evmaps] footnote:[Eventmaps] noch verändert werden, bevor sie an den VDR übergeben werden. Sie befinden sich unter '/etc/eventlircd.d/' und sind entweder nach dem Gerätenamen, dem Treiber (z.B. 'ircore.evmap' für Geräte, die mit *rc-core* als Treiber arbeiten) oder nach der Produkt- und Hersteller-ID aus ihrer <<udev-rules,udev-Regel>> benannt.
 
 .Beispiel für die Syntax in einer evmap:
 ----
@@ -435,29 +435,29 @@ Weitere  Informationen findet man in der <<manpages,Manpage>> von *ir-keytable*.
 user@yavdr:~$ sudo ir-keytable -t
 Testing events. Please, press CTRL-C to abort.
 1310546400.571539: event MSC: scancode = 3d
-1310546400.571545: event key down: |KEY_POWER2 (0x0164)
+1310546400.571545: event key down: KEY_POWER2 (0x0164)
 1310546400.571547: event sync
-1310546400.820703: event key up: |KEY_POWER2 (0x0164)
+1310546400.820703: event key up: KEY_POWER2 (0x0164)
 1310546400.820705: event sync
 1310546401.471543: event MSC: scancode = 3b
-1310546401.471551: event key down: |KEY_SETUP (0x008d)
+1310546401.471551: event key down: KEY_SETUP (0x008d)
 1310546401.471553: event sync
-1310546401.720700: event key up: |KEY_SETUP (0x008d)
+1310546401.720700: event key up: KEY_SETUP (0x008d)
 1310546401.720703: event sync
 1310546406.271547: event MSC: scancode = 01
-1310546406.271556: event key down: |KEY_1 (0x0002)
+1310546406.271556: event key down: KEY_1 (0x0002)
 1310546406.271558: event sync
-1310546406.520700: event key up: |KEY_1 (0x0002)
+1310546406.520700: event key up: KEY_1 (0x0002)
 1310546406.520703: event sync
 1310546407.071539: event MSC: scancode = 02
-1310546407.071543: event key down: |KEY_2 (0x0003)
+1310546407.071543: event key down: KEY_2 (0x0003)
 1310546407.071545: event sync
-1310546407.320705: event key up: |KEY_2 (0x0003)
+1310546407.320705: event key up: KEY_2 (0x0003)
 1310546407.320709: event sync
 1310546407.871539: event MSC: scancode = 03
-1310546407.871544: event key down: |KEY_3 (0x0004)
+1310546407.871544: event key down: KEY_3 (0x0004)
 1310546407.871546: event sync
-1310546408.120700: event key up: |KEY_3 (0x0004)
+1310546408.120700: event key up: KEY_3 (0x0004)
 1310546408.120702: event sync
 ----
 
@@ -547,7 +547,7 @@ ENV{ID_VENDOR_ID}=="0419", ENV{ID_MODEL_ID}=="0001", \                      <1>
 ----
 <1> Die Fernbedienung wird anhand der ID_VENDOR_ID und der ID_MODEL_ID erkannt (siehe <<evtest,evtest>>)
 <2> Erlaubt eventlircd die Eingaben des Geräts zu verwerten
-<3> Lädt die <<evmaps,evmap>> für das Gerät. In diesem Fall entsteht nach Einsetzen der Umgebungsvariablen der Name "03_0419_0001.evmap", demnach wird '/etc/event|LIRC.d/03_0419_0001.evmap' als Keymap geladen.
+<3> Lädt die <<evmaps,evmap>> für das Gerät. In diesem Fall entsteht nach Einsetzen der Umgebungsvariablen der Name "03_0419_0001.evmap", demnach wird '/etc/eventlircd.d/03_0419_0001.evmap' als Keymap geladen.
 
 
 [CAUTION]

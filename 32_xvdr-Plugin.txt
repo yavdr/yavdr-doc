@@ -1,0 +1,27 @@
+[[xvdr]]
+==== xvdr-Plugin ====
+Das xvdr-Plugin erlaubt experiementellen XBMC-Versionen mit PVR-Unterstützung Funktionen des VDR in von XBMC zu nutzen. Der Funktionsumfang umfasst aktuell Live-TV, EPG-Darstellung, das Verwalten von Timern sowie Zugriff auf die Aufnahmen des VDR. Einige Funktionen wie die Möglichkeit Schnittmarken zu benutzen und Aufnahmen zu schneiden sowie Einstellungen des VDR aus XBMC heraus zu verändern sind aktuell nicht vorhanden.
+Das xvdr-Plugin ist Multiuserfähig, d.h. es können mehrere XBMC-Clients auf einen VDR zugreifen und diesen nutzen.
+
+[[xvdr-access]]
+===== Zugriffsrechte =====
+Der Zugriff für von außen zugreifende Clients wird in der '/var/lib/vdr/plugins/xvdr/allowed_hosts.conf' eingestellt. Die Syntax dieser Konfigurationsdatei entspricht der der <<svdrp-config, svdrphosts.conf>>:
+[NOTE]
+.Zugriff von anderen Rechnern
+=====================================================================
+Für den Zugriff von anderen Rechnern aus muss ggf. die Datei '/var/lib/vdr/plugins/xvdr/allowed_hosts.conf' angepasst werden. Einige Beispiele sind im folgenden aufgeführt:
+=====================================================================
+
+.Beispieleinträge für '/var/lib/vdr/plugins/xvdr/allowed_hosts.conf'
+----
+127.0.0.1       <1>
+192.168.1.115   <2>
+192.168.1.0/24  <3>
+192.168.1.0/16  <4>
+0.0.0.0/0       <5>
+----
+<1> Dieser Eintrag sollte nicht entfernt werden, da sonst der lokale Zugriff von XBMC aus auf den VDR nicht mehr funktioniert!
+<2> Erlaubt dem Rechner mit der IP 192.168.1.115 den Zugriff
+<3> Erlaubt allen Rechnern, deren IP mit 192.168.1. beginnt den Zugriff
+<4> Erlaubt allen Rechnern, deren IP mit 192.168. beginnt den Zugriff (entspricht Class C Subnetzen)
+<5> Erlaubt allen Rechnern unabhängig von ihrer IP den Zugriff (Achtung: damit ist ein ungeschützter Zugriff auf den VDR von außerhalb des eigenen Netzwerks möglich, falls der VDR nicht durch einen Router mit NAT footnote:[http://de.wikipedia.org/wiki/Network_Address_Translation[Network Address Translation]] oder eine Firewall gesichert ist!)
