@@ -67,7 +67,7 @@ Auch wenn eine Fernbedienung die Bedienung deutlich bequemer macht, ist es nach 
 ===== Konfiguration der Fernbedienung =====
 
 Kein VDR wäre komplett ohne die Möglichkeit ihn bequem per Fernbedienung zu steuern.
-yaVDR 0.4 unterstützt ein breites Spektrum von Eingabegeräten, sowohl Infrarot- als auch Funk-Fernbedienungen. Falls die eigene Fernbedienung OOTB zufriedenstellend funktioniert kann man den folgenden Abschnitt überspringen. Wer keine Fernbedienungs-Empfänger Kombination hat, die OOTB funktioniert oder einfach verstehen will wie die Einbindung der Fernbedienungen in yaVDR funktioniert sollte einen Blick auf das Kapitel zur <<eventlirc,Fernbedienung und Eventlircd>> und zur <<remote.conf,remote.conf>> in dieser Dokumentation werfen.
+{version} unterstützt ein breites Spektrum von Eingabegeräten, sowohl Infrarot- als auch Funk-Fernbedienungen. Falls die eigene Fernbedienung OOTB zufriedenstellend funktioniert kann man den folgenden Abschnitt überspringen. Wer keine Fernbedienungs-Empfänger Kombination hat, die OOTB funktioniert oder einfach verstehen will wie die Einbindung der Fernbedienungen in yaVDR funktioniert sollte einen Blick auf das Kapitel zur <<eventlirc,Fernbedienung und Eventlircd>> und zur <<remote.conf,remote.conf>> in dieser Dokumentation werfen.
 
 Falls nicht alle Tasten wie erwartet funktionieren oder gar keine Tastendrücke beim VDR ankommen, konnte die Fernbedienung nicht automatisch durch yaVDR konfiguriert werden. Wie man dann weiter verfährt ist im Folgenden beschrieben:
 

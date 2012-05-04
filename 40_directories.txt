@@ -23,11 +23,11 @@ Samba in fstab usw.
 [[avahi-mounter]]
 ==== Avahi-Mounter ====
 
-Der Avahi-Mounter ist ein Python-Skript, das nach Avahi-Announcements für Freigaben im Netzwerk sucht und diese - falls eine gültige Service-Konfiguration existiert - automatisch zusammen mit den lokalen Medien unter '/media/<Kategorie>/<Ort der Dateien>' einbindet. Für Rechner mit yaVDR 0.4 geschieht das automatisch für alle <<standard-dir,lokalen Standardverzeichnisse>>.
+Der Avahi-Mounter ist ein Python-Skript, das nach Avahi-Announcements für Freigaben im Netzwerk sucht und diese - falls eine gültige Service-Konfiguration existiert - automatisch zusammen mit den lokalen Medien unter '/media/<Kategorie>/<Ort der Dateien>' einbindet. Für Rechner mit {version] geschieht das automatisch für alle <<standard-dir,lokalen Standardverzeichnisse>>.
 
 Möchte man also sowohl lokale als auch über das Netzwerk eingebundene Dateien für VDR-Plugins oder XBMC nutzen, empfiehlt es sich als Standard-Verzeichnis '/media/<Kategorie>/' zu wählen.
 
-Beispiel für die Dateistruktur unter '/media/' auf einem yaVDR 0.4 System, das Verzeichnisse von einem weiteren Rechner mit yaVDR 0.4 im Netzwerk mit dem Namen "VDR" automatisch eingebunden hat. Wie man sieht sind die lokal abgelegten Medien jeweils über einen Ordner "local" verlinkt:
+Beispiel für die Dateistruktur unter '/media/' auf einem {version} System, das Verzeichnisse von einem weiteren Rechner mit {version} im Netzwerk mit dem Namen "VDR" automatisch eingebunden hat. Wie man sieht sind die lokal abgelegten Medien jeweils über einen Ordner "local" verlinkt:
 
 .Ausgabe von tree
 ----

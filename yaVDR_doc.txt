@@ -2,14 +2,14 @@ Dokumentation für yaVDR
 =======================
 :Author:   seahawk1986
 :Email:    seahawk986@hotmail.com
-:Revision: v0.1
-:Date:     Juni 2011
-:Revision: v0.2
-:Date:     November 2011
+:Date:     Mai 2012
+:Revision: v0.5
 :encoding: UTF-8
 :lang: de
-:version: yaVDR 0.4
+:version: yaVDR 0.5
+:ubuntu: precise
 :doctype: book
+:thumbsize: 16
 
 ////
 Hoplo schlägt vor:

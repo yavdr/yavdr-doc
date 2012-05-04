@@ -1,7 +1,7 @@
 [[nfs]]
 === NFS ===
 
-yaVDR bringt einen vorkonfigurierten NFShttp://de.wikipedia.org/wiki/Network_File_System[NFS]-Server mit, der die <<directories,Medienverzeichnisse>> im Netzwerk bereitstellt. Sie werden zusäztzlich über Avahi announciert, so dass ein PC mit yaVDR 0.4 über den eingebauten avahi-mounter z.B. die Aufnahmeverzeichnisse aller anderen Rechner mit yaVDR 0.4 im Netzwerk automatisch finden und an entsprechender Stelle einbinden kann.
+yaVDR bringt einen vorkonfigurierten NFShttp://de.wikipedia.org/wiki/Network_File_System[NFS]-Server mit, der die <<directories,Medienverzeichnisse>> im Netzwerk bereitstellt. Sie werden zusäztzlich über Avahi announciert, so dass ein PC mit {version} über den eingebauten avahi-mounter z.B. die Aufnahmeverzeichnisse aller anderen Rechner mit yaVDR >= Version 0.4  im Netzwerk automatisch finden und an entsprechender Stelle einbinden kann.
 
 Auch Aufnahmen von NFS-Freigaben auf http://de.wikipedia.org/wiki/Network_Attached_Storage[NAS] oder anderen PCs lassen sich über den Avahi-Mounter einbinden. Dazu genügt es den entsprechenden Pfad zur Freigabe im <<wfe-network,Webfrontend>> einzutragen und abzuspeichern. Nach einem Neustart sollte das Verzeichnis dann ebenfalls berücksichtigt werden.
 

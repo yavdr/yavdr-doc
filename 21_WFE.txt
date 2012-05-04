@@ -45,19 +45,15 @@ Ein Großteil der Einstellungen kann bei yaVDR über das Webfrontend vorgenommen
 
 [[settings-wfe]]
 ==== Einstellungen ====
-Diese Seite verlinkt zu den Einstellungen, die über das Webfrontend vorgenommen werden können:
+Im folgenden ein kurzer Überblick der Einstellungen, die über das Webfrontend vorgenommen werden können:
 
 [[wfe-common]]
 ===== VDR: Allgemein =====
-
-.TODO:
-****
-Symbol hinzufügen
-****
+image:wfe/logos/preferences-system.png[height=32] 
 
 [[wfe-frontend]]
 
-Hier kann das VDR-Frontend ausgewählt werden. bei yaVDR 0.4 ist xine vorausgewählt, wenn die Ausgabe über die Grafikkarte des PCs erfolgen soll. Ist eine TT S2-6400 (HD-FF), SD-FF oder eine Hauppauge PVR350 verbaut, werden die entsprechenden Plugins für diese Karten bei der Installation automatisch installiert und aktiviert.
+Hier kann das VDR-Frontend ausgewählt werden. bei {version} ist softhddevice vorausgewählt, wenn die Ausgabe über die Grafikkarte des PCs erfolgen soll. Ist eine TT S2-6400 (HD-FF), SD-FF oder eine Hauppauge PVR350 verbaut, werden die entsprechenden Plugins für diese Karten bei der Installation automatisch installiert und aktiviert.
 
 image:wfe/settings_frontend.png[]
 
@@ -73,10 +69,7 @@ image:wfe/settings_epg_enc.png[]
 
 [[wfe-channels]]
 ===== VDR: Kanäle =====
-.TODO:
-****
-Symbol hinzufügen
-****
+image:wfe/logos/address-book-new.png[height=32]
 Hier können die Kanäle des VDR verwaltet werden. Vorhandene Kanäle lassen sich in Gruppen einteilen, per Drag and Drop neu anordnen oder über das Kontextmenü, das per Rechtsklick erreichbar ist, bearbeiten.
 Mehrere Kanäle lassen sich bei gedrückter Umschalttaste gleichzeitig auswählen. Die Ablage rechts erlaubt es Kanäle zwischenzulagern, z.B. um sie ohne ständiges Hin- und Herscrollen anordnen zu können.
 
@@ -92,11 +85,7 @@ image:wfe/channelpedia_add_small.png["Kanal hinzufügen"]
 
 [[wfe-remote]]
 ===== Hardware: Fernbedienung =====
-
-.TODO:
-****
-Symbol hinzufügen
-****
+image:wfe/logos/remote_control.png[height=32] 
 image:wfe/remote.png["Fernbedienung"]
 
 yaVDR nutzt <<eventlirc,Eventlircd>>, ein Systemdienst, der viele Fernbedienungsempfänger automatisch erkennt und für die mit ihnen ausgelieferte Fernbedienung konfiguriert. Diese Fernbedienungen funktionieren dann ohne weiter Konfiguration, in den Einstellungen des Webfrontends zur Fernbedienung muss nichts angepasst werden.
@@ -112,18 +101,12 @@ Für Igor-USB Empfänger darf Lirc nicht über das Webfrontend aktiviert werden.
 
 [[wfe-audio]]
 ===== Hardware: Audio =====
-.TODO:
-****
-Symbol hinzufügen
-****
-Diese Seite erlaubt es einzustellen wie der Ton durch den VDR und XBMC ausgegeben werden soll. Für komplexere Konstellationen und mehreren Soundkarten im Rechner muss die Konfiguration von <<alsa,alsa>> ggf. von Hand angepasst werden.
+image:wfe/logos/audio-card.png[height=32] 
+Diese Seite erlaubt es einzustellen wie der Ton durch den VDR und XBMC ausgegeben werden soll. Es sollten generell nur die benötigten Audiogeräte gewählt werden, um die Systemlast durch Alsa zu reduzieren. Für komplexere Konstellationen und mehreren Soundkarten im Rechner muss die Konfiguration von <<alsa,alsa>> ggf. von Hand angepasst werden.
 
 [[wfe-video]]
 ===== Hardware: Anzeigeneinstellungen =====
-.TODO:
-****
-Symbol hinzufügen
-****
+image:wfe/logos/video-display.png[height=32] 
 Hier kann die Auflösung und Nutzung der angeschlossenen Bildschirme eingestellt werden. Außerdem können hier die Deinterlacing-Methoden für HD- und SD-Material konfiguriert werden.
 
 [[wfe-graphtft]]
@@ -144,31 +127,25 @@ Momentan ist die Konfiguration eines zweiten Bildschirms in yaVDR noch etwas tri
 
 [[wfe-system]]
 ===== System: System =====
-.TODO:
-****
-Symbol hinzufügen
-****
+image:wfe/logos/computer.png[height=32] 
 Auf dieser Seite kann die Systemsprache gewählt werden und eingestellt werden wie der VDR herunterfährt und aufwacht. Außerdem lässt sich der Timeout für die Anzeige des GRUB-Menü einstellen. 
 
 [[wfe-network]]
 ===== System: Netzwerk =====
+image:wfe/logos/network-wired.png[height=32] 
 .TODO:
 ****
-Symbol hinzufügen, Bilder hinzufügen, Beispiel hinzufügen
+Bilder hinzufügen, Beispiel hinzufügen
 ****
 Hier können NFS-Freigaben aus dem Netzwerk und die MAC-Adressen von Rechnern, die später über das OSD per WOL footnote:[Wake On LAN] geweckt werden sollen, eingetragen werden.
 
 [[wfe-edit_config]]
 ===== VDR: Konfiguration bearbeiten =====
-.TODO:
-****
-Symbol hinzufügen
-****
-
+image:wfe/logos/preferences-system.png[height=32]
 Hier können Konfigurationsdateien direkt im Browser bearbeitet werden. Aktuell können folgende Konfigurations-Dateien über das Webfrontend bearbeitet werden:
 
 * '/etc/lirc/lircd.conf'
-* '/etc/vdr/diseq.conf'
+* '/etc/vdr/diseqc.conf'
 * '/var/lib/vdr/remote.conf'
 * '/var/lib/vdr/channels.conf'
 * '/var/lib/vdr/.xbmc/userdata/Lircmap.xml'
@@ -177,12 +154,7 @@ Hier können Konfigurationsdateien direkt im Browser bearbeitet werden. Aktuell 
 
 [[wfe-packages]]
 ===== System: Pakete =====
-
-.TODO:
-****
-Symbol hinzufügen
-****
-
+image:wfe/logos/package-x-generic.png[height=32] 
 Über das Webfrontend können Plugins, Addons und andere VDR-bezogene Pakete verwaltet werden.
 image:wfe/plugins.png["Plugins nachinstallieren"]
 
@@ -203,21 +175,21 @@ Unterpunkte ausführen
 ****
 ===== Befehle =====
 
-* Switch temporarily to second screen
-* Reboot computer
-* Kill XBMC
-* Set XBMC defaults
-* Restart VDR
+* image:wfe/logos/switch-display.png[height=32] Vorläufig auf zweiten Bildschirm schalten
+* image:wfe/logos/reboot.png[height=32] Rechner neu starten
+* image:wfe/logos/xbmc-process-stop.png[height=32] XBMC Notstopp
+* image:wfe/logos/xbmc-edit-delete.png[height=32] XBMC Konfiguration zurücksetzen
+* image:wfe/logos/view-refresh.png[height=32] VDR neu starten
 
 ===== Diagnosewerkzeuge =====
 
-* System information
-* System log files
-* XBMC crash log
-* LIRC configuration
-* VDR configuration
-* Xorg server
-* Sound (ALSA)
-* Package information
-* yaVDR database
+* image:wfe/logos/utilities-system-monitor.png[height=32] System Informationen
+* image:wfe/logos/document-open.png[height=32] System log files
+* image:wfe/logos/xbmc-document-open.png[height=32] XBMC crash log
+* image:wfe/logos/lirc-config.png[height=32] LIRC Konfiguration
+* image:wfe/logos/vdr-config.png[height=32] VDR Konfiguration
+* image:wfe/logos/X11.png[height=32] Xorg Server
+* image:wfe/logos/audio-card.png[height=32] Ton (ALSA)
+* image:wfe/logos/package-x-generic.png[height=32] Paket Informationen
+* image:wfe/logos/drive-harddisk.png[height=32] yaVDR Datenbank
 

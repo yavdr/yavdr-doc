@@ -9,16 +9,8 @@ Hier ensteht eine Sammlung der am häufigsten im http://www.vdr-portal.de gestel
 [qanda]
 Was bedeutet *Namespace-konform*?::
   In yaVDR dürfen aufgrund der Nutzung von Eventlircd nur bestimmte Tastennamen verwendet werden. Das bedeutet dass sie mit den Tastennamen in der Spalte "Event" in dieser Tabelle übereinstimmen  müssen: https://bugs.yavdr.com/projects/1/wiki/IR_Integration_04#Eventmapping Wie man Tastennamen von noch nicht richtig vorkonfigurierten Fernbedienung anpassen kann, steht in der <<remote-guide,Hilfe zur Einrichtung der Fernbedienung>>, dem Abschnitt zu <<ir-keytable,ir-keytable>>, <<Serial-Remote,Lirc>> und den <<evmaps,Evmaps>>.
-Ich  habe einen <<Serial-Remote,Lirc-Empfänger>> und steige von yaVDR 0.3 auf 0.4 um - kann ich die Konfigurationsdateien einfach kopieren?::
-  Nein. In yaVDR 0.4 sollte die remote.conf nicht mehr verändert werden. Die hardware.conf für Lircd wird über das <<wfe-remote,Webfrontend erzeugt>>. Wichtig ist, dass die Tastennamen in der lircd.conf so angepasst werden, dass sie *Namespace-konform* sind.
-Wenn ich eine Taste auf der Fernbedienung drücke, werden doppelte Tastendrücke im VDR ausgeführt - wie kann ich das ändern?::
-Bis eine Lösung für eventlircd verfügbar ist, die die Anpassung des Repeat-Filters von <<eventlirc,Eventlircd>> erlaubt (siehe oneiric-Pakete im main PPA), bitte eines dieser eventlircd-Pakete verwenden und abstimmen wie groß der minimale Abstand zwischen zwei Tastendrücken sein muss: http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/108430-umfrage-zu-eventlircd-einstellung-des-repeat-filters/
-[CAUTION]
-.Bug bei Verwendung von --uinput
-=====================================================================
-Leider scheinen aktuelle Lirc-Versionen unter einem Bug bei der Übergabe von Tastendrücken bei Verwendung von *--uinput* zu leiden - es kommen dann doppelte Tastendrücke am Eventgerät an (die Tastendrücke an eigentlichen Lircd-Socket hingegen sind in Ordnung). Ein Workaround ist http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/p1039488-0-4-xbmc-einfacher-tastendruck-doppelte-eingabe/#post1039488[hier für über das WFE konfigurierte] und http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/p1039542-0-4-xbmc-einfacher-tastendruck-doppelte-eingabe/#post1039542[hier für per udev-Regel eingebundene USB-Lirc-Empfänger] im Forum beschrieben und wird voraussichtlich seinen Weg in die nächste yaVDR-Version finden. 
-=====================================================================
-
+Ich  habe einen <<Serial-Remote,Lirc-Empfänger>> und steige von yaVDR 0.3 auf {version} um - kann ich die Konfigurationsdateien einfach kopieren?::
+  Nein. In {version} sollte die remote.conf nicht mehr verändert werden, um zu den Tastennamen zu passen. Die nötige hardware.conf für Lircd wird über das <<wfe-remote,Webfrontend erzeugt>>. Wichtig ist, dass die Tastennamen in der lircd.conf so angepasst werden, dass sie *Namespace-konform* sind, d.h. den in der input.h der Kernelheader definierten Tastennamen entsprechen.
 
 
 ////
@@ -28,7 +20,7 @@ Was ist yaVDR?::
 Bitte auf http://yavdr.org[YaVDR] nachlesen.
 
 Wie sind die Hardware-Voraussetzungen für yaVDR::
-Diese Frage versucht die Seite http://vdr-wiki.de/wiki/index.php/YaVDR/Hardware-Voraussetzungen[Hardware-Voraussetzungen] zu beantworten.
+Diese Frage versucht die Seite http://vdr-wiki.de/wiki/index.php/YaVDR/Hardware-Voraussetzungen[Hardware-Voraussetzungen] zu beantworten. Ab yaVDR 0.4 wird ein 64-Bit fähiges System benötig.
 
 Kann ich yaVDR als VDR-Client oder VDR-Server verwenden?::
 Diese Frage versucht die Seite http://vdr-wiki.de/wiki/index.php/YaVDR/Hardware-Voraussetzungen#Nutzungs-Szenarien:_yaVDR_als_Client.2C_Server_oder_Zwitter.3F[Hardware-Voraussetzungen] zu beantworten.
@@ -47,9 +39,8 @@ Nein, das ISO-Image muss auf der Festplatte installiert werden, bevor man es aus
 
 Gibt es separate yaVDR-ISO-Images für 32bit und 64bit?::
 Nein. Aus Zeitgründen und um die Supportlast überschaubar zu halten, kann das yaVDR-Team nur für eine der beiden Plattformen ein ISO-Image anbieten. Aber die meisten Einzelpakete der yaVDR-Repositories liegen sowohl als i386- als auch amd64-Varianten vor.
-Die ISO-Images zu yaVDR 0.1, 0.1.1, 0.2 und 0.3.x liegen allesamt nur als 32bit-Versionen vor.
+Die ISO-Images zu yaVDR 0.1, 0.1.1, 0.2 und 0.3.x liegen allesamt nur als 32bit-Versionen vor. Ab yaVDR 0.4 wird nur eine 64-Bit Version angeboten.
 
-NOTE: Für die momentan in Entwicklung befindliche Version yaVDR 0.4 plant das yaVDR-Team, zur 64bit-Plattform zu wechseln.
 
 Ist eine Installation von yaVDR per USB Stick möglich?::
 Man benutzt das ab Ubuntu 9.04 integrierte Tool zum erstellen eines bootfähigen Sticks. Es ist in Gnome unter System -> Systemverwaltung -> "USB-Startmedien-Ersteller" zu finden.

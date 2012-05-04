@@ -5,17 +5,17 @@ yaVDR nutzt die *stabilen PPAs* footnote:[*PPA* = **P**ersonal **P**ackage **A**
 
 .'/etc/apt/sources.list.d/yavdr.list'
 ----
-# yaVDR-PPAs für yaVDR 0.4
-deb http://ppa.launchpad.net/yavdr/main/ubuntu natty main         <1>
-deb http://ppa.launchpad.net/yavdr/stable-vdr/ubuntu natty main   <2>
-deb http://ppa.launchpad.net/yavdr/stable-xbmc/ubuntu natty main  <3>
-deb http://ppa.launchpad.net/yavdr/stable-yavdr/ubuntu natty main <4>
+# yaVDR-PPAs für {version}
+deb http://ppa.launchpad.net/yavdr/main/ubuntu precise main         <1>
+deb http://ppa.launchpad.net/yavdr/stable-vdr/ubuntu precise main   <2>
+deb http://ppa.launchpad.net/yavdr/stable-xbmc/ubuntu precise main  <3>
+deb http://ppa.launchpad.net/yavdr/stable-yavdr/ubuntu precise main <4>
 
-# Quellen für die Pakete in yaVDR 0.4
-deb-src http://ppa.launchpad.net/yavdr/main/ubuntu natty main
-deb-src http://ppa.launchpad.net/yavdr/stable-vdr/ubuntu natty main
-deb-src http://ppa.launchpad.net/yavdr/stable-xbmc/ubuntu natty main
-deb-src http://ppa.launchpad.net/yavdr/stable-yavdr/ubuntu natty main
+# Quellen für die Pakete in {version}
+deb-src http://ppa.launchpad.net/yavdr/main/ubuntu precise main
+deb-src http://ppa.launchpad.net/yavdr/stable-vdr/ubuntu precise main
+deb-src http://ppa.launchpad.net/yavdr/stable-xbmc/ubuntu precise main
+deb-src http://ppa.launchpad.net/yavdr/stable-yavdr/ubuntu precise main
 ----
 <1> In *main* liegen die DVB- und Grafiktreiber, angepasste Software-Pakete, VDR-Addons usw.
 <2> *stable-vdr* beinhaltet den VDR und seine Plugins
