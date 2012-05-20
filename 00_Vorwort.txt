@@ -7,7 +7,7 @@ Diese Dokumentation soll die Bedienung und Interna eines yaVDR-Systems erklären
 
 Wann immer die Beschreibung von Befehlen, Funktionen oder Abläufen den Rahmen dieser Dokumentation sprengen würde, wird daher auf entsprechende Artikel verlinkt. Auch doppelte Ausführungen zum selben Themas werden wo immer es geht vermieden und stattdessen auf die entsprechende Stelle in der Dokumentation verlinkt.
 
-Diese Dokumentation gibt es auch als http://yavdr.org/documentation/de/yaVDR_doc.pdf[PDF-] und als http://yavdr.org/documentation/de/yaVDR_doc.html["All-in-one"] Version
+Diese Dokumentation gibt es auch als link:yaVDR_doc.pdf[PDF-] und als link:yaVDR_doc.html["All-in-one"] Version
 
 === Lizenz ===
 

@@ -1,16 +1,18 @@
-== Häufig gestellte Fragen footnote:[http://vdr-wiki.de/wiki/index.php/YaVDR/FAQ] ==
-http://vdr-wiki.de/wiki/index.php/YaVDR/FAQ
+== Häufig gestellte Fragen ==
+Die große FAQ-Sammlung für alle yaVDR-Versionen befindet sich unter http://vdr-wiki.de/wiki/index.php/YaVDR/FAQ
 
 Hier ensteht eine Sammlung der am häufigsten im http://www.vdr-portal.de gestellten Fragen. Sie wird mit der Zeit wachsen und hoffentlich zeitlich nah an den Stand der Entwicklung von yaVDR angepasst werden.
 
 [[qa-remote]]
 === Fernbedienung ===
 
+[[namespace-faq]]
 [qanda]
 Was bedeutet *Namespace-konform*?::
-  In yaVDR dürfen aufgrund der Nutzung von Eventlircd nur bestimmte Tastennamen verwendet werden. Das bedeutet dass sie mit den Tastennamen in der Spalte "Event" in dieser Tabelle übereinstimmen  müssen: https://bugs.yavdr.com/projects/1/wiki/IR_Integration_04#Eventmapping Wie man Tastennamen von noch nicht richtig vorkonfigurierten Fernbedienung anpassen kann, steht in der <<remote-guide,Hilfe zur Einrichtung der Fernbedienung>>, dem Abschnitt zu <<ir-keytable,ir-keytable>>, <<Serial-Remote,Lirc>> und den <<evmaps,Evmaps>>.
-Ich  habe einen <<Serial-Remote,Lirc-Empfänger>> und steige von yaVDR 0.3 auf {version} um - kann ich die Konfigurationsdateien einfach kopieren?::
-  Nein. In {version} sollte die remote.conf nicht mehr verändert werden, um zu den Tastennamen zu passen. Die nötige hardware.conf für Lircd wird über das <<wfe-remote,Webfrontend erzeugt>>. Wichtig ist, dass die Tastennamen in der lircd.conf so angepasst werden, dass sie *Namespace-konform* sind, d.h. den in der input.h der Kernelheader definierten Tastennamen entsprechen.
+  In yaVDR dürfen aufgrund der Nutzung von Eventlircd nur bestimmte Tastennamen verwendet werden. Dabei handelt es sich prinzipiell um alle Key-Events (erkennbar an "KEY_<Taste>", die vom Kernel unterstützt werden und die man sich in der auf dem eigenen System befindlichen '''/usr/include/linux/input.h''' nachschlagen kann). Anbhängig vom installierten Kernel und eventuell installierten Treiberopaketen wie linux-media-dkms können die unterstützten Tasten variieren. Für {version} haben wir daher eine Vorkonfiguration für die rempote.conf des VDR und die Lircmap.xml von XBMC getroffen, die unter möglichst allen Eventualitäten funktionieren sollte.
+  Für die Konfiguration der Fernbedienung ist es daher wichtig, dass die Tastennamen, die die Fernbedienung liefert mit denen in der Spalte "Tastenname durch Eventlircd" in dieser Tabelle übereinstimmen: <<namespace, Namespace-konforme Tasten in {version}>> Wie man Tastennamen von noch nicht richtig vorkonfigurierten Fernbedienung anpassen kann, steht in der <<remote-guide,Hilfe zur Einrichtung der Fernbedienung>>, dem Abschnitt zu <<ir-keytable,ir-keytable>>, <<Serial-Remote,Lirc>> und den <<evmaps,Evmaps>>.
+Ich  habe einen <<lirc,Lirc-Empfänger>> und steige von yaVDR 0.3 oder einem anderen Linux-System auf {version} um - kann ich die Konfigurationsdateien einfach kopieren?::
+  Nein. In {version} sollte die remote.conf nur noch mit Bedacht verändert werden, es ist einfacher, wenn die lircd.conf zu den Tastennamen in der remote.conf passt. Die nötige hardware.conf für Lircd wird in den meisten Fällen über das <<wfe-remote,Webfrontend erzeugt>>. Wichtig ist, dass die Tastennamen in der lircd.conf so angepasst werden, dass sie *Namespace-konform* sind, d.h. den in der input.h der Kernelheader definierten Tastennamen entsprechen.
 
 
 ////

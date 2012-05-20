@@ -1,0 +1,24 @@
+== yaVDR-Dokumentation ==
+
+=== yaVDR 0.3 ===
+
+http://www.vdr-wiki.de/wiki/index.php/YaVDR/FAQ
+
+http://www.vdr-wiki.de/wiki/index.php/Kategorie:YaVDR
+
+http://www.yavdr.org/tutorials/
+
+=== yaVDR 0.4 ===
+
+http://www.yavdr.org/documentation/0.4/de/
+
+=== yaVDR 0.5 ===
+
+http://www.yavdr.org/documentation/0.5/de/
+
+=== Weitere Quellen ===
+
+http://www.partyfotos.de/vdr/[Deutschsprachiges Tutorial von Bernie7, (wir aktuell von yaVDR 0.3 auf 0.4 umgestellt)]
+
+http://channelpedia.yavdr.com/[Channelpedia - wird ab yaVDR 0.4 im Webfrontend eingebunden] 
+

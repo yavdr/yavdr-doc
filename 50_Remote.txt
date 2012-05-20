@@ -82,10 +82,11 @@ Bei der yaVDR-Standardbelegung haben sich die Entwickler an der http://www.linux
 [[remote.conf]]
 ===== remote.conf =====
 
+[[namespace]]
 [CAUTION]
 .Vorsicht bei Änderungen für die Fernbedienung an der remote.conf!
 =====================================================================
-yaVDR ist auf eine standardisierte remote.conf ausgelegt, damit die Fernbedienung sowohl im VDR als auch unter XBMC richtig funktioniert. Das hat zur Folge, dass die Tastennamen in den Lirc-Konfigurationsdateien, den Keytables von ir-core und den von Eventlircd direkt angesprochenen Geräten *Namespace-konform* zur input.h des Kernel und möglichst passend zur remote.conf eingestellt sein sollten.
+yaVDR ist auf eine standardisierte remote.conf für den VDR und eine dazu passende Lircmap.xml für XBMC ausgelegt, damit die Fernbedienung sowohl im VDR als auch unter XBMC richtig funktioniert. Das hat zur Folge, dass die Tastennamen in den Lirc-Konfigurationsdateien, den Keytables von ir-core und den von Eventlircd direkt angesprochenen Geräten <<namespace-faq, *Namespace-konform* zur input.h des Kernels>> sein *müssen* (sonst kann sie eventlircd nicht weiterreichen) und möglichst passend zur remote.conf eingestellt werden sollten.
 Die Anpassung des Mappings ist in diesem Kapitel beschrieben.
 =====================================================================
 
@@ -93,7 +94,7 @@ Die remote.conf liegt unter /var/lib/vdr/remote.conf und ist eine <<template, ge
 
 Die Zuordnung von Funktion im VDR und Tastennamen sieht bei {version} so aus:
 
-.Namespace-konforme Tastennamen in yaVDR
+.Namespace-konforme Tastennamen in {version}
 [cols="2s,2s,4e",options="header"]
 |=========================================
 |*remote.conf*     |*Tastenname durch Eventlircd*|*Beschreibung*
@@ -729,7 +730,7 @@ Die Tasten-Ausgabe von lircd kann unter '/var/run/lirc/lircd.<PID>' mittels irw 
 [[lirc_igor]]
 ===== Igor USB =====
 
-Für die Igor USB-Empfänger muss lediglich eine passende Namespace-konforme Lircd.conf nach /etc/lirc/ kopiert werden. Über eine udev-Regel wird automatisch ein passender lircd-Prozess gestartet und dessen Ausgabe von eventlircd ausgewertet. Der Socket von lircd liegt typischerweise unter '/var/run/lirc/lircd-lirc0' und kann mittels <<irw, irw>> auf Funktion überprüft werden.
+Für die Igor USB-Empfänger muss lediglich eine passende <<namespace, Namespace-konforme>> lircd.conf nach /etc/lirc/ kopiert werden. Über eine udev-Regel wird automatisch ein passender lircd-Prozess gestartet und dessen Ausgabe von eventlircd ausgewertet. Der Socket von lircd liegt typischerweise unter '/var/run/lirc/lircd-lirc0' und kann mittels <<irw, irw>> auf Funktion überprüft werden.
 
 [CAUTION]
 .Cave Einstellungen zur Fernbedienung im Webfrontend!
@@ -757,4 +758,72 @@ Nach Installation des Paketes *linux-media-dkms* werden die X10-Empfänger nicht
 =====================================================================
 Momentan unterstützt das standardmäßig von {version} genutzte Treibermodul ati_remote das Scrollrad bestimmter X10-Fernbedienungen nicht. Einen Vorschlag für einen möglichen Patch kann man hier finden: [http://www.vdr-portal.de/board18-vdr-hardware/board13-fernbedienungen/p1059478-fortgeschrittenes-linux-problem-mit-der-scrollrad-x10/#post1059478]
 =====================================================================
+
+[[bluetooth]]
+==== Bluetooth-Geräte ====
+
+Prinzipiell ist es unter yaVDR möglich auch Bluetooth-Geräte, die als Eingabegerät erkannt werden zur Steuerung zu nutzen. Dabei sollte man sich überlegen ob man das Gerät nur als Tastatur bzw. Maus oder als Fernbedienung für VDR und XBMC nutzen will - letzteres erfoldert etwas Bastelarbeit mit udev-Regeln, wie weiter unten beschrieben.
+
+[[bt-pairing]]
+===== Pairing =====
+
+Damit ein Bluetooth-Gerät mit dem Rechner kommunizieren kann, muss es erst Authentifiziert werden. Um sich nicht von Verwaltungsprogrammen mit GUI abhängig zu machen, verwenden wir die Tools aus dem Paket *bluez-utils*, das ggf. noch nachinstalliert werden muss.
+
+.Anzeigen der Bluetooth-Adapter - liefert das hci<X> Gerät
+-----
+hciconfig
+-----
+
+.Suche nach Geräten (müssen sichtbar sein)
+-----
+sudo bluez-test-discovery
+-----
+
+Hier muss man sich nun das gewünschte Gerät heraussuchen und den Wert für "Address" notieren.
+
+.Für Geräte mit Display, die eine PIN-Eingabe beim Pairen erfordern, kann man nun so eine Authentifizierung vornehmen:
+-----
+sudo bluez-simple-agent hci<X> <adresse>
+-----
+
+.Für Geräte wie die PS3 Remote oder andere Bluetooth-Fernbedienungen und Tastaturen ohne default-Pin:
+-----
+sudo bluez-test-device trusted <adresse> yes
+-----
+
+.Verbindung zum Testen aufbauen:
+----
+sudo bluez-test-input connect <adresse>
+----
+
+[[bt-remote]]
+===== Nutzung als Fernbedienung =====
+
+Um ein Bluetooth-Gerät als Fernbedienung für VDR und XBMC zu nutzen, muss aufgrund des etwas abweichenden Verhalten von eventlircd im Umgang mit gedrückt gehaltenen Tasten ein kleiner Umweg beschritten werden, der hier exemplarisch für eine PS3 Remote Control gezeigt wird:
+
+Das Python-Skript *ps3remote* wird über einen über eine udev-Regel ausgelösten Upstart-Job gestartet, sobald das passende Bluetooth-Gerät verbunden wird. Es greift dann exklusiv auf das Bluetooth-Eingabegerät zu, liest dessen Events aus, ergänzt bei gedrückt gehaltenen Tasten die nötigen Events und reicht sie über ein virtuelles Eingabegerät-Gerät weiter. Eventlircd erkennt anhand einer neu hinzugefügten Regel in '/lib/udev/rules.d/98-eventlircd.rules', dass es dieses uinput-Gerät auswerten soll, wendet die in der udev-Regel angegebene evmap auf die Events an und gibt sie dann über seinen Lirc-Socket weiter:
+
+http://dl.dropbox.com/u/960809/PS3-yaVDR/ps3remote['/usr/bin/ps3remote']
+
+http://dl.dropbox.com/u/960809/PS3-yaVDR/99-ps3remote.rules['/lib/udev/rules.d/99-ps3remote.rules']
+
+http://dl.dropbox.com/u/960809/PS3-yaVDR/ps3remote.evmap['/etc/eventlircd.d/ps3remote.evmap']
+
+http://dl.dropbox.com/u/960809/PS3-yaVDR/ps3remote.conf['/etc/init/ps3remote.conf']
+
+.Eintrag in der '/lib/udev/rules.d/98-eventlircd.rules'
+----
+[...]
+ATTRS{name}=="PS3 Remote", \
+  ENV{eventlircd_enable}="true", \
+  ENV{eventlircd_evmap}="ps3remote.evmap"
+[...]
+----
+
+
+
+
+
+
+
 
