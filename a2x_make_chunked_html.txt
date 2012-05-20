@@ -1,1 +1,0 @@
-python a2x.py -f chunked ../yaVDR_doc.txt --destination-dir=/home/alexander/Dokumente/ -L --icons --param local.l10n.xml document\(\'custom-chapter.xml\'\)
