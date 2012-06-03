@@ -50,53 +50,51 @@ Dann wird versucht das Netzwerk automatisch zu konfigurieren und es kann der Hos
 
 image:./installation/07_network_name.png[]
 
+Nun wird noch der Standard-Benutzer erstellt, mit dem man sich später zu Wartungs- und Administrationszwecken am yaVDR-System anmelden kann. Dazu gibt man seinen Namen ein:
+
+image:./installation/08_user_name.png[]
+
+Darauf basierend wird ein Benutzername vorgeschlagen, den man aber nach Belieben ändern kann:
+
+image:./installation/09_username.png[]
+
+Ein sicheres Passwort sollte man natürlich auch vergeben:
+
+image:./installation/10_password.png[]
+
 Nun kann die Zeitzone eingestellt werden:
 
-image:./installation/08_zeitzonenvorschlag.png[]
+image:./installation/11_zeitzonenvorschlag.png[]
 
 Im nächsten Schritt kann man konfigurieren, wie die verbaute(n) Festplatten genutzt werden sollen. Die Root-Partition sollte mindestens 3 GB groß sein, damit genug Platz für die Installation weiterer Pakete bleibt ist eine Größe von 8 - 20 GB empfehlenswert. Alle lokalen Mediendateien sollten später unter /srv/vdr liegen. Dies ist der bei yaVDR voreingestellte Ort, an dem später Aufnahmen abgelegt werden und an dem XBMC Medien in den entsprechenden Unterverzeichnissen erwartet. Näheres zu dem Thema findet sich im Abschnitt <<directories,*Verzeichnissstruktur*>> von yaVDR.
 
 Daher kann man entweder den Installer automatisch die Festplatte aufteilen lassen ("*Geführt - verwende vollständige Festplatte*"), wodurch neben der SWAP-Partition der restliche Platz für Root verwendet wird (siehe folgender Screenshot) oder manuell eine kleine Partition für */* erstellen und den Verbleibenen Platz (oder auch eine zweite Festplatte mit hoher Kapazität) unter /srv einhängen. Als Dateisystem eignet sich z.B. ext4.
 
-image:./installation/09_festplatten_partitionieren.png[]
+image:./installation/12_festplatten_partitionieren.png[]
 
-Nun kann die Festplatte ausgewählt werden, auf der das System installiert werden soll:
+Und man bestätigt, dass man die Vorgeschlagene Partitionierung durchführen möchte:
 
-image:./installation/10_festplatte_wählen.png[]
-
-Und man bestätigt, dass man die Vorgeschlagene Partitionierung übernehmen möchte:
-
-image:./installation/12_partitionierung_uebernehmen.png[]
+image:./installation/13_partitionierung_uebernehmen.png[]
 
 Nun wird die Partitionierung übernommen und damit begonnen das System einzurichten:
 
-image:./installation/13_installation_des_grundsystems.png[]
-
-Zum Abschluss der Konfiguration wird noch der Benutzer erstellt, mit dem man sich später zu Wartungs- und Administrationszwecken am yaVDR-System anmelden kann. Dazu gibt man seinen Namen ein:
-
-image:./installation/14_username.png[]
-
-Darauf basierend wird ein Benutzername vorgeschlagen, den man aber nach Belieben ändern kann:
-
-image:./installation/15_systemusername.png[]
+image:./installation/14_installation_des_grundsystems.png[]
 
 Als vorläufig letzten Schritt muss man noch angeben, ob ein HTTP-Proxy verwendet wird. Ist das (wie in den meisten Heimnetzwerken üblich) nicht der Fall, kann man das Feld einfach leer lassen:
 
-image:./installation/16_http_proxy.png[]
+image:./installation/15_http_proxy.png[]
 
 Die Installation des Systems nimmt nun etwas Zeit in Anspruch:
 
-image:./installation/17_installation_der_pakete.png[]
+image:./installation/16_installation_der_pakete.png[]
 
 Bevor das System für den ersten Start vorbereitet werden kann, muss noch der Ort für die Installation des Bootloaders gewählt werden. Hat man keine besonderen Wünsche kann man die Standard-Auswahl einfach übernehmen und Grub in den MBR footnote:[Master Boot Record] der Systemplatte installieren.
 
-image:./installation/18_grub_installation.png[]
+image:./installation/17_grub_installation.png[]
 
-Nun erfolgt noch die automatische Konfiguration von yaVDR anhand der bei der Installation gefundenen Hardware.
+Nach Abschluss der Installation soltle man das Installationsmedium entfernen und den Rechner neu starten.
 
-image:./installation/19_preseed.png[]
-
-Ist dieser Prozess abgeschlossen kann man die Installations-CD entnehmen und den PC neu starten.
+image:./installation/18_done.png[]
 
 
 

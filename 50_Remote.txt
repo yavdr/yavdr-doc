@@ -774,7 +774,7 @@ Damit ein Bluetooth-Gerät mit dem Rechner kommunizieren kann, muss es erst Auth
 hciconfig
 -----
 
-.Suche nach Geräten (müssen sichtbar sein)
+.Suche nach Geräten (müssen sichtbar sein, für die PS3 Remote BD muss "Start" + "Enter" gleichzeitig gedrückt werden)
 -----
 sudo bluez-test-discovery
 -----
@@ -796,29 +796,7 @@ sudo bluez-test-device trusted <adresse> yes
 sudo bluez-test-input connect <adresse>
 ----
 
-[[bt-remote]]
-===== Nutzung als Fernbedienung =====
-
-Um ein Bluetooth-Gerät als Fernbedienung für VDR und XBMC zu nutzen, muss aufgrund des etwas abweichenden Verhalten von eventlircd im Umgang mit gedrückt gehaltenen Tasten ein kleiner Umweg beschritten werden, der hier exemplarisch für eine PS3 Remote Control gezeigt wird:
-
-Das Python-Skript *ps3remote* wird über einen über eine udev-Regel ausgelösten Upstart-Job gestartet, sobald das passende Bluetooth-Gerät verbunden wird. Es greift dann exklusiv auf das Bluetooth-Eingabegerät zu, liest dessen Events aus, ergänzt bei gedrückt gehaltenen Tasten die nötigen Events und reicht sie über ein virtuelles Eingabegerät-Gerät weiter. Eventlircd erkennt anhand einer neu hinzugefügten Regel in '/lib/udev/rules.d/98-eventlircd.rules', dass es dieses uinput-Gerät auswerten soll, wendet die in der udev-Regel angegebene evmap auf die Events an und gibt sie dann über seinen Lirc-Socket weiter:
-
-http://dl.dropbox.com/u/960809/PS3-yaVDR/ps3remote['/usr/bin/ps3remote']
-
-http://dl.dropbox.com/u/960809/PS3-yaVDR/99-ps3remote.rules['/lib/udev/rules.d/99-ps3remote.rules']
-
-http://dl.dropbox.com/u/960809/PS3-yaVDR/ps3remote.evmap['/etc/eventlircd.d/ps3remote.evmap']
-
-http://dl.dropbox.com/u/960809/PS3-yaVDR/ps3remote.conf['/etc/init/ps3remote.conf']
-
-.Eintrag in der '/lib/udev/rules.d/98-eventlircd.rules'
-----
-[...]
-ATTRS{name}=="PS3 Remote", \
-  ENV{eventlircd_enable}="true", \
-  ENV{eventlircd_evmap}="ps3remote.evmap"
-[...]
-----
+Die "PS3 Remote BD" kann nach dem einmaligen Pairen direkt genutzt werden. Ihre Tasten werden über die '/etc/eventlircd.d/ps3remote.evmap' konfiguriert.
 
 
 
