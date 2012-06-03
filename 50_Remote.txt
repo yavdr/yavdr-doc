@@ -788,6 +788,7 @@ sudo bluez-simple-agent hci<X> <adresse>
 
 .Für Geräte wie die PS3 Remote oder andere Bluetooth-Fernbedienungen und Tastaturen ohne default-Pin:
 -----
+sudo bluez-test-device create <adresse>
 sudo bluez-test-device trusted <adresse> yes
 -----
 
