@@ -37,7 +37,7 @@ Da manche Geräte eindeutig erkannt werden können (zum Beispiel USB Geräte), k
 
 Eventlircd kann geräte- oder treiberabhängig eine Übersetzungstabelle mitgegeben werden, um die Tastenbelegung anzupassen. (sogenannte <<evmaps,evmaps>>)
 
-Lircd footnote:[Der LIRC-Daemon] kann man über den Switch footnote:[Das Startargument] --uinput footnote:[User Level Input Subsystem - eine Schnittstelle, um Eingaben aus dem Userland an den Kernel zu übermitteln] anweisen seine Tastendrücke an ein Gerät unter '/etc/input/'  zu übergeben. Damit kann dann lircd parallel zu anderen Eingabegeräten gestartet werden und es ist so theoretisch auch möglich mehrere Instanzen von lircd für verschiedene Geräte mit unterschiedlicher Konfiguration gleichzeitig starten. Für USB-Lirc Empfänger wird über eine udev-Regel in '/lib/udev/rules.d/98-lircd.rules' und dem lircd_helper eine Instanz des Lirc-Daemon gestartet und die in der udev-Regel angegebenen Treiber und lircd.conf benutzt. Für diese Empfänger ist keine Konfiguration über das Webfrontend erforderlich. Weitere noch nicht OOTB unterstützte Lirc-Empfänger sollten entsprechend über ergänzende  udev-Regeln nachgepflegt werden.
+Lircd footnote:[Der LIRC-Daemon] kann man über den Switch footnote:[Das Startargument] --uinput footnote:[User Level Input Subsystem - eine Schnittstelle, um Eingaben aus dem Userland an den Kernel zu übermitteln] anweisen seine Tastendrücke an ein Gerät unter '/dev/input/'  zu übergeben. Damit kann dann lircd parallel zu anderen Eingabegeräten gestartet werden und es ist so theoretisch auch möglich mehrere Instanzen von lircd für verschiedene Geräte mit unterschiedlicher Konfiguration gleichzeitig starten. Für USB-Lirc Empfänger wird über eine udev-Regel in '/lib/udev/rules.d/98-lircd.rules' und dem lircd_helper eine Instanz des Lirc-Daemon gestartet und die in der udev-Regel angegebenen Treiber und lircd.conf benutzt. Für diese Empfänger ist keine Konfiguration über das Webfrontend erforderlich. Weitere noch nicht OOTB unterstützte Lirc-Empfänger sollten entsprechend über ergänzende  udev-Regeln nachgepflegt werden.
 
 [NOTE]
 .Bug bei Verwendung von --uinput
@@ -253,7 +253,7 @@ B: REL=103
 B: MSC=10
 ----
 <1> Die Tastenbelegung von direkt eingebundenen Eingabegeräten kann über <<evmaps, Evmaps>> angepasst werden
-<2> Wollte man die direkt vom Eingabegerät ausgegebenen Tastendrücke beobachten, müsste man nach dem Stoppen von eventlircd das Tool <<evtest,evtest>> mit dem Pfad '/etc/input/event3' bzw. '/etc/input/event4' aufrufen.
+<2> Wollte man die direkt vom Eingabegerät ausgegebenen Tastendrücke beobachten, müsste man nach dem Stoppen von eventlircd das Tool <<evtest,evtest>> mit dem Pfad '/dev/input/event3' bzw. '/dev/input/event4' aufrufen.
 
 .Eventlircd
 ----
