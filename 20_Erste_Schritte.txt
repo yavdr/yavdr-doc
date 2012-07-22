@@ -77,12 +77,6 @@ Falls nicht alle Tasten wie erwartet funktionieren oder gar keine Tastendrücke 
 Für eine Support-Anfrage im http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/[Forum] ist es sinnvoll gleich ein paar Informationen über seinen Empfänger zu sammeln und die Ausgaben der hier in den einzelnen Schritten gezeigten Befehle gleich mit zu posten. 
 ====================================================================
 
-[WARNING]
-.s2-liplianin-dkms
-=====================================================================
-Außerdem sollte man sicherstellen, dass das Paket *s2-liplianin-dkms* nicht installiert ist, da u.U. *eventlircd* und *ir-keytable* ansonsten (Stand 08.11.11) nicht richtig funktionieren. Im Zweifelsfall sollte man das Paket *v4l-dvb-dkms* <<install-packages,installieren>>, da es zum einen aktuellere Treiber und im Quellcode aktualisierte Keymaps einspielt und zum anderen *s2-liplianin-dkms* sicher verdrängt.
-=====================================================================
-
 Im Folgenden ein kurzer Leitfaden, der dabei hilft notwendige Informationen über den verwendeten Empfänger zu sammeln. Dies erleichtert die Suche im Internet und hilft dabei Support-Anfragen im http://vdr-portal.de oder beim Hinzufügen der eigenen Konfiguration zur yaVDR-Konfigurationssammlung im https://bugs.yavdr.com/projects/yavdr/issues[Bug- & Feature-Tracker von yaVDR] mit sinnvollen Informationen zu versehen.
 
 Je nach Empfänger empfehlen sich unterschiedliche Herangehensweisen bei der Konfiguration. Um den Aufwand zu verringern folgt man am besten den nachfolgenden Links zum eigenen Empfänger.

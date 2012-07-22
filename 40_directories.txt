@@ -15,11 +15,6 @@ Für lokal abgelegte Musik, Filme und Bilder existieren bereits Verzeichnisse un
 |Aufnahmen  |'/srv/vdr/video.00' footnote:[Bei mehren video.xx-Verzeichnissen entsprechend zusätzlich /srv/vdr/video.01, /srv/vdr/video.02 usw.]  |'/srv/share/vdr' |*recordings* 
 |==========================================================
 
-.TODO:
-****
-Samba in fstab usw.
-****
-
 [[avahi-mounter]]
 ==== Avahi-Mounter ====
 

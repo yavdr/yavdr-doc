@@ -1,5 +1,33 @@
 == Troubleshooting footnote:[http://vdr-wiki.de/wiki/index.php/YaVDR/Troubleshooting] ==
 http://vdr-wiki.de/wiki/index.php/YaVDR/Troubleshooting
+
+[[posting_files]]
+=== Posten von Dateien ===
+
+Lange Dateien und Logs sollten nicht einfach in einen Forumspost oder einen Bugreport kopiert werden. Eleganter ist es sie als Anhang ober bei einem Pastebin-Dienst zu hinterlegen.
+
+Ein praktisches Tool um Text an einen Pastebin-Dienst zu senden ist *pastebinit*, das aus dem gleichnamigen Paket <<install-packages,installiert>> werden kann. Die Benutzung ist denkbar einfach:
+
+.Weitergeben der Ausgabe eines Befehls an pastebinit mittels Pipe "|"
+----
+dmesg | pastebinit
+----
+
+.Posten einer Datei
+----
+sudo pastebinit /var/log/syslog
+----
+
+pastebinit gibt eine URL zurück, die auf den Paste verweist, und leicht in Forenposts und Bugreports verwendet werden kann.
+
+[CAUTION]
+.Probleme beim Pasten von Templates
+=====================================================================
+Die Clearsilver-Syntax der yaVDR-Templates wird of fälschlicherweise als PHP-Code erkannt und von vielen Pastebin-Diensten nicht akzeptiert.
+=====================================================================
+
+
+
 ////
 Wer yaVDR installiert, wird häufig darauf hoffen, mit wenig Hintergrundwissen schnell und "out of the box" einen funktionierenden VDR zu bekommen. Das mag in vielen Fällen auch klappen, sofern man die richtige Hardware und das nötige Quentchen Glück hat. Meiner Erfahrung nach geht es aber selten ganz glatt. Zu vielfältig sind die möglichen Fallstricke: defekte oder exotische Hardware, falsche Konfiguration usw.
 

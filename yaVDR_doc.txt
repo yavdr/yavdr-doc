@@ -1,7 +1,7 @@
 Dokumentation für yaVDR
 =======================
 :Author:   seahawk1986
-:Email:    seahawk986@hotmail.com
+:Email:    seahawk1986@hotmail.com
 :Date:     Mai 2012
 :Revision: v0.5
 :encoding: UTF-8
@@ -75,6 +75,8 @@ include::81_dynamite-plugin.txt[]
 include::98_Debugging.txt[]
 
 :leveloffset: -1
+
+include::90_XBMC.txt[]
 
 include::101_Linux.txt[]
 

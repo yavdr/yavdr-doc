@@ -17,9 +17,9 @@ Um anderen Clients den Zugriff (und die Steuerung wichtiger Funktionen per SVDRP
 
 Für den Zugriff über SVDRP (z.B. wenn ein anderer VDR mit <<streamdev-client,Streamdev-Client Plugin>> zugreifen können soll) muss die Datei '/etc/vdr/svdrphosts.conf' wie unter <<svdrp,SVDRP>> beschrieben angepasst werden.
 
-Für den Zugriff auf die von Streamdev-Server bereitgestellten Transportströme muss außerdem die Datei '/etv/vdr/plugins/streamdev-server/streamdevhosts.conf' angepasst werden. Diese Datei ist unter {version} <<template,getemplated>>.
+Für den Zugriff auf die von Streamdev-Server bereitgestellten Transportströme muss außerdem die Datei '/etv/vdr/plugins/streamdevhosts.conf' angepasst werden. Diese Datei ist unter {version} <<template,getemplated>>.
 
-.Beispieleinträge für '/etc/vdr/plugins/streamdev-server/streamdevhosts.conf'
+.Beispieleinträge für '/etc/vdr/plugins/streamdevhosts.conf' (bzw. das Ziel des symbolischen Links '/var/lib/vdr/plugins/streamdev-server/streamdevhosts.conf')
 ----
 127.0.0.1       <1>
 192.168.1.115   <2>
@@ -38,14 +38,14 @@ Der Streamdev-Server stellt auf Port 3000 eine Webinterface mit Links zu den von
 [TIP]
 .Radio-Sender streamen
 =====================================================================
-Möchte man Radio-Sender streamen, sollte man als Übertragungsformat unbedingt "ES" footnote:[**E**lementary **S**tream, siehe http://en.wikipedia.org/wiki/Elementary_stream] wählen.
+Möchte man Radio-Sender streamen, sollte man als Übertragungsformat "ES" footnote:[**E**lementary **S**tream, siehe http://en.wikipedia.org/wiki/Elementary_stream] wählen.
 Ein Beispiellink zum Stream sieht dann z.B. so aus: http://<IP_DES_VDR>:3000/ES/C-1-1093-28457
 =====================================================================
 
 [TIP]
 .extremux.sh
 =====================================================================
-Um die externremux.sh nutzen zu können, muss das Paket *mencoder* <<install-packages,nachinstalliert>> werden.
+Um die externremux.sh nutzen zu können, muss das Paket *mencoder* <<install-packages,nachinstalliert>> werden. Eine Beispieldatei ist bereits unter /var/lib/vdr/plugins/streamdev-server/externremux.sh zu finden.
 =====================================================================
 
 [[streamdev-client]]

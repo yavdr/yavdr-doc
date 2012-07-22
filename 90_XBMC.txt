@@ -1,0 +1,45 @@
+=== XBMC ===
+
+Um die Bedienung und die komplexen Konfigurationsmöglichkeiten von XBMC besser kennenzulernen sollte man sich im http://wiki.xbmc.org/index.php?title=Main_Page[XBMC-Wiki] einlesen.
+
+==== Konfigurationsdateien ====
+
+Die globalen Konfigurationsdateien, Addons und Skins von XBMC liegen unter '/usr/share/xbmc/' und '/usr/lib/xbmc/'. Die Dateien im Ordner '.xbmc' im *$HOME*-Verzeichnis für die Benutzereinstellungen - bei yaVDR für den User *vdr* demnach in '/var/lib/vdr/.xbmc/' haben immer Vorrang vor den globalen Konfigurationsdateien.
+
+.Überblick über wichtige Dateien und Verzeichnisse
+----
+/var/lib/vdr/.xbmc/
+├── addons                    # Heruntergeladene Addons
+├── temp                      # Temporäre Dateien, Logfiles
+│   └── xbmc.log
+└── userdata
+    ├── addon_data            # Addon-Einstellungen
+    ├── Database              # Datenbanken
+    │   ├── Addons15.db       # Addons
+    │   ├── CDDB              # CD-Metadaten
+    │   ├── Epg7.db           # EPG
+    │   ├── MyMusic18.db      # Musik
+    │   ├── MyPrograms3.db    # XBMC-Skripte
+    │   ├── MyVideos61.db     # Videos (Filme, Serien)
+    │   ├── TV20.db           # PVR-Addons
+    │   └── ViewModes4.db     # Ansichten in verschiedenen Modi von XBMC
+    ├── keymaps     
+    │   └── remote.xml        # Funktionen für die XBMC-internen Tastenamen
+    ├── playlists             # Playlisten
+    ├── advancedsettings.xml  # erweiterte Einstellungen (muss angelegt werden)
+    └── Lircmap.xml           # Mapping von eventlircd auf XBMC-interne Tastennamen
+----
+
+==== Log ====
+
+XBMC erzeugt ein Log in '/var/lib/vdr/.xbmc/temp/xbmc.log'. Bei XBMC-Abstürzen und Fehlfunktionen sollte dieses möglichst zusammen mit der Problembeschreibung <<posting_files,gepostet>> werden.
+
+==== Fernbedienung, Tastatur und Maus ====
+
+Die Tastatur wird über die '/usr/share/xbmc/system/keymaps/keyboard.xml' konfiguriert. Möchte man Anpassungen vornehmen sollte man eine Kopie davon in '/var/lib/vdr/.xbmc/userdata/keymaps/' erstellen und dort bearbeiten. Zur Syntax siehe http://wiki.xbmc.org/index.php?title=Keymap.xml[Keymap.xml im XBMC-Wiki]
+
+Die Konfiguration der Fernbedienung in XBMC erfolgt über zwei getemplatete Dateien:
+
+[horizontal]
+Lircmap.xml:: Durch die '/var/lib/vdr/.xbmc/userdata/Lircmap.xml' werden die Tastennamen, die durch eventlircd ausgeliefert werden XBMC-internen Tastennamen zugewiesen.footnote:[http://wiki.xbmc.org/index.php?title=Userdata/lircmap.xml]
+remote.xml:: In der '/var/lib/vdr/.xbmc/userdata/keymaps/remote.xml' erfolgt dann die Funktionszuweisung der Tasten abhängig vom Kontext in XBMC.

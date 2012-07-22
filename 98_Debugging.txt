@@ -12,4 +12,20 @@ restart vdr
 exit
 ----
 
-Beim nächsten Crash des VDR sollte in '/var/log/vdr/' ein Backtrace des Segfaults erstellt werden.
+Beim nächsten Crash des VDR sollte in '/var/log/vdr/' ein Coredump erstellt werden.
+
+Zum erzeugen des Backtrace wird gdb verwendet. Man übergibt das Programm und den Pfad zum Coredump:
+
+----
+sudo gdb vdr-dbg /var/log/vdr/core.<PID>
+----
+
+Nun befindet man sich in der interaktiven Shell von gdb. Hier stehen viele Befehle zur Verfügung um den Coredump zu analysieren.footnote:[Eine kurze Übersicht der verfügbaren Befehle findet man z.B. hier: http://www.yolinux.com/TUTORIALS/GDB-Commands.html[GDB-Commands]]
+
+Einen kompletten Backtrace kann man nun so erzeugen:
+
+----
+bt full
+----
+
+Mit "q" verlässt man gdb wieder.
