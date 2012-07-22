@@ -256,7 +256,7 @@ B: REL=103
 B: MSC=10
 ----
 <1> Die Tastenbelegung von direkt eingebundenen Eingabegeräten kann über <<evmaps, Evmaps>> angepasst werden
-<2> Wollte man die direkt vom Eingabegerät ausgegebenen Tastendrücke beobachten, müsste man nach dem Stoppen von eventlircd das Tool <<evtest,evtest>> mit dem Pfad '/etc/input/event3' bzw. '/etc/input/event4' aufrufen.
+<2> Wollte man die direkt vom Eingabegerät ausgegebenen Tastendrücke beobachten, müsste man nach dem Stoppen von eventlircd das Tool <<evtest,evtest>> mit dem Pfad '/dev/input/event3' bzw. '/dev/input/event4' aufrufen.
 
 .Eventlircd
 ----
