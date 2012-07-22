@@ -1,6 +1,23 @@
 [[tipps]]
 == Tipps und Tricks ==
 
+[[umask]]
+=== Zugriffsrechte für Aufnahmen ===
+Für bestimmte Anwendungsfälle ist es praktisch, wenn auch andere User Schreibrechte für die vom VDR erstellten Aufnahmen haben (z.B. weil man dann Projektdaten für Schnittprogramme direkt im Aufnahmeordner ablegen kann).
+Eine mögliche Lösung ist die fraglichen User der Gruppe *vdr* hinzuzufügen und die umask, mit der Dateien vom VDR erstellt werden anzupassen.
+
+.Hinzufügen eines Users zur Gruppe *vdr*
+----
+sudo adduser <username> vdr
+----
+
+.umask für den VDR anpassen
+Folgende Zeile muss dann noch (am besten über ein <<template,custom Template>>) in die '/etc/default/vdr' eingefügt werden:
+
+----
+umask 002
+----
+
 [[samba_win]]
 === Samba und Windows ===
 
