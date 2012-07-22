@@ -2,10 +2,13 @@
 
 Kein VDR wäre komplett ohne die Möglichkeit ihn bequem per Fernbedienung zu steuern.
 {version} unterstützt ein breites Spektrum von Eingabegeräten, sowohl Infrarot- als auch Funk-Fernbedienungen.
+
+////
 Ob deine Fernbedienung unterstützt wird, kannst du 
 ****
 hoffentlich bald hier lesen - Liste im yaVDR-Wiki sinnvoll?
 ****
+////
 
 [TIP]
 .Das yaVDR-Projekt lebt von deiner Mithilfe.
@@ -37,7 +40,7 @@ Da manche Geräte eindeutig erkannt werden können (zum Beispiel USB Geräte), k
 
 Eventlircd kann geräte- oder treiberabhängig eine Übersetzungstabelle mitgegeben werden, um die Tastenbelegung anzupassen. (sogenannte <<evmaps,evmaps>>)
 
-Lircd footnote:[Der LIRC-Daemon] kann man über den Switch footnote:[Das Startargument] --uinput footnote:[User Level Input Subsystem - eine Schnittstelle, um Eingaben aus dem Userland an den Kernel zu übermitteln] anweisen seine Tastendrücke an ein Gerät unter '/etc/input/'  zu übergeben. Damit kann dann lircd parallel zu anderen Eingabegeräten gestartet werden und es ist so theoretisch auch möglich mehrere Instanzen von lircd für verschiedene Geräte mit unterschiedlicher Konfiguration gleichzeitig starten. Für USB-Lirc Empfänger wird über eine udev-Regel in '/lib/udev/rules.d/98-lircd.rules' und dem lircd_helper eine Instanz des Lirc-Daemon gestartet und die in der udev-Regel angegebenen Treiber und lircd.conf benutzt. Für diese Empfänger ist keine Konfiguration über das Webfrontend erforderlich. Weitere noch nicht OOTB unterstützte Lirc-Empfänger sollten entsprechend über ergänzende  udev-Regeln nachgepflegt werden.
+Lircd footnote:[Der LIRC-Daemon] kann man über den Switch footnote:[Das Startargument] --uinput footnote:[User Level Input Subsystem - eine Schnittstelle, um Eingaben aus dem Userland an den Kernel zu übermitteln] anweisen seine Tastendrücke an ein Gerät unter '/dev/input/'  zu übergeben. Damit kann dann lircd parallel zu anderen Eingabegeräten gestartet werden und es ist so theoretisch auch möglich mehrere Instanzen von lircd für verschiedene Geräte mit unterschiedlicher Konfiguration gleichzeitig starten. Für USB-Lirc Empfänger wird über eine udev-Regel in '/lib/udev/rules.d/98-lircd.rules' und dem lircd_helper eine Instanz des Lirc-Daemon gestartet und die in der udev-Regel angegebenen Treiber und lircd.conf benutzt. Für diese Empfänger ist keine Konfiguration über das Webfrontend erforderlich. Weitere noch nicht OOTB unterstützte Lirc-Empfänger sollten entsprechend über ergänzende  udev-Regeln nachgepflegt werden.
 
 [NOTE]
 .Bug bei Verwendung von --uinput
@@ -80,7 +83,7 @@ das heisst nur neuere DVB Treiber benutzen rc-core
 Bei der yaVDR-Standardbelegung haben sich die Entwickler an der http://www.linuxtv.org/wiki/index.php/Remote_Controllers[Dokumentation von linux-media] (Tabelle am Ende der Seite) orientiert und benutzen diese als Referenz, eine Zuordnung von VDR-Taste und Tastenname kann man sich hier ansehen: https://bugs.yavdr.com/projects/1/wiki/IR_Integration_04#Eventmapping[neue IR-Integration für yaVDR 0.4]
 
 [[remote.conf]]
-===== remote.conf =====
+==== remote.conf ====
 
 [[namespace]]
 [CAUTION]
@@ -646,12 +649,34 @@ lircd2uinput ist eine Bridge, die die Tastendrücke von einem Lirc-Socket über 
 
 In der Voreinstellung reicht lircd2uinput jeden vom Lirc-Socket gelieferten Tastendruck durch. Falls es zum Prellen (z.B. doppelte Tastendrücke bei einfachem Tastendruck) von Fernbedienungstasten kommt oder die Fernbedienung zu schnell reagiert, kann man einen Repeat-Filter einsetzen. Dieser lässt sich im Webfrontend einfach auf der Seite zur Fernbedienung aktivieren und über die Konfigurationsdatei in /etc/yavdr/lircd2uinput.conf feinjustieren. Es stehen folgende Parameter zur Verfügung:
 
-****
-.TODO:
+----
+$ lircd2uinput -h
+Usage: lircd2uinput [options]
 
-Einstellungsmöglichkeiten beschreiben.
-
-****
+Options:
+  -h, --help            show this help message and exit
+  -f, --repeat-filter   enable repeat-filter
+  -s LIRCD_SOCKET, --lircd-socket=LIRCD_SOCKET
+                        choose lircd socket to listen on
+  -d, --debug           enable debug mode
+  -x, --xbmc            enable xbmc single keypress mode
+  -l MIN_GAP, --min-gap=MIN_GAP
+                        set minimum gap between repeated keystrokes (default
+                        150000 µs) - needs active repeat-filter
+  -u MAX_GAP, --max-gap=MAX_GAP
+                        set maximum gap between repeated keystrokes (default
+                        300000 µs) - needs active repeat-filter
+  -r WAIT_REPEATS, --min-repeats=WAIT_REPEATS
+                        number of repeats before using accelerated keypresses
+                        (default = 2) - needs active repeat-filter
+  -t TIMEOUT, --timeout=TIMEOUT
+                        release key after x ms no following key is received
+                        (default = 200 ms)
+  -a ACCELERATION, --acceleration=ACCELERATION
+                        acceleration to get from MAX_GAP to MIN_GAP. default
+                        value of 0.25 equals 4 repeated keystrokes to reach
+                        maximum speed - needs active repeat-filter
+----
 
 
 ==== IR-Server ====
@@ -687,6 +712,12 @@ Für Lirc-Empfänger, die über das Webfrontend konfiguriert werden, muss i.d.R.
 [[lirc_serial]]
 ===== Serielle Empfänger =====
 
+[CAUTION]
+.Probleme mit linux-media-dkms
+=====================================================================
+Mit der aktuellsten Version des Treiberpaketes *linux-media-dkms* kommt es zu Fehlern beim Laden des lirc_serial Moduls, so dass serielle Lirc-Empfänger nicht mehr funktionieren.
+=====================================================================
+
 Serielle Empfänger wie z.B. der Atric-Einschalter oder Homebrew-Empfänger lassen sich leider schlecht automatisch vorkonfigurieren, da sie mit beliebigen Fernbedienungen benutzt werden können. Trotzdem lassen sie sich in yaVDR mit wenig Aufwand zusammen mit <<lirc,LIRC>> einrichten.
 
 .Einstellungen im Webfrontend
@@ -694,7 +725,7 @@ Im Abschnitt <<wfe-remote,Fernbedienung>> des yaVDR-Webfrontend setzt man das H�
 Für Atric-Einschalter ist dies der Eintrag "*Home-brew (16x50 UART compatible serial port)*". Außerdem muss noch die Serielle Schnittstelle angegeben werden, über die der Empfänger angeschlossen ist. Die Nummerierung orientiert sich normalerweise an den Angaben im Handbuch des Mainboards.
 
 .Anpassen der lircd.conf
-Im nächsten Schritt muss dann noch eine passende lircd.conf nach '/etc/lirc/lircd.conf' kopiert werden. Die dort verwendeten Tastennamen sollten sich an der <<remote.conf, remote.conf>> orientieren, da die Fernbedienung dann sowohl mit dem VDR als auch unter XBMC ohne weitere Konfiguration verwendet werden kann.
+Im nächsten Schritt muss dann noch eine passende lircd.conf nach '/etc/lirc/lircd.conf' kopiert werden. Die dort verwendeten Tastennamen müssen <<namespace-faq, *Namespace-konform* zur input.h des Kernels>> sein und sollten sich (wenn sie zur Steuerung des VDR und XBMC genutzt werden sollen) an der <<remote.conf, remote.conf>> orientieren, da die Fernbedienung dann sowohl mit dem VDR als auch unter XBMC ohne weitere Konfiguration verwendet werden kann.
 
 .Beispiel alte lircd.conf zu neuer lircd.conf
 
@@ -750,7 +781,7 @@ Mit dem neuen Kernel 3.2.x in {version} werden die X10-Empfänger über rc-core 
 [CAUTION]
 .Änderung durch linux-media-dkms bzw. Kernel 3.2.x
 =====================================================================
-Nach Installation des Paketes *linux-media-dkms* werden die X10-Empfänger nicht mehr als tastaturartige Eingabegeräte erkannt, sondern durch ein neues Treibermodul (das ebenfalls den Namen *ati_remote* trägt) als <<ir-keytable,rc-core Gerät>> eingebunden. Dementsprechend sollte die <<rc-core_keys,Anpassung der Tastennamen>> dann über eigene Keytables erfolgen.
+Durch die im Kernel enthaltenen Treiber werden die X10-Empfänger nicht mehr als tastaturartige Eingabegeräte erkannt, sondern durch ein neues Treibermodul (das ebenfalls den Namen *ati_remote* trägt) als <<ir-keytable,rc-core Gerät>> eingebunden. Dementsprechend sollte die <<rc-core_keys,Anpassung der Tastennamen>> dann über eigene Keytables erfolgen.
 =====================================================================
 
 [NOTE]
