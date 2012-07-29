@@ -712,12 +712,6 @@ Für Lirc-Empfänger, die über das Webfrontend konfiguriert werden, muss i.d.R.
 [[lirc_serial]]
 ===== Serielle Empfänger =====
 
-[CAUTION]
-.Probleme mit linux-media-dkms
-=====================================================================
-Mit der aktuellsten Version des Treiberpaketes *linux-media-dkms* kommt es zu Fehlern beim Laden des lirc_serial Moduls, so dass serielle Lirc-Empfänger nicht mehr funktionieren.
-=====================================================================
-
 Serielle Empfänger wie z.B. der Atric-Einschalter oder Homebrew-Empfänger lassen sich leider schlecht automatisch vorkonfigurieren, da sie mit beliebigen Fernbedienungen benutzt werden können. Trotzdem lassen sie sich in yaVDR mit wenig Aufwand zusammen mit <<lirc,LIRC>> einrichten.
 
 .Einstellungen im Webfrontend
