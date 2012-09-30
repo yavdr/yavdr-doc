@@ -109,6 +109,20 @@ Diese Seite erlaubt es einzustellen wie der Ton durch den VDR und XBMC ausgegebe
 image:wfe/logos/video-display.png[height=32] 
 Hier kann die Auflösung und Nutzung der angeschlossenen Bildschirme eingestellt werden. Außerdem können hier die Deinterlacing-Methoden für HD- und SD-Material konfiguriert werden.
 
+[[overscan]]
+.Overscan
+
+Ab der http://www.nvidia.com/object/linux-display-amd64-302.07-driver.html[nVidia Treiberversion 302.07] hat sich die Einstellung der Overscan-Kompensation verändert. Anstatt nur einen Prozentwert anzugeben, kann man nun den sichtbaren Bildbereich als sogenannten Viewport mit Höhe, Breite und Abstand von der linken oberen Ecke des ausgegebenen Bildes definieren.
+
+Einen Überblick über die Bezeichnungen liefert die folgende Abbildung:
+
+image:wfe/overscan.png[height=512]
+
+Der ViewPortIn beschreibt die Bildgröße, die von der Grafikkarte berechnet wird. Das Bild wird dann auf die Größe des ViewPortOut (*X* x *Y*) skaliert und um *x* und *y* relativ zu linken oberen Bildecke versetzt ausgegeben.
+
+Zum Ermitteln der Parameter bietet es sich an, ein helles Bild anzeigen zu lassen, dann den ViewPortOut über *x* und *y* so zu verschieben, bis die linke obere Ecke richtig dargestellt wird und zuletzt die Skalierung (*X* und *Y*) so anzupassen, dass die rechte untere Ecke passt.
+Zum Ausprobieren kann man den Knopf image:wfe/test-viewport.png[height=24]  nutzen, der eine schnelle Vorschau der gewählten Overscan-Einstellungen zeigt.
+
 [[wfe-graphtft]]
 .GraphTFT
 Das GraphTFT-Plugin erlaubt es Statusinformationen und das Menü des VDR auf einem zweiten angeschlossenen Bildschirm auszugeben.
@@ -116,7 +130,7 @@ Das GraphTFT-Plugin erlaubt es Statusinformationen und das Menü des VDR auf ein
 [NOTE]
 .GraphTFT Aktivieren
 =====================================================================
-Momentan ist die Konfiguration eines zweiten Bildschirms in yaVDR noch etwas tricky. Hier ein Weg der am ehesten zum Erfolg führt:
+Momentan ist die Konfiguration eines zweiten Bildschirms in yaVDR noch etwas tricky. Hier ein Weg der am ehesten zum Erfolg führt, falls es zu Problemen kommt:
 
 * Monitore neu erkennen lassen ("Rescan Displays")
 * Neustart, damit die Reihenfolge der Anzeigen sicher stimmt
