@@ -175,7 +175,7 @@ image:wfe/plugins.png["Plugins nachinstallieren"]
 image:wfe/plugins_apt.png[APT-Befehle]
 Über die Buttons über der Plugin-Liste können die Paketquellen neu eingelesen (<<update-packages,"apt-get update">>), nicht mehr benötigte als Abhängigkeit installierte Pakete deinstalliert (<<autoremove,"apt-get autoremove">>) und lokale Kopien heruntergeladener Pakete gelöscht werden (<<clean,"apt-get clean">>).
 
-Über das mit einem Rechtsklick auf ein Paket in der Liste erreichbare Menü kann das jeweilige Paktet  installiert, entfernt oder (de)aktiviert werden.
+Über das mit einem Rechtsklick auf ein Paket in der Liste erreichbare Menü kann das jeweilige Paket  installiert, entfernt oder (de)aktiviert werden.
 
 image:wfe/plugin-installation.png["Paketinstallation"]
 
