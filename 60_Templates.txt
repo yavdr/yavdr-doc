@@ -45,7 +45,7 @@ image:Yavdr_templating-visualization.png["Templates in yaVDR",align="left"] foot
 Anhand der Konfigurationsdatei für vdr-addon-acpiwakeup soll das Template-System an einem Beispiel verdeutlicht werden.
 Wir möchten, dass der VDR jeden Tag um 19:45 aufwacht, damit das EPG aktualisiert und der VDR die Gelegenheit hat nach neuen Treffern für die Suchtimer zu suchen. Außerdem müssen wir ihn dann nicht extra einschalten, wenn wir die Tagesschau sehen wollen.
 
-Die Datei '/etc/vdr/vdr-addon-acpiwakeup.conf' sieht im Auslieferungszustand in so aus footnote:[Wenn im Webfrontend acpi-wakeup aktiviert ist]:
+Die Datei '/etc/vdr/vdr-addon-acpiwakeup.conf' sieht im Auslieferungszustand so aus footnote:[Wenn im Webfrontend acpi-wakeup aktiviert ist]:
 
 -------------------------------------
 #################################################################################
