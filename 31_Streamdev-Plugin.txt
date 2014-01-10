@@ -45,7 +45,7 @@ Ein Beispiellink zum Stream sieht dann z.B. so aus: http://<IP_DES_VDR>:3000/ES/
 [TIP]
 .extremux.sh
 =====================================================================
-Um die externremux.sh nutzen zu können, muss das Paket *mencoder* <<install-packages,nachinstalliert>> werden. Eine Beispieldatei ist bereits unter /var/lib/vdr/plugins/streamdev-server/externremux.sh zu finden.
+Um die externremux.sh nutzen zu können, muss das Paket *mencoder* <<install-packages,nachinstalliert>> werden. Eine Beispieldatei ist bereits unter /usr/share/doc/vdr-plugin-streamdev-server/examples/externremux.sh.gz zu finden und kann nach /var/lib/vdr/plugins/streamdev-server/externremux.sh entpackt werden
 =====================================================================
 
 [[streamdev-client]]
