@@ -52,20 +52,6 @@
   </title>
 </xsl:template> -->
 <!-- Footer -->
-<xsl:template name="user.footer.content">
-<div class="footer">
-<script type="text/javascript">
-    var pkBaseURL = (("https:" == document.location.protocol) ? "https://www.yavdr.org/pywyk/" : "http://www.yavdr.org/pywyk/");
-    document.write(unescape("%3Cscript src='" + pkBaseURL + "piwik.js' type='text/javascript'%3E%3C/script%3E"));
-</script><script type="text/javascript">
-try {
-var piwikTracker = Piwik.getTracker(pkBaseURL + "piwik.php", 1);
-piwikTracker.trackPageView();
-piwikTracker.enableLinkTracking();
-} catch( err ) {}
-</script><noscript><p><img src="http://www.yavdr.org/pywyk/piwik.php?idsite=1" style="border:0" alt="" /></p></noscript>
-        </div>
-</xsl:template>
 <!--
 End of customization -->
 <xsl:param name="navig.graphics.path">images/icons/</xsl:param>

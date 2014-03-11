@@ -26,7 +26,11 @@ pastebinit gibt eine URL zurück, die auf den Paste verweist, und leicht in Fore
 Die Clearsilver-Syntax der yaVDR-Templates wird of fälschlicherweise als PHP-Code erkannt und von vielen Pastebin-Diensten nicht akzeptiert.
 =====================================================================
 
+[[extra_dvb_drivers]]
+=== Zusätzliche DVB-Treiber ===
 
+Bevor man zusätzliche Treiberpakete installiert sollte man nachsehen, ob eine neuere Kernelversion, die über den https://wiki.ubuntu.com/Kernel/LTSEnablementStack[LTS Enablement Stack] beziehen kann bereits Unterstützung für die gewünschte DVB-Karte mitbringt.
+Für {version} stehen zwei zusätzliche Treiberpakete zur Verfügung: *linux-media-dkms*  und *media-build-experimental-dkms*
 
 ////
 Wer yaVDR installiert, wird häufig darauf hoffen, mit wenig Hintergrundwissen schnell und "out of the box" einen funktionierenden VDR zu bekommen. Das mag in vielen Fällen auch klappen, sofern man die richtige Hardware und das nötige Quentchen Glück hat. Meiner Erfahrung nach geht es aber selten ganz glatt. Zu vielfältig sind die möglichen Fallstricke: defekte oder exotische Hardware, falsche Konfiguration usw.

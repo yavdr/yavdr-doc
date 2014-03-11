@@ -22,16 +22,16 @@ damit die Hardware-Unterstützung für die kommenden Versionen verbessert werden
 
 {version} benutzt standardmäßig eventlircd, ein Dienst der dabei hilft die unterschiedlichen Treiber und Eingabegeräte unter einen Hut zu bringen. Es dient sozusagen als Filter, der die Tastendrücke aller konfigurierten Fernbedienungen auswertet, auf Wunsch die Tastencodes vereinheitlicht und an den VDR weiterreicht.
 
-===== Die Theorie footnote:[http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/p1009867-yavdr-0-4-eventlircd-und-fernbedienungen-die-grundlagen/#post1009867] =====
+===== Grundlagen footnote:[http://www.vdr-portal.de/board60-linux/board14-betriebssystem/board96-yavdr/p1009867-yavdr-0-4-eventlircd-und-fernbedienungen-die-grundlagen/#post1009867] =====
 
-http://code.google.com/p/eventlircd[*Eventlircd*] übersetzt Tastendrücke von Eingabegeräten footnote:[bzw. "Eventgeräten", also Eingabegeräte, für die durch den Treiber ein Eintrag unter '/dev/input/' erstellt wird] in Lirc-Tastendrücke. Im Prinzip ähnelt die Funktion dem remote-plugin mit dem Unterschied, dass nur Tasten ausgewertet werden, denen über eine Keymap footnote:[Konfigurationsdatei, die für die Übersetzung des Tastendrucks auf der Fernbedienung in eine Taste am Computer herangezogen wird] eine Funktion zugewiesen wurde.
+http://code.google.com/p/eventlircd[*Eventlircd*] übersetzt Tastendrücke von Kernel Input Devices footnote:[bzw. Eingabegeräte, für die durch den Treiber ein Eintrag unter '/dev/input/' erstellt wird] in Lirc-Tastendrücke. Im Prinzip ähnelt die Funktion dem remote-plugin mit dem Unterschied, dass zuvor den Tasten über eine evmap footnote:[Konfigurationsdatei, die für die Übersetzung des Tastendrucks auf der Fernbedienung in eine Taste am Computer herangezogen wird] eine andere Funktion zugewiesen werden kann.
 
 Solche Eingabegeräte sind zum Beispiel normale Tastaturen oder auch Fernbedienungen die über ihre Treiber als Tastaturen eingebunden werden. Fernbedienungen welche an DVB Karten angeschlossen sind, melden sich teilweise ebenfalls als Tastaturen, außerdem existiert eine neue Schnittstelle für Fernbedienungen namens rc-core, auf welche Jarod Wilson footnote:[Neuer Maintainer des Lirc Projektes] schon einige der bestehenden Lirc Treiber und auch einige Konfigurationen der mit DVB Geräten ausgelieferten Fernbedienungen portiert hat.
 Auch diese Schnittstelle - auch wenn sie kein normaler Tastaturtreiber ist - stellt ihre Geräte als Eingabegeräte zur Verfügung.
 
-Eingaben von Zeigegeräten (wie Maus, Touchpad, Grafiktablett), die ebenfalls über die Input-Schnittstelle arbeiten, versucht eventlircd unverändert durchzuleiten.
+Eingaben von Zeigegeräten (wie Maus, Touchpad, Grafiktablett), die ebenfalls über die Input-Schnittstelle arbeiten, versucht eventlircd unverändert durchzuleiten (es sei denn sie werden über eine evmap auf ein Key-Event umgemappt.
 
-Eventlircd erkennt Eingabegeräte über <<udev,udev>>, auch wenn sie erst nach dem Start des Dämon eingebunden oder angeschlossen werden. Hier liegt einer der Vorteile dieser Lösung, da eventlircd ab seinem Start einen Lirc Socket für den VDR bereitstellt, und nach und nach die ihm zugeordneten Geräte als Eingabegeräte einbinden kann. 
+Eventlircd erkennt Eingabegeräte über ein <<udev,udev>>-Attribut, auch wenn sie erst nach dem Start des Dämon eingebunden oder angeschlossen werden. Hier liegt einer der Vorteile dieser Lösung, da eventlircd ab seinem Start einen Lirc Socket für den VDR bereitstellt, und nach und nach die ihm zugeordneten Geräte als Eingabegeräte einbinden kann. 
 
 Um welche Geräte es sich kümmern soll, erkennt eventlircd anhand von Attributen, welche man den Geräten bei der Initialisierung über <<udev-rules,udev-Regeln>> mitgeben kann. Für manche Geräte funktioniert das schon in der Standardkonfiguration (rc-core, Eingabegeräte die das yaVDR-Team selber besitzt, Konfigurationen die an das yaVDR-Team weitergegeben wurden). 
 Die Ausgabe erfolgt nach Verarbeitung durch Eventlircd für die Anwendungen dann so, als würde sie von einem einzigen Gerät stammen.
@@ -54,7 +54,7 @@ Leider scheinen aktuelle Lirc-Versionen unter einem Bug bei der Übergabe von Ta
 =====================================================================
 image:EventlircdOrganigrammconfigfilesyaVDR0.5.png["Übersicht der Eventlircd",align="center"]
 
-Je nachdem welchen Anschluss und welche Treiber die eigenen Empfänger bzw. TV-Karten verwenden kann der Weg eines Tastendrucks also sehr unterschiedlich sein, bis er von eventlircd ausgewertet wird. Dieses Hintergrundwissen ist dann von Vorteil, wenn die Tastenbelegung die Eventlircd ausgibt nicht zur *remote.conf* von yaVDR passt.
+Je nachdem welchen Anschluss und welche Treiber die eigenen Empfänger bzw. TV-Karten verwenden kann der Weg eines Tastendrucks also sehr unterschiedlich sein, bis er von eventlircd ausgewertet wird. Dieses Hintergrundwissen ist dann von Vorteil, wenn die Tastenbelegung, die Eventlircd ausgibt nicht zur *remote.conf* von yaVDR passt.
 =====================================================================
 
 ////
@@ -167,7 +167,7 @@ Die Zuordnung von Funktion im VDR und Tastennamen sieht bei {version} so aus:
 evmaps sollten nur für Geräte angelegt werden, die keine andere Möglichkeit bieten die Tastennamen zu verändern. Für Lirc- und rc-core-Geräte sollte man vorzugsweise eine entsprechene Konfigurationsdatei (<<lirc,lircd.conf>> bzw. <<ir-keytable_keymap,Keymap>>) zur korrekten Belegung der Tasten erstellen.
 =====================================================================
 
-Alle Tastendrücke, die an Eventlirc weitergereicht werden, können durch Übersetzungstabellen, die sogenannten https://bugs.yavdr.com/projects/yavdr-remote/repository/revisions/master/show/evmaps[evmaps] footnote:[Eventmaps] noch verändert werden, bevor sie an den VDR übergeben werden. Sie befinden sich unter '/etc/eventlircd.d/' und sind entweder nach dem Gerätenamen, dem Treiber (z.B. 'ircore.evmap' für Geräte, die mit *rc-core* als Treiber arbeiten) oder nach der Produkt- und Hersteller-ID aus ihrer <<udev-rules,udev-Regel>> benannt.
+Alle Tastendrücke, die an Eventlirc weitergereicht werden, können durch Übersetzungstabellen, die sogenannten https://bugs.yavdr.com/projects/yavdr-remote/repository/revisions/master/show/evmaps[evmaps] footnote:[Eventmaps] noch verändert werden, bevor sie an den VDR übergeben werden. Sie befinden sich unter '/etc/eventlircd.d/' und sind entweder nach dem Gerätenamen, dem Treiber oder nach der Produkt- und Hersteller-ID aus ihrer <<udev-rules,udev-Regel>> benannt.
 
 .Beispiel für die Syntax in einer evmap:
 ----
@@ -607,7 +607,7 @@ and the attributes from one single parent device.
 [[irw]]
 ==== irw ====
 
-Wenn eventlircd <<status-remoted,gestartet>> ist, zeigt der Befehl *sudo irw* die vom VDR erkannten Tastendrücke an. Die Ausgabe der erkannten Tastendrücke kann per *STRG + c* <<control-c,abgebrochen>> werden.
+Wenn eventlircd <<status-remoted,gestartet>> ist, zeigt der Befehl *sudo irw* die an den VDR gesendeten Tastendrücke an. Die Ausgabe der erkannten Tastendrücke kann per *STRG + c* <<control-c,abgebrochen>> werden.
 *irw* kann auch auf den Sockets von lircd lauschen, wenn man ihm den Pfad zu diesem als Argument übergibt.
 
 .irw bei eventlircd mit einer Hama MCE Remote
@@ -642,7 +642,7 @@ sudo irw /var/run/lirc/lircd.$(pidof lircd)
 <3> Name der Taste
 <4> Benutzte Fernbedienung aus der lircd.conf für die Tastenzuordnung
 
-
+[[lircd2uinput]]
 ==== lircd2uinput ====
 
 lircd2uinput ist eine Bridge, die die Tastendrücke von einem Lirc-Socket über ein virtuelles HID-Gerät weiterreichen kann. Dieses kann dann z.B. über eine udev-Regel von eventlircd eingebunden und genutzt werden. Unter {version} wird dies für alle Lirc-Empfänger und den irserver genutzt. Auch andere Dienste, die über einen Lirc-Socket Tastendrücke liefern können so eingebunden werden.
@@ -766,7 +766,59 @@ Bei Igor USB-Empfängern darf Lirc nicht für den Igor über das Webfrontend akt
 [[lirc_yausbir]]
 ===== yaUsbIr =====
 
-Der yaUsbIr-Empfänger footnote:[siehe [http://www.vdr-portal.de/board18-vdr-hardware/board13-fernbedienungen/111753-yausbir-lirc-f%C3%A4higer-usb-ir-empf%C3%A4nger-sender-mit-einschalter/?s=fe5464cec7949ed10dfae76056ae1404df47e899]] ist ein IR-Empfänger und Einschalter, der über USB angeschlossen wird. Damit stellt er eine interessante Alternative zu den bislang nur mit Serieller Schnittstelle verfügbaren Atric IR-Einschaltern dar. Vermutlich aufgrund eines Bugs in der libusb (es treten unter Ubuntu falsche "remove" Events auf) kann er nicht über udev-Regeln eingerichtet werden, sondern muss im yaVDR-Webfrontend von Hand aktiviert werden.
+Der yaUsbIr-Empfänger footnote:[siehe http://www.vdr-portal.de/board18-vdr-hardware/board13-fernbedienungen/111753-yausbir-lirc-f%C3%A4higer-usb-ir-empf%C3%A4nger-sender-mit-einschalter/?s=fe5464cec7949ed10dfae76056ae1404df47e899] ist ein IR-Empfänger und Einschalter, der über USB angeschlossen wird. Damit stellt er eine interessante Alternative zu den bislang nur mit Serieller Schnittstelle verfügbaren Atric IR-Einschaltern dar. Vermutlich aufgrund eines Bugs in der libusb (es treten unter Ubuntu falsche "remove" Events auf) kann er nicht über udev-Regeln eingerichtet werden, sondern muss im yaVDR-Webfrontend von Hand aktiviert werden.
+
+[[lirc_atric_usb]]
+===== Atric IR-WakeupUSB =====
+
+Die Grundkonfiguration für den Atric IR-WakeupUSB Empfänger kann über das Webfrontend vorgenommen werden (Eintrag *Atric IR-WakeupUSB*). Der Empfänger ist durch eine Udev-Regel immer unter dem Symlink /dev/irman erreichbar.
+
+Zum Anlernen einer Fernbedienung (nachdem das Protokoll mit Hilfe des Konfigurationsprogrammes festgelegt wurde) führt man diese Befehle aus und folgt den Anweisungen von irrecord. Die gewählten Tastennamen sollten dabei dem yaVDR-<<namespace, Namespace>> entsprechen:
+----
+$ cd /etc/lirc/
+$ sudo stop lircd
+$ sudo irrecord -H irman -d /dev/irman lircd.conf
+----
+
+Nach dem Anlernen kann man lircd wie gewohnt starten:
+----
+sudo start lircd
+----
+
+[[usb_irmp]]
+==== IRMP Empfänger ====
+
+Die USB-IRMP-Empfänger benötigen das Paket *yavdr-addon-irmp*. Bei der Installation werden alle nötigen Programme wie irmplircd und ir_control mitinstalliert. Wird das Gerät anhand seine Attribute ATTRS\{idVendor\}=="16c0", ATTRS\{idProduct\}=="27d9" über udev erkannt, wird der Upstart-Job /etc/init/irmplircd gestartet.
+
+Damit die empfangenen Tastendrücke von <<lircd2uinput,lircd2uinput>> an <<evenlircd,eventlircd>> weitergegeben werden können, muss in der '/etc/default/irmplircd' noch der Pfad für eine passende Keymap als Wert für Variable *KEYMAP* angegeben werden (für weitere Informationen zur Konfiguration siehe '/usr/share/doc/irmplircd/README.Debian').
+
+Die nötige Zuordnung erhält man durch das Auslesen der Scancodes mittels irw vom Sockel von irmplircd:
+
+----
+$ sudo irw /var/run/irmplircd
+<1>            <2> <3>           <4>
+0250af00f200 0 0250af00f200 IRMP
+0250af00b600 0 0250af00b600 IRMP
+[...]
+
+----
+<1> Scancode
+<2> n-te Wiederholung
+<3> gemappter Tastencode (momentan kein Mapping vorhanden)
+<4> Name
+
+Daraus lässt sich dann eine Keymap erstellen, die z.B. so aussieht:
+
+----
+<1>            <2>
+0250af00f200 KEY_UP
+0254ab002c00 KEY_RIGHT
+[...]
+----
+<1> Scancode
+<2> Tastenname
+
+Die verwendeten Tastennamen müssen <<namespace-faq, *Namespace-konform* zur input.h des Kernels>> sein und sollten sich (wenn sie zur Steuerung des VDR und XBMC genutzt werden sollen) an der <<remote.conf, remote.conf>> orientieren, da die Fernbedienung dann sowohl mit dem VDR als auch unter XBMC ohne weitere Konfiguration verwendet werden kann.
 
 [[X10]]
 ==== X10-Fernbedienungen ====
@@ -781,13 +833,13 @@ Durch die im Kernel enthaltenen Treiber werden die X10-Empfänger nicht mehr als
 [NOTE]
 .X10-Fernbedienungen mit Scrollrad
 =====================================================================
-Momentan unterstützt das standardmäßig von {version} genutzte Treibermodul ati_remote das Scrollrad bestimmter X10-Fernbedienungen nicht. Einen Vorschlag für einen möglichen Patch kann man hier finden: [http://www.vdr-portal.de/board18-vdr-hardware/board13-fernbedienungen/p1059478-fortgeschrittenes-linux-problem-mit-der-scrollrad-x10/#post1059478]
+Das standardmäßig von {version} genutzte Treibermodul ati_remote unter dem Kernel 3.2 untestützt das Scrollrad bestimmter X10-Fernbedienungen noch nicht. Im Paket *media-build-experimental-dkms* sind aktualisierte Treiber enthalten, die die Unterstützung für das Scrollrad nachrüsten. Alternativ kann über den Ubuntu LTS Enablement Stack ein Kernel >= 3.5 installiert werden. footnote:[siehe http://wiki.ubuntuusers.de/Kernel#Backport-Kernel]
 =====================================================================
 
 [[bluetooth]]
 ==== Bluetooth-Geräte ====
 
-Prinzipiell ist es unter yaVDR möglich auch Bluetooth-Geräte, die als Eingabegerät erkannt werden zur Steuerung zu nutzen. Dabei sollte man sich überlegen ob man das Gerät nur als Tastatur bzw. Maus oder als Fernbedienung für VDR und XBMC nutzen will - letzteres erfoldert etwas Bastelarbeit mit udev-Regeln, wie weiter unten beschrieben.
+Prinzipiell ist es unter yaVDR möglich auch Bluetooth-Geräte, die als Eingabegerät erkannt werden zur Steuerung zu nutzen. Dabei sollte man sich überlegen ob man das Gerät nur als Tastatur bzw. Maus oder als Fernbedienung für VDR und XBMC nutzen will - letzteres erfoldert etwas Bastelarbeit mit udev-Regeln, damit die Geräte an eventlircd gebunden werden.
 
 [[bt-pairing]]
 ===== Pairing =====
@@ -799,7 +851,7 @@ Damit ein Bluetooth-Gerät mit dem Rechner kommunizieren kann, muss es erst Auth
 hciconfig
 -----
 
-.Suche nach Geräten (müssen sichtbar sein, für die PS3 Remote BD muss "Start" + "Enter" gleichzeitig gedrückt werden)
+.Suche nach Geräten (diese müssen sichtbar sein, für die PS3 Remote BD muss "Start" + "Enter" gleichzeitig gedrückt werden)
 -----
 sudo bluez-test-discovery
 -----

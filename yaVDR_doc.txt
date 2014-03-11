@@ -72,6 +72,8 @@ include::80_restfulapi-plugin.txt[]
 
 include::81_dynamite-plugin.txt[]
 
+include::85_Logs.txt[]
+
 include::98_Debugging.txt[]
 
 :leveloffset: -1
