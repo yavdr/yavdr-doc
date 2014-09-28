@@ -11,4 +11,4 @@ Die Konfigurationsdateien befinden sich unter '/etc/samba/smb.conf', die die vor
 * '/etc/samba/smb.conf.yavdr.recordings' für Aufnahmen
 * '/etc/samba/smb.conf.yavdr.video' für Videos
 
-Eigene Freigaben kann man z.B. in der 'smb.conf.yavdr.custom' definieren. Wie ein solcher Eintrag aussehen muss  und welche Optionen es dabei gibt, kann man in den Wiki-Artikelm zum http://wiki.ubuntuusers.de/Samba_Server[Samba-Server] und zur http://wiki.ubuntuusers.de/Samba_Server/smb.conf[smb.conf] auf http://www.ubuntuusers.de nachlesen.
+Eigene Freigaben kann man z.B. in der 'smb.conf.yavdr.custom' definieren. Wie ein solcher Eintrag aussehen muss und welche Optionen es dabei gibt, kann man in den Wiki-Artikeln zum http://wiki.ubuntuusers.de/Samba_Server[Samba-Server] und zur http://wiki.ubuntuusers.de/Samba_Server/smb.conf[smb.conf] auf http://www.ubuntuusers.de nachlesen.
