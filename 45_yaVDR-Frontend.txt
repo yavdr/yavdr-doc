@@ -1,0 +1,49 @@
+[[frontend]]
+=== yaVDR-Frontend ===
+
+Für {version} wurde ein Frontend-Skript erstellt, dass alle VDR-Frontends und
+KODI verwalten kann, statt wie bislang auf mehrere von einander Abhängige Upstart-Jobs
+zurückzugreifen.
+Das Frontend-Skript kommuniziert über das dbus2vdr-Plugin mit dem VDR. Es erkennt,
+welches der gängigen Software-Ausgabeplugins aktiv ist und kann dementsprechend
+dafür sorgen, dass das Ausgabefrontend zum richtigen Zeitpunkt gestartet wird.
+Die Konfiguration des Skriptes erfolgt über die Konfigurationsdatei
+'/etc/default/yavdr-frontend'.
+
+==== automatisches Attachen des Frontend ====
+Der VDR läuft häufig ohne Benutzerinteraktion, wenn er für eine Aufnahme
+geweckt und danach weder automatisch heruntergefahren wird.
+Daher bietet es sich an, das Software-Frontend nur zu starten, wenn tatsächlich
+Benutzereingaben erfolgen. Dies erlaubt es den Stromverbrauch des Systems
+zu senken und dadurch die entstehende Abwärme zu reduzieren.
+Das Frontend-Skript für {version} bietet daher mehrere Einstellungen:
+ * auto: Aktiviere das Frontend nur, wenn der VDR nicht für einen Timer gestartet wird, ansonsten erst bei Tastendruck
+ * always: Aktiviere das Frontend immer beim Start
+ * never: Das Frontend bleibt inaktiv, bis eine Taste auf der Fernbedienung gedrückt wird.
+
+Desweiteren lässt sich das momentan aktive Frontend auch über DBus-Befehle steuern:
+----
+vdr-dbus-send /frontend attach <1>
+vdr-dbus-send /frontend detach <2>
+vdr-dbus-send /frontend toggle <3>
+----
+<1> aktiviere das Frontend
+<2> deaktiviere das Frontend
+<3> wechsle zwischen aktivem und inaktivem Frontend
+
+Für OpenBox steht auch der Hotkey KEY_HOMEPAGE zum (De-)aktivieren und
+ALT+A sowie ALT+D zum gezielten An- und Abschalten des Frontends zur Verfügung.
+
+==== Starten externer Anwendungen ====
+Wenn man Programme nutzen möchte, für die es nicht gewünscht ist, dass das System
+z.B. auf die Fernbedienung reagiert (z.B. Spiele über Steam), lässt sich ein spezieller
+Modus für das Frontend-Skrip akivieren:
+----
+vdr-dbus-send /frontend begin_external <1>
+vdr-dbus-send /frontend end_external   <2>
+----
+<1> das Frontend-Skript reagiert auf keine weiteren Befehle für VDR bzw. KODI, bis end_external aufgerufen wird
+<2> beendet den Modus für ein externes Programm
+
+Für Programme, die über den app-switcher von {version} mit der Option standalone=true gestartet werden, wird dieser Modus automatisch gesetzt.
+
