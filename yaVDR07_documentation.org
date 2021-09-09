@@ -1,0 +1,1461 @@
+# -*- mode: org; -*-
+* Settings for Export :noexport:
+:DOCUMENT_OPTIONS:
+#+LANGUAGE: de
+#+TITLE: Ansible Playbooks für yaVDR
+#+Author: Alexander Grothe (seahawk1986)
+#+Email: seahawk1986@gmx.de
+# #+SETUPFILE: https://fniessen.github.io/org-html-themes/org/theme-readtheorg.setup
+#+SETUPFILE: org-html-themes/org/theme-readtheorg-local.setup
+#+OPTIONS: ^:nil
+#+MACRO: YAVDR_VERSION 0.7
+#+OPTIONS: auto-id:f toc:4
+# Local Variables:
+# org-src-preserve-indentation: t
+# End:
+#+PROPERTY: header-args :mkdirp yes :padline no :comments link
+#+STARTUP: latexpreview
+#+EXPORT_LATEX_CLASS: koma-article
+#+LATEX_HEADER: \usepackage[ngerman]{babel}
+#+LATEX_CLASS_OPTIONS: [a4paper,ngerman,koma,DIV=15,10pt,captions=tableheading,parskip=full]
+# #+LATEX_HEADER: \usepackage[BCOR=8.25mm]{typearea}
+#+LATEX_HEADER: \RequirePackage[ngerman=ngerman-x-latest]{hyphsubst}
+#+LATEX_HEADER: \usepackage{microtype}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage{parskip}
+#+LATEX_HEADER: \usepackage{listingsutf8}
+# #+LATEX_HEADER: \usepackage{librebaskerville}
+# #+LATEX_HEADER: \usepackage[bitstream-charter]{mathdesign}
+#+LATEX_HEADER: \usepackage{DejaVuSerif}
+#+LATEX_HEADER: \usepackage[defaultsans]{droidsans}
+#+LATEX_HEADER: \usepackage[defaultmono]{droidsansmono}
+#+LATEX_HEADER: \usepackage[unicode,pdfencoding=auto,breaklinks=true,colorlinks=true,linktoc=all]{hyperref}
+#+LATEX_HEADER: \usepackage{inconsolata}
+
+#+LaTeX_HEADER: \usepackage{paralist}
+#+LaTeX_HEADER: \let\itemize\compactitem
+#+LaTeX_HEADER: \let\description\compactdesc
+#+LaTeX_HEADER: \let\enumerate\compactenum
+#+LATEX_HEADER: \usepackage[margin=3.0cm]{geometry}
+#+LATEX_HEADER: \usepackage[ngerman]{babel}
+#+LATEX_HEADER: \usepackage{palatino}
+#+LATEX_HEADER: \usepackage{inconsolata}
+# #+LATEX_HEADER: \renewcommand*\ttdefault{pcr}
+#+LATEX_HEADER: \usepackage{rotating}
+#+LATEX_HEADER: \usepackage{paralist}
+#+LATEX_HEADER: \usepackage{tabularx}
+#+LATEX_HEADER: \usepackage{booktabs}
+#+LATEX_HEADER: \usepackage{titlesec}
+#+LATEX_HEADER: \usepackage[locale=DE,seperr,repeatunits=true,trapambigerr=false,tophrase={{ bis }}]{siunitx}
+#+LATEX_HEADER: \usemintedstyle{lovelace}
+#+LATEX_HEADER: \lstset{basicstyle=\ttfamily, columns=fullflexible, frame=single, breaklines=true, postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+#+LATEX_HEADER:         xleftmargin=17pt,
+#+LATEX_HEADER:         framexleftmargin=17pt,
+#+LATEX_HEADER:         framexrightmargin=5pt,
+#+LATEX_HEADER:         framexbottommargin=4pt,
+#+LATEX_HEADER:         breakatwhitespace=true,
+#+LATEX_HEADER: }
+#+LATEX: \defaultfontfeatures{Ligatures=TeX}
+#+LATEX: \renewcommand\arraystretch{1.5}
+#+LATEX_HEADER: \usepackage{parskip}
+#+LATEX_HEADER: \usepackage{url}
+#+LATEX_HEADER: \let\OldTexttt\texttt
+#+LATEX_HEADER: \renewcommand{\texttt}[1]{\OldTexttt{\path{#1}}}
+#+LATEX_HEADER: \setlength\emergencystretch{1em}
+# #+LATEX_HEADER_EXTRA:
+#+begin_src elisp
+(setq org-latex-toc-command "\\tableofcontents \\clearpage")
+#+end_src
+
+#+RESULTS:
+: \tableofcontents \clearpage
+
+#+BEGIN_SRC latex
+\newcommand*\justify{%
+  \fontdimen2\font=0.4em% interword space
+  \fontdimen3\font=0.2em% interword stretch
+  \fontdimen4\font=0.1em% interword shrink
+  \fontdimen7\font=0.1em% extra space
+  \hyphenchar\font=`\-% allowing hyphenation
+}
+
+\renewcommand{\texttt}[1]{%
+  \begingroup
+  \ttfamily
+  \begingroup\lccode`~=`/\lowercase{\endgroup\def~}{/\discretionary{}{}{}}%
+  \begingroup\lccode`~=`[\lowercase{\endgroup\def~}{[\discretionary{}{}{}}%
+  \begingroup\lccode`~=`.\lowercase{\endgroup\def~}{.\discretionary{}{}{}}%
+  \catcode`/=\active\catcode`[=\active\catcode`.=\active
+  \justify\scantokens{#1\noexpand}%
+  \endgroup
+}
+#+END_SRC
+
+#+EXCLUDE_TAGS: noexport
+:END:
+
+* TOC :TOC:noexport:
+- [[#einleitung][Einleitung]]
+  - [[#lizenz][Lizenz]]
+  - [[#vorwort][Vorwort]]
+  - [[#zur-syntax][Zur Syntax]]
+- [[#installation][Installation]]
+  - [[#systemvoraussetzungen][Systemvoraussetzungen]]
+  - [[#installation-des-basissystems][Installation des Basissystems]]
+  - [[#installation-von-yavdr-mit-ansible][Installation von yaVDR mit Ansible]]
+  - [[#erste-schritte-nach-der-installation][Erste Schritte nach der Installation]]
+- [[#grundlegendes-zum-system][Grundlegendes zum System]]
+  - [[#ssh][SSH]]
+  - [[#mit-erhöhten-rechten-arbeiten][Mit erhöhten Rechten Arbeiten]]
+  - [[#editoren][Editoren]]
+  - [[#paketverwaltung][Paketverwaltung]]
+  - [[#dienste][Dienste]]
+  - [[#logdateien][Logdateien]]
+  - [[#audioausgabe][Audioausgabe]]
+- [[#fernbedienungen][Fernbedienungen]]
+  - [[#vereinheitlichtes-schema-für-tastennamen][Vereinheitlichtes Schema für Tastennamen]]
+  - [[#ir-keytable][ir-keytable]]
+  - [[#lircd2uinput][lircd2uinput]]
+  - [[#eventlircd][eventlircd]]
+  - [[#lircd][lircd]]
+  - [[#tools-zum-debuggen-von-tastendrücken][Tools zum Debuggen von Tastendrücken]]
+- [[#netzwerkdienste][Netzwerkdienste]]
+  - [[#netzwerkfreigaben][Netzwerkfreigaben]]
+  - [[#nfs][NFS]]
+  - [[#samba][Samba]]
+- [[#ausgabe-mit-xorg][Ausgabe mit Xorg]]
+  - [[#zugriff-auf-die-systemd-user-session][Zugriff auf die Systemd User Session]]
+  - [[#yavdr-frontend][yavdr-frontend]]
+  - [[#programme-starten][Programme starten]]
+  - [[#mehrere-bildschirme][Mehrere Bildschirme]]
+- [[#vdr][VDR]]
+  - [[#bedienung-des-vdr][Bedienung des VDR]]
+  - [[#unterstützte-ausgabeplugins][Unterstützte Ausgabeplugins]]
+  - [[#konfiguration-des-vdr][Konfiguration des VDR]]
+- [[#kodi][KODI]]
+- [[#vdr-epg-daemon][vdr-epg-daemon]]
+  - [[#häufige-probleme][Häufige Probleme]]
+- [[#sundtek-treiber][Sundtek Treiber]]
+  - [[#start-des-vdr-verzögern-bis-alle-tuner-initialisiert-wurden][Start des VDR verzögern, bis alle Tuner initialisiert wurden]]
+  - [[#sundtek-tuner-automatisch-zur-laufzeit-des-vdr-einbinden-lassen][Sundtek-Tuner automatisch zur Laufzeit des VDR einbinden lassen]]
+
+* Einleitung
+:PROPERTIES:
+:CUSTOM_ID: einleitung
+:UNNUMBERED: t
+:END:
+** Lizenz
+:PROPERTIES:
+:CUSTOM_ID: lizenz
+:UNNUMBERED: t
+:END:
+Dieses Dokument steht unter der [[http://www.gnu.org/licenses/fdl-1.3.txt][GNU FDL]]
+** Vorwort
+:PROPERTIES:
+:CUSTOM_ID: vorwort
+:UNNUMBERED: t
+:END:
+yaVDR (yet another VDR) ist eine für die Nutzung des [[http://www.tvdr.de/][Video Disk Recorder]] von Klaus Schmidinger angepasste Distribution auf der Basis von Ubuntu Linux, das mit Paketen aus eigenen Paketquellen erweitert wird, um die Nutzung aktueller Versionen des VDR, von KODI und anderer erforderlicher Pakete zu ermöglichen.
+
+Der VDR ist dafür ausgelegt, digitales Fernsehen über die gängigen Empfangswege (DVB-S2, DVB-T(2), DVB-C) zu empfangen, aufzuzeichnen, zu schneiden und wiederzugeben. Mit mit dem [[http://www.vdr-wiki.de/wiki/index.php/Pvrinput-plugin][pvrinput-Plugin]] und einer passenden Hauppauge-TV Karte mit MPEG2-Hardware\-encoder ist der Empfang von analog-TV möglich.
+Mit KODI ist außerdem ein mächtiges MediaCenter integriert, das es ermöglicht einen PC mit yaVDR als [[https://de.wikipedia.org/wiki/Home_Theater_Personal_Computer][HTPC]] zu nutzen.
+Um eine lange Versorgung mit sicherheitsrelevanten Updates zu ermöglichen, baut yaVDR nach Möglichkeit auf [[https://wiki.ubuntuusers.de/Long_Term_Support/][LTS Versionen von Ubuntu]] auf.
+
+Bei der Installation wird unterstützte Hardware automatisch erkannt und die notwendigen Pakete installiert und vorkonfiguriert, um dem Nutzer eine schnelle Inbetriebnahme des Systems zu ermöglichen. Da dieser Teil der Installation als Ansible-Playbook realisiert ist, kann die Vorkonfiguration bequem erweitert und angepasst werden.
+
+Diese Dokumentation soll die Installation, Konfiguration und Bedienung eines yaVDR Systems erklären und dem Nutzer dabei helfen, sich mit den Besonderheiten vertraut zu machen, die eine yaVDR-Installation von einer normalen Ubuntu-Installation unterscheiden.
+Es ist bewusst keine Einführung in die Grundlagen der Bedienung von (Ubuntu) Linux.
+Daher wird dem Neueinsteiger empfohlen sich mit Hilfe von entsprechender Literatur oder Online-Quellen wie dem sehr umfangreichen [[http://wiki.ubuntuusers.de][Ubuntu Users Wiki]] einzulesen. Die [[https://freedesktop.org/wiki/Software/systemd/][Dokumentation für systemd]] kann hilfreich sein, um die Funktionsweise der von yavdr-ansible eingerichteten Dienste nachvollziehen zu können.
+Auch für den VDR und für KODI kann an dieser Stelle nicht jedes Detail erklärt werden - gute Anlaufstellen für weiterführende Informationen sind das [[http://vdr-wiki.de/][VDR-Wiki]] und das [[http://kodi.wiki/view/Main_Page][KODI-Wiki]].
+Wann immer die Beschreibung von Befehlen, Funktionen oder Abläufen den Rahmen dieser Dokumentation sprengen würde, wird daher auf weiterführendes Material verlinkt. Auch Doppelungen werden nach Möglichkeit vermieden und stattdessen auf die entsprechende Stelle in der Dokumentation verlinkt.
+** Zur Syntax
+:PROPERTIES:
+:CUSTOM_ID: zur-syntax
+:UNNUMBERED: t
+:END:
+Befehle, die man in der Shell ausführen kann, sehen so aus:
+#+BEGIN_EXAMPLE
+$ echo "Hallo, Welt!"
+Hallo, Welt!
+$ sudo -i  # erlange eine root-Shell
+# whoami
+root
+#+END_EXAMPLE
+Ein ~$~ ist dabei der Prompt für einen normalen Nutzer (wie er bei der Installation angelegt wurde) und ein ~#~ der Prompt für den Benutzer *root*. Der Prompt wird nicht mit eingegeben, um einen Befehl auszuführen. In dem Fall würde man also ~echo "Hallo, Welt!"~ eingeben. Die Ausgaben des Befehl erscheinen vor dem nächsten Prompt (in dem Fall in Zeile 2 und 5)
+
+Code im Dokument wird nach Möglichkeit mit Syntax-Highlighting dargestellt, also z.B.:
+#+BEGIN_SRC python
+#!/usr/bin/env python3
+print("Hallo, Welt")
+#+END_SRC
+* Installation
+:PROPERTIES:
+:CUSTOM_ID: installation
+:END:
+** Systemvoraussetzungen
+:PROPERTIES:
+:CUSTOM_ID: system-requirements
+:END:
+- Eine von Ubuntu unterstützte x86-kompatible CPU (muss aktuell mindestens i686 kompatibel sein). Falls von der CPU unterstützt, wird eine 64-Bit Installation empfohlen.  32-Bit Installationen wurden nicht getestet.
+- Für die Root-Partition (~/~) werden mindestens 8 GB empfohlen, bei einer großen Mediensammlung mit KODI mindestens 32 GB. Eine SSD für die Systempartition kann die Boot-Zeit spürbar verringern.
+- Eine swap-Partition wird bei mehr als 2 GB Arbeitsspeicher nicht zwingend benötigt. Sie sollte mindestens so groß wie der Arbeitsspeicher sein, um den Ruhezustand nutzen zu können.
+- Der Mountpoint für ~/srv~ sollte eine eigene Partition bekommen. Da für Aufnahmen von SD-TV bis zu ca. 3 GB/s und für HD-TV bis zu 9 GB pro Stunde an Daten geschrieben werden können, sollte sie ausreichend dimensioniert werden. Falls Aufnahmen und andere Medien gesammelt werden, ist eine Platte mit einer Größe von mehr als einem Terabyte sinnvoll.
+*** für die Nutzung als HTPC
+yaVDR {{{YAVDR_VERSION}}} ist für die Nutzung mit VDPAU-fähigen NVidia-Grafikkarten und Intel IGPs ausgelegt. Für eine experimentelle Unterstützung für Grafikkarten von AMD werden Tester mit geeigneter Hardware gesucht.
+*** Nutzung als Server
+Ab yaVDR {{{YAVDR_VERSION}}} besteht die Möglichkeit auf die Installation der GUI-Komponenten zu verzichten und es als Backend-Server zu betreiben.
+In dem Fall wird keine Grafikkarte für die hardwarebeschleunigte Ausgabe benötigt. In Verbindung mit einem Sat>IP Server könnte man den Server in einer Virtuellen Maschine betreiben.
+** Installation des Basissystems
+:PROPERTIES:
+:CUSTOM_ID: ubuntu-installation
+:END:
+Da es in der Vergangenheit immer wieder Kompatibilitätsprobleme durch die angepassten yaVDR Installation-Images gab, gehen wir bei yaVDR {{{YAVDR_VERSION}}} einen anderen Weg:
+
+Zunächst wird eine Ubuntu Server Installation (wichtig: bei Ubuntu 18.04 die ISOs für den alternative Ubuntu Server Installer nutzen, damit Bootsplash, X-Server und Abhängigkeiten zu bestehenden Netzwerkverbindungen korrekt funktionieren und nicht durch das cloud-init Paket aus dem Tritt gebracht werden) durchgeführt, bei der der Nutzer beliebige Point-Releases (und damit neuere Kernel) wählen kann. Danach besteht die Möglichkeit zusätzliche Treiber zu installieren und die Netzwerkverbindung zu konfigurieren.
+
+Nachdem die Grundinstallation abgeschlossen wurde, wird mit Hilfe von [[https://docs.ansible.com/ansible/latest/index.html][Ansible]] das System als yaVDR-Installation konfiguriert. Der interessierte Nutzer hat die Möglichkeit die Installationsskripte selbst anzupassen - damit wird es deutlich leichter zusätzliche Paketquellen einzubinden und das System reproduzierbar auf die eigenen Bedürfnisse angepasst vorkonfigurieren zu lassen.
+
+*** Download des Ubuntu Server ISO
+:PROPERTIES:
+:CUSTOM_ID: iso-download
+:END:
+Das Installations-ISO für den Ubuntu Server 20.04 kann von der offiziellen Ubuntu-Webseite heruntergeladen werden: https://releases.ubuntu.com/20.04/ 
+
+Das ISO lässt sich auf eine DVD brennen (für normale CD-Rohlinge ist das Image zu groß) oder mit einem Tool wie [[https://wiki.ubuntuusers.de/dd/#Live-USB-Stick-erstellen][dd]] auf einen USB-Stick schreiben. Ein Netboot ist ebenfalls möglich:  https://discourse.ubuntu.com/t/netbooting-the-live-server-installer/14510
+
+Ubuntu Server 18.04 wird mit Einschränkungen unterstützt (es sollte dabei unbedingt der klassische Installer genutzt werden) und spiegelt im Wesentlichen einen früheren Entwicklungsstand wieder.
+*** TODO Installation von Ubuntu Server
+:PROPERTIES:
+:CUSTOM_ID: ubuntu-server-install
+:END:
+
+** Installation von yaVDR mit Ansible
+:PROPERTIES:
+:CUSTOM_ID: ansible-installation
+:END:
+*** Herunterladen von yavdr-ansible
+:PROPERTIES:
+:CUSTOM_ID: playbook-git
+:END:
+Die Ansible-Playbook-Sammlung für yaVDR kann so heruntergeladen werden:
+#+BEGIN_src text
+$ sudo apt install git
+$ git clone https://github.com/yavdr/yavdr-ansible
+$ cd yavdr-ansible
+#+END_src
+
+Die Dateien für Ubuntu 20.04 befinden sich im Zweig =focal=, der automatisch aktiv sein sollte (kann man z.B. mit =git status= überprüfen), die Dateien für Ubuntu 18.04 befinden sich im Branch =bionic=. Um gezielt zu dem Branch zu wechseln kann man den Befehl =git checkout bionic= nutzen.
+
+Um später den aktuellsten Stand für den aktuell aktiven Branch aus den Repository zu holen, kann man den Befehl ~git pull~ nutzen.
+*** Anpassen der Vorkonfiguration
+Interessierte Nutzer haben die Möglichkeit die von yavdr-ansible umgesetzte Systemkonfiguration auf die eigenen Vorlieben und Gegebenheiten anzupassen.
+
+Nicht benötigte Rollen können im Playbook (~yavdr07.yml~ bzw. ~yavdr07-headless.yml~) auskommentiert werden und Rollen, die keine automatische Hardwareerkennung nutzen (wie z.B. ~serial-ir~ und ~epgd)~ können bei Bedarf aktiviert werden.
+
+Um in ~group_vars/all~ definierte Variablen anzupassen, sollte man eine Datei ~host_vars/localhost~ anlegen und darin die gewünschten Anpassungen vornehmen. Die in dieser Datei definierten Variablen übersteuern die Vorgabewerte aus dem Playbook und der ~group_vars/all~.
+
+**** genutzte PPAs
+Statt der in der =groups_vars/all= vorgegebenen PPAs können beliebige Paketquellen genutzt werden (solange diese die benötigten Pakete enthalten).
+
+Standardmäßig werden die PPAs  ~ppa:yavdr/experimentai-main~, ~ppa:yavdr/experimental-vdr~ sowie ~ppa:yavdr/experimental-kodi~ genutzt:
+#+begin_src yaml
+branch: experimental
+ppa_owner: 'ppa:yavdr'
+# add the following PPAs
+repositories:
+  - '{{ ppa_owner }}/{{branch}}-main'
+  - '{{ ppa_owner }}/{{branch}}-vdr'
+  - '{{ ppa_owner }}/{{branch}}-kodi'
+#+end_src
+
+Möchte man stattdessen z.B. ein PPA für den VDR 2.4.5 mit Patches für das dynamite-Plugin nutzen, könnte man in einer ~host_vars/localhost~ z.B. folgende Änderung vornehmen:
+#+begin_src yaml
+repositories:
+  - '{{ ppa_owner }}/{{branch}}-main'
+  - 'ppa:seahawk1986-hotmail/vdr-2.4.5-patches'
+  - '{{ ppa_owner }}/{{branch}}-kodi'
+#+end_src
+
+Wichtig: Das Playbook entfernt einmal hinzugefügte Paketquellen nicht automatisch - man muss also immer dafür sorgen, dass nur die gewünschten Paketquellen aktiv sind. Das Entfernen von PPAs und den daraus installierten Paketen (ggf. mit Downgrade auf ältere Paketversionen) ist z.B. mit dem Tool [[https://wiki.ubuntuusers.de/Paketquellen_freischalten/PPA/#PPA-Purgehttps://wiki.ubuntuusers.de/Paketquellen_freischalten/PPA/#PPA-Purge][ppa-purge]] möglich.
+
+**** Sprache und Zeitzone
+Da der Live-Installer für Ubuntu Server 20.04 die Locale- und Zeitzoneneinstellungen nicht mehr automatisch setzt, läuft ein frisch installiertes System in der Zeitzone UTC und mit der Locale =en_US.UTF-8=. Das Playbook setzt standardmäßig die Zeitzone =Europe/Berlin= und die Standard-Locale =de_DE.UTF-8=.
+
+Diese Einstellungen können über die folgenden Variablen in der ==host_vars/localhost= angepasst werden - in der Voreinstellung sieht das so aus:
+#+begin_src yaml
+timezone: 'Europe/Berlin'
+default_locale: 'de_DE.UTF-8'
+generate_locales:  # see entries in /etc/locale.gen
+  - 'de_DE.UTF-8 UTF-8'
+  - 'en_US.UTF-8 UTF-8'
+language_packs:
+  - language-pack-de
+  - language-pack-en
+#+end_src
+**** Spezielle Rollen
+:PROPERTIES:
+:CUSTOM_ID: special-roles
+:END:
+***** serial-ir
+:PROPERTIES:
+:CUSTOM_ID: serial-ir-role
+:END:
+Für serielle Empfänger (wie z.B. beim Atric V5) sollte im Playbook die Rolle ~serial-ir~ einkommentiert werden. Standardmäßig wird die erste serielle Schnittstelle genutzt (~/dev/ttyS0~ aka COM1). Ist der Empfänger an der zweiten seriellen Schnittstelle angeschlossen, muss in der ~host_vars/localhost~ die Variable ~serial_ir_device~ entsprechend angepasst werden:
+#+begin_src yaml
+serial_ir_device: ttyS1
+#+end_src
+***** epgd
+:PROPERTIES:
+:CUSTOM_ID: epgd-role
+:END:
+Wird diese Rolle im Playbook einkommentiert, richtet yavdr-ansible den vdr-epgd-daemon inkl. MariaDB-Datenbank ein und installiert das ~vdr-plugin-epg2vdr~.
+***** install-sundtek
+:PROPERTIES:
+:CUSTOM_ID: install-sundtek-role
+:END:
+
+Für Sundtek-Tuner sollte im Playbook die Rolle =install-sundtek= einkommentiert werden. Diese Rolle richtet die Sundtek-Treiber und eine ~sundtek.service~ ein.
+
+Über die Konfiguration in der =host_vars/localhost= kann festgelegt werden, ob die Treiber auch installiert werden sollen, wenn kein lokal angeschlossener Stick erkannt wurde (=sundtek.force_install=) und ob der Start des VDR verzögert werden soll bis
+ - lokal angeschlossene Sundtek-Tuner initialisiert wurden (=sundtek.wait_for_devices=) - falls das nicht auf =true= gesetzt wird, werden die Pakete =vdr-plugin-sundtek= und =vdr-plugin-dynamite= installiert
+ - das Netzwerk verfügbar ist (=sundtek.wait_for_network=)
+
+#+begin_src yaml
+sundtek:
+  force_install: false
+  wait_for_devices: true
+  wait_for_network: false
+#+end_src
+
+**** Templates
+:PROPERTIES:
+:CUSTOM_ID: jinja2-templates
+:END:
+Gegenüber früheren yaVDR-Versionen kommt eine neue Template-Engine ([[http://jinja.palletsprojects.com/][jinja2]]) zum Einsatz. Templates werden beim Ausführen der im Playbook konfigurierten Rollen expandiert.
+*** Ausführen der Installationsskripte
+:PROPERTIES:
+:CUSTOM_ID: install-scripts
+:END:
+Um yaVDR mit dem vorgegebenen Playbook einzurichten, ruft man danach folgenden Befehl auf:
+#+BEGIN_EXAMPLE
+$ sudo -H ./install-yavdr.sh
+#+END_EXAMPLE
+Will man nur eine Server-Installation ohne GUI, ruft man dieses Skript auf:
+#+BEGIN_EXAMPLE
+$ sudo -H ./install-yavdr-headless.sh
+#+END_EXAMPLE
+
+** Erste Schritte nach der Installation
+:PROPERTIES:
+:CUSTOM_ID: first-steps
+:END:
+*** Kanalliste hinterlegen
+:PROPERTIES:
+:CUSTOM_ID: channel-list
+:END:
+Damit der VDR Sender empfangen kann, benötigt er eine =/var/lib/vdr/channels.conf= (diese Datei sollte dem Nutzer und der Gruppe =vdr= gehören).
+
+Bevor man Änderungen an der Kanalliste vornimmt oder eine Kanalsuche mit einem Programm wie w_scan, t2scan usw. startet, muss der VDR gestoppt werden:
+#+begin_example
+systemctl stop vdr
+#+end_example
+
+Um an eine Kanalliste zu kommen, gibt es mehrere Möglichkeiten:
+**** Kanallisten aus der channelpedia
+:PROPERTIES:
+:CUSTOM_ID: channel-list-channelpedia
+:END:
+Die [[https://channelpedia.yavdr.com/gen/][Channelpedia]] bietet eine Sammlung von Kanallisten für die gängigen Satellitenpositionen, Kabelnetze und den terrestrischen Empfang.
+**** Kanalsuche mit w_scan
+:PROPERTIES:
+:CUSTOM_ID: channel-search-w-scan
+:END:
+[[https://wiki.ubuntuusers.de/w_scan/][w_scan]] erlaubt die Kanalsuche mit Tunern für DVB-S(2), DVB-C und DVB-T. Für DVB-T2 funktioniert das nachfolgend beschriebene t2scan besser.
+
+#+CAPTION: Beispiel für die Kanalsuche für DVB-C in Deutschland
+#+begin_example
+$ sudo w_scan -c de -f c > channels.conf
+#+end_example
+**** Kanalsuche mit t2scan
+:PROPERTIES:
+:CUSTOM_ID: channel-search-t2scan
+:END:
+[[https://github.com/mighty-p/t2scan][t2scan]] ist speziell dafür ausgelegt nach DVB-T(2) Kanälen zu suchen.
+
+#+CAPTION: Beispielaufruf von t2scan
+#+begin_example
+$ sudo t2scan > channels.conf
+#+end_example
+* Grundlegendes zum System
+:PROPERTIES:
+:CUSTOM_ID: system-basics
+:END:
+
+Dieser Abschnitt ist insbesondere für Leser gedacht, die noch nicht besonders viel Erfahrung damit haben ein Linux-System über eine Shell zu administrieren.
+** SSH
+:PROPERTIES:
+:CUSTOM_ID: ssh
+:END:
+
+yavdr-ansible installiert einen SSH-Server, der es erlaubt sich von einem anderen Rechner aus auf dem System einzuloggen. Weiterführende Informationen gibt es im [[https://wiki.ubuntuusers.de/SSH/][Wiki-Artikel zu SSH]].
+
+** Mit erhöhten Rechten Arbeiten
+:PROPERTIES:
+:CUSTOM_ID: root-permissions
+:END:
+Bei Ubuntu ist der Login für den Benutzer ~root~ standardmäßig deaktiviert (man kann das ändern, indem man für ~root~ ein Passwort vergibt, für den Zugriff über SSH als ~root~ muss außerdem die Konfiguration des SSH-Server angepasst werden). Man kann als Mitglied in der Gruppe ~sudo~ (der bei der Installation angelegte Nutzer ist standardmäßig Mitglied in dieser Gruppe) mit dem gleichnamigen Befehl erhöhte Rechte erlangen: https://wiki.ubuntuusers.de/sudo/
+** Editoren
+:PROPERTIES:
+:CUSTOM_ID: editors
+:END:
+Um Dateien bearbeiten zu können, sollte man mit einem [[https://wiki.ubuntuusers.de/Editor/#Kommandozeile][Editor]] umgehen können. Für Einsteiger bietet sich das vorinstallierte [[https://wiki.ubuntuusers.de/Nano/][nano]] an. Das Programm [[https://wiki.ubuntuusers.de/mit_Root-Rechten_arbeiten/#sudoedit][sudoedit]] kann genutzt werden, um Dateien mit root-Rechten zu bearbeiten.
+** Paketverwaltung
+:PROPERTIES:
+:CUSTOM_ID: package-management
+:END:
+Ubuntu nutzt ~apt~ für die Paketverwaltung. Im Ubuntu Users Wiki findet sich alles wissenswerte [[https://wiki.ubuntuusers.de/Paketverwaltung/][zum Thema Paketverwaltung]].
+
+Die am häufigsten genutzten Befehle sind:
+#+begin_EXAMPLE
+# Paketquellen neu einlesen
+sudo apt update
+# alle Pakete aktualisieren
+sudo apt full-upgrade
+# ein einzelnes Paket installieren
+sudo apt install vdr-plugin-live
+# mehrere Pakete installieren
+sudo apt install vdr-plugin-epgsearch vdr-plugin-streamdev-server
+# Pakete entfernen
+sudo apt remove PAKETNAME [PAKETNAME_2 ..]
+# PPA hinzufügen
+sudo add-apt-repository ppa:seahawk1986-hotmail/vdr-2.4.0
+#+end_EXAMPLE
+*** Updates Einspielen
+:PROPERTIES:
+:CUSTOM_ID: apt-updates
+:END:
+Neben den Sicherheitsupdates, die für Ubuntu ausgeliefert werden (z.B. für Samba, Firefox, SSH usw.), versuchen wir yaVDR ständig zu verbessern und veröffentlichen daher häufiger Updates für VDR- und KODI-Pakete, Plugins, Addons, Skripte und Templates.
+
+Gerade bevor man darüber nachdenkt eine Support-Anfrage im Forum (http://www.vdr-portal.de/) zu stellen, sollte man überprüfen, ob der Fehler auch nach dem Einspielen der aktuellen Updates und einem anschließenden Neustart noch auftritt. Dieses Vorgehen reduziert auch den Support-Aufwand für das yaVDR-Team.
+
+Man kann Updates entweder über Ansible anstoßen oder sie von Hand so einspielen:
+#+BEGIN_EXAMPLE
+$ sudo apt update && sudo apt full-upgrade
+#+END_EXAMPLE
+Alternativ kann auch apt-get genutzt werden:
+#+BEGIN_EXAMPLE
+$ sudo apt-get update && sudo apt-get dist-upgrade
+#+END_EXAMPLE
+
+Wenn apt nachfragt, ob Konfigurationsdateien überschrieben werden sollen, empfiehlt es sich zunächst die Unterschiede anzeigen zu lassen und dann zu entscheiden, ob ein händisches Zusammenführen oder das Beibehalten der aktuellen Konfiguration (oder in seltenen Fällen die Übernahme der neuen Datei) sinnvoll ist.
+
+Wenn die Updates über Ansible erfolgen, werden die Konfigurationsdateien automatisch auf den in den Ansible-Rollen vorgesehenen Stand gebracht.
+*** Entfernen ungenutzter Pakete und alter Kernel
+Um nicht mehr benötigte Pakete und Kernel-Versionen zu entfernen, kann dieser Befehl genutzt werden (Ubuntu behält dabei die drei aktuellsten Kernel-Pakete):
+#+BEGIN_EXAMPLE
+$ sudo apt autoremove --purge
+#+END_EXAMPLE
+** Dienste
+:PROPERTIES:
+:CUSTOM_ID: systemd-services
+:END:
+Seit Ubuntu 16.04 setzt Ubuntu auf Systemd (https://www.freedesktop.org/wiki/Software/systemd/) als Init-System, das bis Ubuntu 14.04 genutzte Upstart wurde entfernt und dafür geschriebene Units müssen portiert werden. Systemd bietet eine eingeschränkte Abwärtskompatibilität zu SysV-Init: https://www.freedesktop.org/wiki/Software/systemd/Incompatibilities/
+*** systemctl
+:PROPERTIES:
+:CUSTOM_ID: systemctl
+:END:
+[[https://www.freedesktop.org/software/systemd/man/systemctl.html][systemctl]] erlaubt es Systemd Units zu steuern. Die wichtigsten Befehle sind:
+
+#+begin_EXAMPLE
+# Status einer Unit anzeigen
+systemctl status vdr
+# Unit starten
+systemctl start vdr
+# Unit neu starten
+systemctl restart vdr
+# Unit stoppen
+systemctl stop vdr
+# Unit deaktivieren (wird nicht mehr automatisch beim Booten gestartet)
+systemctl disable vdr
+# Unit aktivieren (wird gemäß ihres Install Abschitts automatisch beim Booten gestartet
+systemctl enable vdr
+# Unit maskieren (kann weder automatisch noch von Hand gestartet werden)
+systemctl mask vdr
+#+end_EXAMPLE
+
+** Logdateien
+:PROPERTIES:
+:CUSTOM_ID: logfiles
+:END:
+Bei Ubuntu 18.04 ist sowohl rsyslog als auch journald vorinstalliert. Die von rsyslog verwalteten Logdateien liegen wie gewohnt in ~/var/log/~.
+
+Zusätzlich kann man journalctl nutzen, um auf das von journald verwaltete Log zuzugreifen, z.B.:
+#+begin_src
+# Logausgaben der Unit vdr.service beobachten
+journalctl -u vdr -fl
+# Logausgaben seit dem Booten anzeigen
+journalctl -b
+# Logausgaben der letzten 10 Minuten anzeigen
+journalctl -l --since=-10m
+#+end_src
+
+Journald legt in der Vorkonfiguration keine persistenten Logdateien an. Dieses Verhalten kann wie in [[https://wiki.ubuntuusers.de/systemd/journald/#Speichereinstellung-fuer-das-Journal-aendern][Speichereinstellungen für journald]] beschrieben geändert werden.
+
+**** Logeinträge filtern mit rsyslog
+:PROPERTIES:
+:CUSTOM_ID: rsyslog-filtering
+:END:
+
+rsyslog bietet die Möglichkeit Logeinträge nach Ursprung, Priorität oder Inhalt zu filtern.
+
+Um z.B. alle Logmeldungen mit dem String ="dvb_frontend_get_frequency_limits"= zu verwerfen, könnte man eine =/etc/rsyslog.d/10-ignore.conf= mit dem folgenden Inhalt anlegen:
+#+begin_src conf
+:msg,contains,"dvb_frontend_get_frequency_limits" ~
+#+end_src
+** Audioausgabe
+:PROPERTIES:
+:CUSTOM_ID: audio-output
+:END:
+Standardmäßig erfolgt die Audioausgabe über pulseaudio, um auch die Nutzung von Anwendungen zu ermöglichen, die keine Soundausgabe über Alsa beherrschen. Mit Ausnahmen einiger moderner Formate wie TrueHD or DTS-MA können Bitstream-Formate an den Receiver durchgereicht werden ("Passthrough"), so dass dieser die Dekodierung übernehmen kann.
+
+In [[https://kodi.wiki/view/PulseAudio]] wird u.a. die Konfiguration von Pulseaudio bei Nutzung in Verbindung mit Mehrkanalreceivern beschrieben.
+
+Bei Bedarf kann Pulseaudio vorübergehend oder komplett deaktiviert werden, um die Soundkarte für Programme freizugeben, die direkt mittels Alsa darauf zugreifen sollen.
+
+*** Pulseaudio vorübergehend deaktivieren
+Pulseaudio kann mit Hilfe von ~pasuspender~ vorübergehend deaktiviert werden, solange das Zielprogramm läuft - z.B. für KODI:
+#+begin_example
+pasuspender -- env AE_SINK=ALSA kodi
+#+end_example
+Da sich der VDR mit softhddevice (oder einem der davon abgeleiteten Plugins, die keine eigenständigen Programme für die Ausgabe bereitstellen) nicht sinnvoll mit dem ~pasuspender~ wrappen lässt, wenn man zwischendurch Pulseaudio-Programme nutzen will, kann in diesem Fall auf ~yavdr-pasuspend~ zurückgegriffen werden:
+#+begin_example
+yavdr-pasuspend -s # pausiere Pulseaudio
+yavdr-pasuspend -r # reaktiviere Pulseaudio
+#+end_example
+Das yavdr-frontend ermöglicht es pulseaudio automatisch zu pausieren, wenn softhddevice (oder ein davon abgeleitetes Ausgabeplugin) aktiv ist - dazu muss in der ~/etc/yavdr-frontend/config.yml~ beim Eintrag für das jeweilige Frontend (vdr -> frontends) die Option ~use_pasuspend: true~ gesetzt werden.
+
+In dem Fall muss die Audiokonfiguration für das Ausgabeplugin für die gewünschten Alsa-Geräte angepasst werden.
+
+Wichtig: Beim suspend von Pulseaudio frieren Pulseaudio-Clients mit aktiver Soundausgabe ein, bis der Suspend wieder aufgehoben wird.
+*** Pulseaudio komplett deaktivieren
+:PROPERTIES:
+:CUSTOM_ID: pulse-disable-permanently
+:END:
+Um Pulseaudio komplett zu deaktivieren, kann man in der ~/var/lib/vdr/.config/pulse/daemon.conf~ verhindern, dass der Dienst automatisch gestartet wird:
+#+begin_src conf
+autospawn = no
+#+end_src
+
+Nicht vergessen die Audiokonfiguration für das Ausgabeplugin auf die gewünschten Alsa-Geräte anzupassen!
+*** Pulseaudio Nutzung von Alsa-Gerät erzwingen
+:PROPERTIES:
+:CUSTOM_ID: pulse-force-alsa
+:END:
+Um die Nutzung von bestimmten Alsa-Geräten durch Pulseaudio zu erzwingen kann wie in https://wiki.archlinux.org/index.php/PulseAudio/Examples#Manually_configuring_PulseAudio_to_detect_the_Nvidia_HDMI beschrieben ein Pulseaudio-Sink mit einem Alsa-Gerät verknüpft werden:
+#+begin_src conf
+load-module module-alsa-sink device=hw:1,7
+#+end_src
+* Fernbedienungen
+:PROPERTIES:
+:CUSTOM_ID: remotes
+:END:
+yavdr-ansible nutzt [[https://github.com/OpenELEC/eventlircd][eventlircd]], um Signale von Fernbedienungsempfängern an den VDR, KODI, irexec und andere Lirc-Clients weiter zureichen.
+
+~eventlircd~ kann die Tastendrücke von Kernel Input Devices (wie sie für rc-core Geräte, HID-Geräte, virtuelle Eingabegeräte, die mittels uinput usw. angelegt werden) über udev-Regeln identifizieren und exklusiv öffnen. Tastatur-Tastendrücke werden auf einem lircd-kompatiblen Sockel (~/run/lirc/lircd~) ausgegeben, Maustastendrücke auf einem mittels uinput angelegten Virtuellen Kernel Input Device weitergereicht.
+
+Da eventlircd keine Abhängigkeiten zu bereits initialisierter Hardware hat, kann der Dienst frühzeitig gestartet werden, ohne den Bootvorgang zu verzögern - die Empfänger werden dynamisch eingebunden, sobald sie verfügbar sind.
+
+Alle Fernbedienungen sollten das vereinheitlichte Schema für Tastennamen nutzen, damit die von ihnen gesendeten Tastendrücke zur Vorkonfiguration der Fernbedienung für den VDR, KODI und andere Programme passen, wie in der Tabelle [[yavdr-keynames]["Vereinheitlichtes Schema für Tastennamen"]] gezeigt.
+
+** Vereinheitlichtes Schema für Tastennamen
+:PROPERTIES:
+:CUSTOM_ID: yavdr-namespace
+:END:
+#+CAPTION: Vereinheitlichtes Schema für Tastennamen
+#+NAME: yavdr-keynames
+| Tastenname Eventlircd | remote.conf      | Beschreibung                                         |
+|-----------------------+------------------+------------------------------------------------------|
+| KEY_UP                | LIRC.Up          | Nach oben                                            |
+| KEY_DOWN              | LIRC.Down        | Nach unten                                           |
+| KEY_MENU              | LIRC.Menu        | Menü                                                 |
+| KEY_OK                | LIRC.Ok          | OK/Eingabe                                           |
+| KEY_ESC               | LIRC.Back        | Zurück                                               |
+| KEY_LEFT              | LIRC.Left        | Nach links                                           |
+| KEY_RIGHT             | LIRC.Right       | Nach rechts                                          |
+| KEY_RED               | LIRC.Red         | Rot                                                  |
+| KEY_GREEN             | LIRC.Green       | Grün                                                 |
+| KEY_YELLOW            | LIRC.Yellow      | Gelb                                                 |
+| KEY_BLUE              | LIRC.Blue        | Blau                                                 |
+| KEY_0                 | LIRC.0           | Ziffer 0                                             |
+| KEY_1                 | LIRC.1           | Ziffer 1                                             |
+| KEY_2                 | LIRC.2           | Ziffer 2                                             |
+| KEY_3                 | LIRC.3           | Ziffer 3                                             |
+| KEY_4                 | LIRC.4           | Ziffer 4                                             |
+| KEY_5                 | LIRC.5           | Ziffer 5                                             |
+| KEY_6                 | LIRC.6           | Ziffer 6                                             |
+| KEY_7                 | LIRC.7           | Ziffer 7                                             |
+| KEY_8                 | LIRC.8           | Ziffer 8                                             |
+| KEY_9                 | LIRC.9           | Ziffer 9                                             |
+| KEY_INFO              | LIRC.Info        | Info zum aktuellen Objekt                            |
+| KEY_PLAY              | LIRC.Play        | Play                                                 |
+| KEY_PAUSE             | LIRC.Pause       | Pause                                                |
+| KEY_PLAYPAUSE         | LIRC.Play/Pause  | Kombinierte Taste für Play und Pause                 |
+| KEY_STOP              | LIRC.Stop        | Stop                                                 |
+| KEY_RECORD            | LIRC.Record      | Aufnehmen                                            |
+| KEY_FASTFORWARD       | LIRC.FastFwd     | Vorspulen                                            |
+| KEY_REWIND            | LIRC.FastRew     | Zurückspulen                                         |
+| KEY_NEXT              | LIRC.Next        | Vorwärts springen                                    |
+| KEY_BACK              | LIRC.Prev        | Rückwärts springen                                   |
+| KEY_POWER2            | LIRC.Power       | Ausschalten                                          |
+| KEY_CHANNELUP         | LIRC.Channel+    | Kanal hoch                                           |
+| KEY_CHANNELDOWN       | LIRC.Channel-    | Kanal runter                                         |
+| KEY_PREVIOUS          | LIRC.PrevChannel | zurück zum zuvor gewählten Kanal                     |
+| KEY_VOLUMEUP          | LIRC.Volume+     | Lautstärke erhöhen                                   |
+| KEY_VOLUMEDOWN        | LIRC.Volume-     | Lautstärke verringern                                |
+| KEY_MUTE              | LIRC.Mute        | Stummschalten                                        |
+| KEY_SUBTITLE          | LIRC.Subtitles   | Untertitel einblenden                                |
+| KEY_EPG               | LIRC.Schedule    | Programmführer                                       |
+| KEY_CHANNEL           | LIRC.Channels    | Kanäle                                               |
+| KEY_FAVORITES         | LIRC.Commands    | Befehlsauswahl                                       |
+| KEY_MODE              | LIRC.Audio       | Tonspur wählen                                       |
+| KEY_TIME              | LIRC.Timers      | gesetzte Timer                                       |
+| KEY_PVR               | LIRC.Recordings  | Aufnahmen                                            |
+| KEY_SETUP             | LIRC.Setup       | Setup-Menü                                           |
+| KEY_TEXT              | LIRC.User0       | aktiviert Teletext bei installiertem teletext-plugin |
+| KEY_PROG1             | LIRC.User1       | User-Taste, z.B. für Keymakros                       |
+| KEY_PROG2             | LIRC.User2       | User-Taste, z.B. für Keymakros                       |
+| KEY_PROG3             | LIRC.User3       | User-Taste, z.B. für Keymakros                       |
+| KEY_PROG4             | LIRC.User4       | User-Taste, z.B. für Keymakros                       |
+| KEY_AUDIO             | LIRC.User5       | User-Taste, z.B. für Keymakros                       |
+| KEY_VIDEO             | LIRC.User6       | User-Taste, z.B. für Keymakros                       |
+| KEY_IMAGES            | LIRC.User7       | User-Taste, z.B. für Keymakros                       |
+| KEY_FN                | LIRC.User8       | User-Taste, z.B. für Keymakros                       |
+| KEY_SCREEN            | LIRC.User9       | User-Taste, z.B. für Keymakros                       |
+** ir-keytable
+:PROPERTIES:
+:CUSTOM_ID: ir-keytable
+:END:
+Das Programm =ir-keytable= kann genutzt werden, um rc-core Geräte zu testen und zu konfigurieren. Damit =ir-keytable= Zugriff auf die Geräte hat, muss [[#eventlircd-specialities][eventlircd zuvor gestoppt werden]].
+
+#+CAPTION: Anzeigen der verfügbaren rc-core Empfänger mit ir-keytable
+#+begin_example
+$ sudo ir-keytable
+/sys/class/rc/rc0/ gefunden (/dev/input/event4) mit:
+    Name: Nuvoton w836x7hg Infrared Remote Transceiver
+    Treiber: nuvoton-cir, Tabelle: rc-rc6-mce
+    Lirc Gerät: /dev/lirc0
+    unterstützte Protokolle: lirc rc-5 rc-5-sz jvc sony nec sanyo mce_kbd rc-6 sharp xmp
+    Aktivierte Protokolle: lirc rc-6
+    bus: 25, Anbieter/Produkt: 1050:00b4, Version: 0x0073
+    Wiederholungsverzögerung = 500 ms, Wiederholungsperiode = 125 ms
+#+end_example
+*** Anpassen der Tastenbelegung für rc-core Empfänger
+:PROPERTIES:
+:CUSTOM_ID: ir-keytable-customization
+:END:
+In der =/etc/rc_maps.cfg= können Regeln hinterlegt werden, für welche Kombination aus Treiber und Tabellen-Name welche Keytable geladen werden soll. Es zählt jeweils der erste Eintrag in der Datei für die angegebene Kombination.
+
+#+CAPTION: Regel zum Laden der Keytable für den weiter oben gezeigten CIR-Empfänger
+#+begin_src config
+# driver	  table				  file
+nuvoton-cir rc-rc6-mce          /lib/udev/rc_keymaps/rc-rc6-mce
+#+end_src
+**** Eigene Keytables erzeugen
+:PROPERTIES:
+:CUSTOM_ID: ir-keytable-create-keytables
+:END:
+Möchte man eine Fernbedienung mit einem anderen IR-Protokoll bzw. abweichenden Tastencodes nutzen, kann eine eigene Keytable dafür geladen werden.
+
+Damit uneingeschränkter Zugriff auf den Empfänger möglich ist, sollten die Systemd-Units =eventlircd.socket= und =eventlircd.service= gestoppt sein:
+#+begin_src shell
+systemctl stop eventlircd.socket eventlircd.service
+#+end_src
+
+Um die Keytable erzeugen zu können, benötigt man als erstes das Protokoll, das die Fernbedienung nutzt, um Tastendrücke zu senden. Wenn es nicht bekannt ist, kann man versuchen den Empfänger mit allen unterstützten Protokollen zu betreiben:
+#+begin_src shell
+ir-keytable -c -p all -t
+#+end_src
+
+Aus der Ausgabe 
+
+Mit =ir-keytable -p $PROTOKOL= kann man das gewünschte Protokoll für den Empfänger setzen und danach mit mit =ir-keytable -c= die aktuell geladene Keytable löschen. Mit =sudo ir-keytable -t= kann man sich jetzt die Scancodes für gedrückte Tasten anzeigen lassen und diese in einer Keytable dem gewünschten Tastennamen zuordnen.
+
+
+
+***** Neue Syntax
+:PROPERTIES:
+:CUSTOM_ID: ir-keytable-create-keytables-new-syntax
+:END:
+ir-keytable hat ein neues Format für Keytables eingeführt - neben der alten Syntax wird jetzt auch das TOML-Format unterstützt - dabei werden wie in der Manpage beschrieben mindestens diese Abschnitte mit Feldern erwartet:
+#+begin_src toml
+[[protcols]]
+name = "rc-rc6-mce"  # yaVDR-Convention: Tabellen-Name laut rc-core, Name darf aber beliebig gewählt werden
+protocol = "rc-6"  # Protokoll laut rc-core
+[protocols.scancodes]
+0xdeadbeef = "KEY_COFFEE"
+#+end_src
+
+***** Alte Syntax
+:PROPERTIES:
+:CUSTOM_ID: ir-keytable-create-keytables-old-syntax
+:END:
+In der Ersten Zeile der Keytable sollte der vom Treiber vorgegebene Name der Keytable und das - oder falls gewünscht und vom Empfänger unterstützt die - gewünschten Protokolle angegeben werden und in den Folgenden Zeilen werden Scancode und Tastenname durch Whitespace getrennt angegeben - für den weiter oben genutzten CIR-Empfänger wäre das dann also z.B. für eine Fernbedienung mit =RC6= Protokoll:
+
+#+begin_src example
+# table rc-rc6-mce, type: RC6
+0xdeadbeef KEY_COFFEE
+#+end_src
+
+
+***** Umstellung von lircd auf rc-core
+:PROPERTIES:
+:CUSTOM_ID: lircd-to-rc-core
+:END:
+Im Git-Repository der v4l-utils gibt es ein Skript, das dabei helfen kann eine bestehende lircd.conf in eine keymap (im TOML-Format) umzuwandeln: https://git.linuxtv.org/v4l-utils.git/tree/contrib/lircd2toml.py
+***** Automatisiertes Anlernen von rc-core Empfängern
+:PROPERTIES:
+:CUSTOM_ID: rc-core-learn-keys
+:END:
+Um die Erstellung von Keytables zu vereinfachen, kann das folgende Python-Skript genutzt werden (benötigt das Paket =python3-evdev=) - die anzulernenden Tasten können in der Liste =BUTTONS= definiert werden:
+#+begin_src python :shebang "#!/usr/bin/env python3"
+import functools
+import contextlib
+import signal
+import sys
+import time
+from argparse import ArgumentParser
+from pathlib import Path
+from evdev import InputDevice, ecodes
+
+BUTTONS = [
+        "KEY_OK",
+        "KEY_UP",
+        "KEY_DOWN",
+        "KEY_LEFT",
+        "KEY_RIGHT",
+        ]
+
+RC_SYS_DEVICES = Path('/sys/class/rc/')
+DEVPATH = Path('/dev')
+debug = functools.partial(print, file=sys.stderr)
+
+
+def print_keymap(keytable, protocol, keys):
+    print("[[protocols]]")
+    print(f'name = "{keytable}"')
+    print(f'protocol = "{protocol}"')
+    print('[protocols.scancodes]')
+    for keyname, scancode in keys.items():
+        print(f'{scancode:#06x} = "{keyname}"')
+
+
+def read_from_device(dev, keytable, protocol):
+    def btn_generator():
+        for btn in BUTTONS:
+            yield btn
+        while True:
+            yield None
+
+    btn_gen = btn_generator()
+
+    keymap = {}
+    last_scancode = None
+    last_ts = float('inf')
+
+    button = next(btn_gen)
+    first_btn = button
+    with contextlib.closing(InputDevice(dev)) as dev:
+        debug(f"Please press a button for {button}")
+
+        for ev in dev.read_loop():
+            advance_button = False
+            if ev.type == ecodes.EV_MSC:
+                ts = ev.timestamp()
+                if (
+                    ev.value == keymap.get(first_btn)
+                    and last_scancode == keymap.get(first_btn)
+                    and ts - last_ts > .5
+                ):
+
+                    # skip button because user pressed KEY_OK
+                    # and it's not an unwanted repeat
+                    advance_button = True
+                    debug(f"skipped learning button {button}")
+                elif last_scancode == ev.value:
+                    # repeated key
+                    pass
+                elif ev.value != keymap.get(first_btn):
+                    debug(f"Got scancode {ev.value:#06x} for {button}.")
+                    advance_button = True
+                    keymap[button] = ev.value
+                    last_scancode = ev.value
+
+                last_ts = ts
+                last_scancode = ev.value
+
+            if advance_button:
+                button = next(btn_gen)
+                if button:
+                    debug(f"Please press a button for {button} (press KEY_OK to skip)")
+                else:
+                    break
+        print_keymap(keytable, protocol, keymap)
+
+
+def list_devices():
+    devices = []
+    for rc_device in RC_SYS_DEVICES.glob('rc*'):
+        device = {}
+        device["path"] = rc_device
+        device["sys"] = rc_device.name
+
+        with open(next(rc_device.glob('input*/event*/uevent'))) as f:
+            # read DEVNAME attribute (and others)
+            for line in f:
+                key, value = line.rstrip().split('=')
+                device[key] = value
+
+        with open(rc_device.joinpath('uevent')) as f:
+            for line in f:
+                key, value = line.rstrip().split('=')
+                device[key] = value
+
+        with open(rc_device.joinpath('protocols')) as f:
+            protocols = f.read().rstrip().split()
+            active_protocols = [p[1:-1] for p in protocols if (
+                p.startswith('[') and p != "[lirc]")]
+            inactive_protocols = [p for p in protocols if not p.startswith('[')]
+            device["protocols"] = protocols
+            device["inactive_protocols"] = inactive_protocols
+            device["active_protocols"] = active_protocols
+            devices.append(device)
+    return devices
+
+
+if __name__ == '__main__':
+    parser = ArgumentParser(description="create keymaps for rc-core devices")
+    parser.add_argument('-p', '--protocol', metavar='PROTOCOL',
+                        help='set ir-protocol')
+    parser.add_argument('-d', '--device', metavar='DEVICE', default=None,
+                        help='ir device (e.g. rc0)')
+    args = parser.parse_args()
+
+    devices = list_devices()
+    if not devices:
+        sys.exit("No rc-core devices found. Exiting.")
+    elif len(devices) == 1:
+        print(f"Using device {devices[0]['NAME']}", file=sys.stderr)
+        dev = devices[0]['path']
+        input_dev = devices[0]['DEVNAME']
+        keytable = devices[0]['NAME']
+        protocol = ",".join(devices[0]['active_protocols'])
+    else:
+        if args.device:
+            for d in devices:
+                if (d['sys'] == args.device
+                        or d['path'] == RC_SYS_DEVICES.joinpath(args.device)):
+                    dev = RC_SYS_DEVICES.joinpath(args.device)
+                    input_dev = d['DEVNAME']
+                    keytable = d['NAME']
+                    protocol = ",".join(d['active_protocols'])
+        else:
+            for i, d in enumerate(devices, start=1):
+                if not args.protocol:
+                    print(f"{i}) {d['DEV_NAME']} ({','.join(d.get('active_protocols'))})")
+                else:
+                    print(f"{i}) {d['DEV_NAME']}")
+            try:
+                dev_num = int(input("\tUse device numer: "))
+                if dev_num < 0 or dev_num > len(devices):
+                    raise ValueError
+                d = devices[dev_num - 1]
+            except (ValueError, IndexError):
+                sys.exit("invalid device number")
+            input_dev = d['DEVNAME']
+            keytable = d['NAME']
+            protocol = ",".join(d['active_protocols'])
+            dev = d['path']
+
+    # set ir-protocol(s)
+    if args.protocol:
+        try:
+            with open(dev.joinpath('protocols'), 'w') as f:
+                f.write(args.protocol)
+        except PermissionError as e:
+            sys.exit(f"Error: insifficient permissions to change protocol - are you root?")
+        except IOError as e:
+            sys.exit(f"Error: could not set protocol(s) to {args.protocol}: {e}")
+        protocol = args.protocol
+
+    input_dev = DEVPATH.joinpath(input_dev)
+    debug("using device: ", input_dev)
+
+    def signal_handler(signum, frame):
+        sys.exit()
+
+    for signame in {'SIGINT', 'SIGTERM'}:
+        signal.signal(
+            getattr(signal, signame),
+            signal_handler)
+    try:
+        read_from_device(input_dev, keytable, protocol)
+    except PermissionError as e:
+        sys.exit(f"Error: can't open {input_dev} - are you root?")
+#+end_src
+** lircd2uinput
+:PROPERTIES:
+:CUSTOM_ID: lircd2uinput
+:END:
+lircd2uinput kann von einem oder mehreren lircd-kompatiblen Sockeln lesen und diese Tastendrücke über ein virtuelles Eingabegerät mit Hilfe von uinput ausgeben.
+
+Alle Programme, die einen lircd-kompatiblen Sockel bereitstellen (z.B. lircd, ir-server, irmplircd usw.), können über ~lircd2uinput~ an =eventlircd= angebunden werden. Mit dem Programm ~lircd2uinput-add "$SOCKET"~ kann man lircd2uinput anweisen einen Sockel auszulesen und mit ~lircd2uinput-remove "$SOCKET"~ wieder damit aufzuhören. Die vom Ansible Playbook installierten Dienste werden automatisch passend konfiguriert.
+** eventlircd
+:PROPERTIES:
+:CUSTOM_ID: eventlircd
+:END:
+Eventlircd liest Tastendrücke von allen Kernel Input Devices, die das Udev-Attribut ~ENV{eventlircd_enable}="true"~ tragen. Optional kann über das Attribut ~ENV{eventlircd_evmap}="evmap.evmap"~ eine im Ordner ~/etc/eventlircd.d/~ hinterlegte evmap genutzt werden, die dazu dient Tastendrücke bzw. Tastenkombinationen auf den in der Tabelle [[yavdr-keynames]["Vereinheitlichtes Schema für Tastennamen"]] beschriebenen Namespace umzuformen. evmaps sollten genutzt werden, wenn die Anpassung der Tastennamen nicht früher wie z.B. durch Keymap für rc-core Empfänger, lircd oder andere Wege erfolgen kann.
+
+*** Besonderheiten für eventlircd
+:PROPERTIES:
+:CUSTOM_ID: eventlircd-specialities
+:END:
+Dienste mit Socket-Activation wie eventlircd erfordern eine besondere Behandlung, wenn man sie stoppen möchte - da die ~eventlircd.socket~ die ~eventlircd.service~ beim Zugriff auf den Sockel-Pfad ~/run/lirc/lircd~ startet, müssen beide maskiert und gestoppt werden, wenn man z.B. mit ~evtest~ oder ~ir-keytable~ auf die von eventlircd exklusiv geöffneten Kernel Input Devices zugreifen möchte:
+#+begin_example
+systemctl stop eventlircd.{service,socket}
+#+end_example
+Um eventlircd wieder zu aktivieren:
+#+begin_example
+systemctl start eventlircd.{service,socket}
+#+end_example
+** lircd
+:PROPERTIES:
+:CUSTOM_ID: lircd
+:END:
+Die meisten ehemals nur in Verbindung mit lirc nutzbaren Treiber wurden bereits auf rc-core portiert, ~lircd~ ist daher nur noch für ein paar Geräte nötig. Dazu gehören die beiden vom Playbook automatisch eingerichteten IR-Empfänger Atric IrWakeupUSB und die YaUsbIR-Empfänger. Wenn ein solcher Empfänger während der Installation angeschlossen war, muss nur noch eine passende lircd.conf angelernt bzw. eine bereits vorhandene Datei nach ~/etc/lirc/lircd.conf.d/~ kopiert werden.
+** Tools zum Debuggen von Tastendrücken
+:PROPERTIES:
+:CUSTOM_ID: debug-remote
+:END:
+*** evtest
+:PROPERTIES:
+:CUSTOM_ID: evtest
+:END:
+~evtest~ kann die Rohdaten für Tastendrücke von Kernel Input Devices lesen. Ruft man es ohne einen Pfad für ein solches Gerät auf, kann man interaktiv ein Gerät aus einer Liste wählen. Wichtig ist eventlircd vorher zu stoppen ( vgl. [[#eventlircd-specialities][Besonderheiten für eventlircd]]), damit Tastendrücke von Geräten ausgelesen werden können, die der Dienst exklusiv geöffnet hat.
+*** ir-keytable
+:PROPERTIES:
+:CUSTOM_ID: ir-keytable-test
+:END:
+Bei rc-core Geräten kann ~ir-keytable~ genutzt werden, um mittels ~sudo ir-keytable -t~ ankommende Tastendrücke auszulesen.
+Damit =ir-keytable= Zugriff auf die Geräte hat, muss [[#eventlircd-specialities][eventlircd zuvor gestoppt werden]].
+*** irw
+:PROPERTIES:
+:CUSTOM_ID: irw
+:END:
+~irw~ kann von allen lirc-kompatiblen Sockeln lesen, wird es ohne Argumente aufgerufen, liest es von ~/run/lirc/lircd~, was in der Vorkonfiguration der Sockel von eventlircd ist.
+* Netzwerkdienste
+:PROPERTIES:
+:CUSTOM_ID: network-services
+:END:
+** Netzwerkfreigaben
+:PROPERTIES:
+:CUSTOM_ID: network-shares
+:END:
+In der Vorkonfiguration exportiert yavdr-ansible folgende Verzeichnisfreigaben über NFS und Samba:
+
+#+ATTR_LATEX: :booktabs
+| Name       | Verzeichnis    |
+|------------+----------------|
+| audio      | =/srv/audio=     |
+| video      | =/srv/video=     |
+| pictures   | =/srv/picture=   |
+| files      | =/srv/files=     |
+| backups    | =/srv/backups=   |
+| recordings | =/srv/vdr/video= |
+
+*** avahi-linker
+:PROPERTIES:
+:CUSTOM_ID: avahi-linker
+:END:
+Der =avahi-linker= sucht nach Ankündigungen von NFS-Freigaben mit dem Subtyp =_nfs._tcp= und bindet diese automatisch ein. So können sich Rechner im Netzwerk gegenseitig Dateifreigaben zur Verfügung stellen.
+
+**** Freigaben ankündigen
+:PROPERTIES:
+:CUSTOM_ID: avahi-service-syntax
+:END:
+Der =avahi-daemon= liest die Dateien in =/etc/avahi/services/= ein und kündigt diese im Netzwerk an. Der Wert für =subtype= beeinflusst an welcher Stelle eine Freigabe von avahi-linker eingebunden wird. ~subtype=vdr~ ist für Freigaben vorgesehen, die VDR-Aufzeichnungen enthalten.
+
+#+CAPTION: Beispiel für die Ankünfigung des VDR-Aufnahmeverzeichnis über Avahi
+#+begin_src xml
+<?xml version="1.0" standalone='no'?>
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<service-group>
+  <name replace-wildcards="yes">Recordings on %h</name> <!-- Name der Freigabe, %h entspricht dem Hostname -->
+    <service>
+      <type>_nfs._tcp</type>
+      <port>2049</port>
+      <txt-record>path=/srv/vdr/video</txt-record>   <!-- Pfad der NFS-Freigabe -->
+      <txt-record>subtype=vdr</txt-record>           <!-- Subtyp -->
+    </service>
+</service-group>
+#+end_src
+
+Über einen ~<txt-record>~ für ~category~ können Unterverzeichnisse abgebildet werden:
+
+#+CAPTION: Beispiel für eine Freigabe mit Filmen für das Videoverzeichnis
+#+begin_src xml
+<?xml version="1.0" standalone='no'?>
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<service-group>
+<name replace-wildcards="yes">Movies on %h</name> ## Name
+  <service>
+    <type>_nfs._tcp</type>
+    <port>2049</port>
+    <txt-record>path=/srv/video/movies</txt-record> <!-- Pfad der NFS-Freigabe -->
+    <txt-record>subtype=video</txt-record> <!-- Subtyp -->
+    <txt-record>category=movies</txt-record> <!-- Kategorie -->
+  </service>
+</service-group>
+#+end_src
+
+#+CAPTION: Beispiel für eine Freigabe mit Serien für das Videoverzeichnis
+#+begin_src xml
+<?xml version="1.0" standalone='no'?>
+<!DOCTYPE service-group SYSTEM "avahi-service.dtd">
+<service-group>
+<name replace-wildcards="yes">Movies on %h</name> ## Name
+  <service>
+    <type>_nfs._tcp</type>
+    <port>2049</port>
+    <txt-record>path=/srv/video/tv-series</txt-record> <!-- Pfad der NFS-Freigabe -->
+    <txt-record>subtype=video</txt-record> <!-- Subtyp -->
+    <txt-record>category=series</txt-record> <!-- Kategorie -->
+  </service>
+</service-group>
+#+end_src
+Alle anderen Freigaben werden unter den Namen des Subtyps und falls Vorhanden der Kategorie (die übersetzt werden, falls sie in den Übersetzungsdateien aus dem Paket ~yavdr-i18n~ enthalten sind) unterhalb von ~/media/~ eingebunden.
+
+** NFS
+:PROPERTIES:
+:CUSTOM_ID: nfs-server
+:END:
+Zusätzliche NFS-Freigaben können in der =/etc/exports= bzw. in dem Template für die Datei definiert werden.
+** Samba
+:PROPERTIES:
+:CUSTOM_ID: samba-server
+:END:
+Zusätzliche Samba-Freigaben können in der Datei =/etc/samba/smb.conf.custom= eingetragen werden.
+* Ausgabe mit Xorg
+:PROPERTIES:
+:CUSTOM_ID: xorg-output
+:END:
+Während der VDR als System Dienst läuft, werden die vom Nutzer benötigten Dienste und Programme im Rahmen einer Systemd User Session gestartet.
+
+Der Start der Benutzersitzung für den User vdr ist folgendermaßen umgesetzt:
+ - Der Systemdienst ~yavdr-xorg.service~ startet die beiden abhängigen Dienste ~x@vt7.service~ und ~xlogin@vdr.service~
+ - ~xlogin@vdr.service~ startet über die ~/var/lib/vdr/.xinitrc~ eine ~openbox-session~
+ - Openbox ruft das Skript ~/var/lib/vdr/.config/openbox/autostart~ auf
+ - Das Autostart Skript bereitet die Sitzung vor und ruft das Systemd-Target ~yavdr-desktop.target~ für die Systemd User Session auf, so dass alle davon abhängigen Dienste gestartet werden
+
+** Zugriff auf die Systemd User Session
+Um Dienste in der Systemd-User Session zu steuern gibt es zwei Möglichkeiten:
+*** Einzelne Befehl mit passenden Rechten und Umgebungsvariablen absetzen:
+:PROPERTIES:
+:CUSTOM_ID: systemctl-user-session
+:END:
+Man kann sich die nötigen Rechte verschaffen, um Dienste in der User Session mit ~systemctl~ zu steuern: - so wird z.B. der Dienst ~osd2web.service~ neu gestartet:
+#+begin_src example
+sudo -u vdr DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/666/bus systemctl --user restart osd2web.service
+#+end_src
+
+Für die häufigere Nutzung kann es hilfreich sein, sich einen [[https://wiki.ubuntuusers.de/alias/][alias]] in der =~/.bashrc= zu definieren:
+#+begin_src shell
+alias sctlu="sudo -u vdr DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/666/bus systemctl --user "
+#+end_src
+Damit reduziert sich der oben gezeigte Befehl auf:
+#+begin_src example
+sctlu restart osd2web
+#+end_src
+*** Zugriff mit tmux
+:PROPERTIES:
+:CUSTOM_ID: tmux-user-session
+:END:
+Möchte man umfangreichere Anpassungen vornehmen, kann es sich lohnen eine Shell zu öffnen, die Zugriff auf die Systemd User Session des Benutzers ~vdr~ hat - mit Hilfe von [[https://wiki.ubuntuusers.de/tmux][tmux]] kann man sich mit dem von der ~tmux.service~ in der User Session gestarteten Dienst verbinden:
+#+begin_src example
+sudo tmux -S /tmp/tmux-666/default
+#+end_src
+Möchte man automatisch die Umgebungsvariablen der Systemd User Session laden, kann man in der ~/var/lib/vdr/.bashrc~ einen der folgenden Einträge nutzen:
+#+begin_src shell
+source <(systemctl --user show-environment)
+# bzw.
+export $(systemctl --user show-environment)
+#+end_src
+
+** yavdr-frontend
+:PROPERTIES:
+:CUSTOM_ID: yavdr-frontend
+:END:
+~yavdr-frontend~ ist ein in Python3 geschriebenes Programm, das das VDR-Frontend und andere Programme steuert.
+
+*** Verhalten beim Start
+~yavdr-frontend~ kennt ein primäres und ein sekundäres Frontend, in der Voreinstellungen sind diese mit der VDR Ausgabe und KODI vorbelegt.
+
+Beim Starten prüft ~yavdr-frontend~, ob es Hinweise dafür gibt, dass der VDR für einen Timer, Plugin oder einen vom vdr-addon-acpiwakup gesetzten Aufweckzeitpunkt gestartet wurde. Wenn das nicht der Fall ist, wird das VDR-Frontend gestartet, ansonsten bleibt es inaktiv, bis der Nutzer eine Taste auf der Fernbedienung bzw. ~SUPER + A~ auf der Tastatur drückt oder auf einem anderen Weg den Befehl ~frontend-dbus-send start~ absetzt.
+
+Das Startverhalten lässt sich in der =/etc/yavdr-frontend/config.yml= anpassen. Dazu kann im Abschnitt =vdr= der Wert für =attach_on_startup= angepasst werden. Die möglichen Werte sind:
+- =auto= :: VDR-Frontend wird nur attached, wenn der VDR nicht für einen Timer, ein Plugin bzw. acpiwakeup gestartet wurde
+- =always= :: VDR-Frontend wird immer attached
+- =never= :: VDR-Frontend bleibt beim Start detached und kann durch Benutzeraktivität attached werden
+
+** Programme starten
+:PROPERTIES:
+:CUSTOM_ID: start-programs
+:END:
+*** desktop-Plugin
+Das desktop-Plugin (Menüpunkt "Applikationen" bei Nutzung von menuorg) bildet die GNOME-Menüstruktur ab - wenn eine Anwendung eine [[https://wiki.ubuntuusers.de/.desktop-Dateien/][.desktop]] Datei mitbringt (oder man eine ~.desktop~ Datei für eine Anwendung hinterlegst), kann man sie darüber "standalone" starten (unter der Voraussetzung, dass der Prozess nicht forkt oder sich sonst der Kontrolle durch die generische Systemd-Unit entzieht). Im Hintergrund wird dann über ~/var/lib/vdr/plugins/desktop/starter~ (was ein symbolischer Link auf ~/usr/bin/start-desktop~ ist) mit dem Pfad der ~.desktop~ Datei aufgerufen. Das yavdr-frontend sieht dann nach, ob es eine Systemd-Unit mit dem Namen gibt (abzüglich einer eventuell vorhandenen ~.desktop~ Endung - das kann man z.B. nutzen, wenn Programme mit speziellen Argumenten gestartet werden müssen oder zum Beenden besondere Befehle nötig sind - vgl. z.B. ~/var/lib/vdr/.config/systemd/user/kodi.service~) , ansonsten fällt es auf ~/usr/lib/systemd/user/app@.service~ zurück und startet eine Instanz mit dem Namen der Anwendung.
+
+Wenn eine ~.desktop~ Datei (keine Systemd-Unit!) parallel zum VDR-Frontend über menuorg gestartet werden soll, kann man das mit dem Programm ~/usr/bin/run-desktop-file~ machen, da für den VDR passende Umgebungsvariablen gesetzt sind, um auf die Session zugreifen zu können.
+*** frontend-dbus-send
+:PROPERTIES:
+:CUSTOM_ID: frontend-dbus-send
+:END:
+yavdr-frontend bietet außerdem eine DBus-API an, über die man den Wechsel je nach Anwendungszweck schöner steuern kann - für menuorg-Einträge bzw. die ~commands.conf~ des VDR gäbe es ~~frontend-dbus-send start_desktop NAME_DER_DESKTOP_DATEI~ (alternativ kann man auch frontend-dbus-send switchto NAME_DER_DESKTOP_DATEI nutzen, dafür kann man auch die in der Konfigurationsdatei ~/etc/yavdr-frontend/config.yml~ im Abschnitt Applications definierten besonderen Namen wie "vdr", "mediacenter", "browser" usw. nutzen), wenn man mit einer Taste auf der Fernbedienung zwischen einer Anwendung und dem VDR-Frontend hin- und herschalten können will, wäre z.B. =frontend-dbus-send switchbetween vdr NAME_DER_DESKTOP_DATEI= eine Möglichkeit.
+
+Ruft man =frontend-dbus-send= ohne Argumente auf, zeigt es eine XML-Beschreibung der DBUS-API.
+
+** Mehrere Bildschirme
+:PROPERTIES:
+:CUSTOM_ID: dual-screen
+:END:
+yavdr-ansible unterstützt die Ausgabe auf zwei Bildschirmen. Der primäre Bildschirm stellt standardmäßig das VDR-Frontend, KODI und andere Programme dar. Ist ein sekundärer Bildschirm erkannt worden, wird dieser standardmäßig für die Darstellung von osd2web genutzt.
+
+Man kann die Ausgabe auf primärem und sekundärem Monitor vertauschen, indem man das Skript ~/var/lib/vdr/bin/switch-displays~ innerhalb der User Session (z.B. über irexec) oder als root mit korrekt gesetzter ~DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/666~ aufruft.
+
+*** osd2web auf zweitem Monitor
+:PROPERTIES:
+:CUSTOM_ID: osd2web-dualscreen
+:END:
+Wenn ein =DISPLAY= mit der Adresse =:0.1= existiert (das ist vorhanden, wenn das Ansible-Playbook einen zweiten Monitor erkannt und konfiguriert hat), wird auf diesem ein Webbrowser (Voreinstellung: =kiosk-browser=) zur Darstellung der von =osd2web= bereitgestellten Webseite angezeigt.
+
+Die dafür zuständige Systemd-Unit ist =/var/lib/vdr/.config/systemd/user/osd2web.service=. Die in dieser Unit genutzten Vorgabewerte für die Variablen =url= und =browser= können durch das Anlegen der Datei =/var/lib/vdr/.config/osd2web/config= mit den gewünschten Variablenzuweisungen übersteuert werden.
+
+Um z.B. statt dem vorkonfigurierten anthraize-Theme das bluecd-Theme zu nutzen, könnte man die Variable =url= so setzen (~?onlyView=1~ sorgt dafür, dass die Steuerungselemente ausgeblendet werden):
+#+begin_src shell
+url="http://192.168.1.30:4444/skins/horchiTft/index.html?theme=bluecd?onlyView=1"
+#+end_src
+
+Das Plugin ist auf Port =4444= erreichbar, dort werden auch die verfügbaren Themes mit den zugehörigen URLs gelistet.
+* VDR
+:PROPERTIES:
+:CUSTOM_ID: vdr
+:END:
+** Bedienung des VDR
+:PROPERTIES:
+:CUSTOM_ID: vdr-controls
+:END:
+Um die grundlegende Bedienung und die Konfiguration des VDR über das OSD werden im Benutzerhandbuch beschrieben:
+
+ http://vdr-wiki.de/wiki/index.php/Benutzerhandbuch
+
+Die standardmäßig über die ~remote.conf~ des VDR vorkonfigurierte Tastenbelegung für die Tastatur sieht so aus:
+#+CAPTION: Tastenbelegung
+#+ATTR_LATEX: :environment tabularx :width \textwidth :align llX
+| Taste         | Funktion     | Anmerkung                                        |
+|---------------+--------------+--------------------------------------------------|
+| Pos1/Home/Tab | Menü         |                                                  |
+| Backspace     | Exit         | Kehrt zum Übergeordneten Menü zurück             |
+| Enter         | Ok           | Außerhalb des OSD-Menüs: kleine Info-Anzeige     |
+| Pfeil Auf     | Nach oben    | Außerhalb des OSD-Menüs: Kanal hoch              |
+| Pfeil Ab      | Nach unten   | Außerhalb des OSD-Menüs: Kanal runter            |
+| Pfeil links   | Nach links   | Außerhalb des OSD-Menüs: Wechsel der Kanalgruppe |
+| Pfeil rechts  | nach rechts  | Außerhalb des OSD-Menüs: Wechsel der Kanalgruppe |
+| Ende          | Info         | Öffnet die Informationen zu einem Listenelement  |
+| Pause         | Power        | VDR herunterfahren                               |
+| F1            | Rot          | Belegung wird bei aktivem OSD eingeblendet.      |
+| F2            | Grün         | Belegung wird bei aktivem OSD eingeblendet.      |
+| F3            | Gelb         | Belegung wird bei aktivem OSD eingeblendet.      |
+| F4            | Blau         | Belegung wird bei aktivem OSD eingeblendet.      |
+| F5            | Zurückspulen |                                                  |
+| F6            | Vorspulen    |                                                  |
+| F10           | Mute         | Schaltet den Ton aus oder ein                    |
+| F11           | Leiser       |                                                  |
+| F12           | Lauter       |                                                  |
+| Zifferntasten | Ziffern 0-9  |                                                  |
+** Unterstützte Ausgabeplugins
+:PROPERTIES:
+:CUSTOM_ID: vdr-output-plugins
+:END:
+Da das originale softhddevice nicht mehr weiterentwickelt zu werden scheint, gibt es mittlerweile eine Reihe von Ablegern, die je nach Einsatzszenario mehr oder weniger gut geeignet sind.
+Aktuell sind die folgenden Pakete für Ausgabeplugins für Ubuntu bionic verfügbar, die vom yavdr-frontend automatisch erkannt werden:
+
+#+LATEX: \small
+#+CAPTION: Verfügbare Ausgabeplugins unter Ubuntu 18.04
+#+ATTR_LATEX: :environment tabularx :width \textwidth :align XlllrX
+| Paketname                                    | VDPAU | Cuvid | VAAPI | HEVC               | ffmpeg | Kommentar                                                                     |
+|----------------------------------------------+-------+-------+-------+--------------------+--------+-------------------------------------------------------------------------------|
+| vdr-plugin-softhddevice-vpp                  | Ja    | Nein  | Ja    | Ja (Software)      |    3.4 | Fork von softhddevice, unterstützt Ausgabe über VDPAU und VAAPI               |
+| vdr-plugin-softhddevice-vdpau-hevc           | Ja    | Nein  | Ja    | Ja (VAAPI, VDPAU) |    3.3 | Wie softhddevice-vpp, aber gegen ffmpeg 3.3 gebaut                            |
+| vdr-plugin-softhddevice-openglosd            | Ja    | Nein  | Nein  | Nein               |    3.4 | Fork von softhddevice mit hardwarebeschleunigtem OSD                          |
+| vdr-plugin-softhddevice-openglosd-ffmpeg-2.8 | Ja    | Nein  | Nein  | Nein               |    2.8 | wie softhddevice-openglosd, scheint mit ffmpeg 2.8 stabiler zu laufen         |
+| vdr-plugin-softhddevice                      | Ja    | Nein  | Ja    | Ja (Software)      |    3.4 | Für neuere ffmpeg-Versionen angepasste Weiterentwicklung von softhddevice-vpp |
+| vdr-plugin-softhddevice                      | Ja    | Ja    | Ja    | Ja (CUVID, VAAPI?) |  4.2.1 | mit ppa:seahawk1986-hotmail/vdr-2.4.1 und ppa:seahawk1986-hotmail/softhdvaapi |
+| vdr-plugin-softhdvaapi                       | Nein  | Nein  | Ja    | Ja (VAAPI)         |  4.2.1 | mit ppa:seahawk1986-hotmail/vdr-2.4.1 und ppa:seahawk1986-hotmail/softhdvaapi |
+| vdr-plugin-softhddrm                         | Nein  | Nein  | Ja    | Ja (VAAPI)         |  4.2.1 | mit ppa:seahawk1986-hotmail/vdr-2.4.1 und ppa:seahawk1986-hotmail/softhdvaapi |
+| vdr-plugin-softhdcuvid                       | Nein  | Ja    | Ja    | Ja (CUVID)         |  4.2.1 | [[https://www.vdr-portal.de/forum/index.php?thread/132253-anleitung-f%C3%BCr-softhdcuvid-mit-libplacebo/][Anleitung für softhdcuvid mit libplacebo]]                                      |
+| vdr-plugin-softhddevice-ffmpeg-2.8           | Ja    | Nein  | Nein  | Nein               |    2.8 | originale Variante des softhddevice-Plugin, gegen ffmpeg 2.8 gebaut.          |
+| vdr-plugin-vaapidevice                       | Nein  | Nein  | Ja    | Ja (Software)      |    3.3 | Auf VAAPI reduzierte Variante von softhddevice-vpp                            |
+| vdr-plugin-vaapidevice-hecv                  | Nein  | Nein  | Ja    | Ja (VAAPI, VDPAU) |    3.3 | wie vaapidevice, gegen ffmpeg-3.3 gebaut                                      |
+| vdr-plugin-softhdcuvid                       | Ja    | Ja    | Nein  | Ja (CUVID)         |    3.4 | Für Nvidia-Karten mit CUDA/CUVID Decoder (ab GT630 Kepler und höher)          |
+| vdr-plugin-xineliboutput                     | Ja    | Nein  | Ja    | Ja (Software)      |    3.4 | Unterstützt VAAPI und VDPAU, läuft auch ohne Hardwarebeschleunigung in VMs    |
+#+LATEX: \normalsize
+
+Für Ubuntu Focal sind nur noch Pakete mit Kompatibilität zu ffmpeg 2.8 und ffmpeg 4.2 in den Paketquellen:
+#+LATEX: \small
+#+CAPTION: Verfügbare Ausgabeplugins unter Ubuntu 20.04
+#+ATTR_LATEX: :environment tabularx :width \textwidth :align XlllrX
+| Paketname                                    | VDPAU | CUVID | VAAPI | HEVC                     | ffmpeg | Kommentar                                                                       |
+|----------------------------------------------+-------+-------+-------+--------------------------+--------+---------------------------------------------------------------------------------|
+| vdr-plugin-softhddevice                      | Ja    | Nein  | Ja    | Ja (VDPAU, VAAPI)        |    4.2 |                                                                                 |
+| vdr-plugin-softhddevice-cuvid                | Ja    | Ja    | Ja    | Ja (CUVID, VDPAU, VAAPI) |    4.2 | mit cuvid-Unterstützung (muss mit dem Start-Argument ~-v cuvid~ aktiviert werden) |
+| vdr-plugin-softhddevice-ffmpeg-2.8           | Ja    | Nein  | Nein  | Nein                     |    2.8 | originale Variante des softhddevice-Plugin, gegen ffmpeg 2.8 gebaut.            |
+| vdr-plugin-softhddevice-openglosd-ffmpeg-2.8 | Ja    | Nein  | Nein  | Nein                     |    2.8 | wie softhddevice-openglosd, scheint mit ffmpeg 2.8 stabiler zu laufen           |
+| vdr-plugin-softhdvaapi                       | Nein  | Nein  | Ja    | Ja (VAAPI)               |    4.2 |                                                                                 |
+| vdr-plugin-softhddrm                         | Nein  | Nein  | Ja    | Ja (VAAPI)               |    4.2 | funktioniert nur ohne X-Session                                                 |
+| vdr-plugin-softhdcuvid                       | Ja    | Ja    | Nein  | Ja (CUVID)               |    4.2 | Für Nvidia-Karten mit CUDA/CUVID Decoder (ab GT630 Kepler und höher)            |
+| vdr-plugin-vaapidevice                       | Nein  | Nein  | Ja    | Ja (VAAPI)               |    4.2 | Auf VAAPI reduzierte Variante von softhddevice-vpp, seit längerem ungepflegt    |
+| vdr-plugin-xineliboutput                     | Ja    | Nein  | Ja    | Ja                       |    4.2 | Unterstützt VAAPI und VDPAU, läuft auch ohne Hardwarebeschleunigung in VMs      |
+#+LATEX: \normalsize
+
+
+HEVC sollte mit Nvidia-GPUs ab der GTX 950/GT 1030 aufwärts und mit Intel IGPs ab der Skylake-Generation (mehr als 8-Bit pro Farbkanal erst ab Kabylake) funktionieren. Die Ausgabe ist bislang auf 8-Bit pro Farbkanal beschränkt.
+
+Die Ausgabe mit 10 Bit pro Farbkanal scheint mit softhddrm in Verbindung mit einem gepatchten Kernel auf geeigneter Hardware grundsätzlich möglich zu sein: [[https://www.vdr-portal.de/forum/index.php?thread/132976-softhdcuvid-jetzt-mit-vaapi-und-hdr-support/&postID=1320674#post1320674][Beschreibung von softhddrm (2019-12-10)]] ff.
+*** Bekannte Probleme bei den Ausgabeplugins:
+- 4k Auflösung :: Darstellungsprobleme beim Skindesigner mit anderen Skins als metrix HD
+- softhddrm :: Funktioniert nur ohne X-Server, Umschaltung zu anderen Programmen schwierig ([[https://www.vdr-portal.de/forum/index.php?thread/132976-softhdcuvid-jetzt-mit-vaapi-und-hdr-support/&postID=1321463#post1321463][VDR muss wohl als root laufen, um das DRM-Device freigaben zu können]])
+- softhddevice-vpp :: Farbfehldarstellung des OSD mit bestimmten Nvidia-Karten (z.B. GT630 mit Kepler Chipsatz)
+- VDPAU mit ffmpeg 3.4/3.3 :: bei SAT-Empfang in Verbindung Crashes auf bestimmten Sendern, in dem Fall eine der Varianten mit ffmpeg 2.8 verwenden.
+- VDPAU und VAAPI mit ffmpeg 3.4 :: keine Hardwarebeschleunigung für HEVC-Material, in dem Fall eine Variante mit ffmpeg 3.3 verwenden.
+** Konfiguration des VDR
+:PROPERTIES:
+:CUSTOM_ID: vdr-configuration
+:END:
+*** Umgebungsvariablen
+:PROPERTIES:
+:CUSTOM_ID: vdr-environment-variables
+:END:
+Für den VDR und die von der Systemd-Unit genutzten Hilfsskripte können in der Konfigurationsdatei ~/etc/default/vdr~ Umgebungsvariablen gesetzt werden.
+*** Startargumente
+:PROPERTIES:
+:CUSTOM_ID: vdr-start-arguments
+:END:
+Wie schon bei yaVDR 0.6 wird weiterhin die ARGSDIR-Konfiguration genutzt. Wenn der VDR ohne Argumente gestartet wird, liest er beim Start alle Dateien mit der Endung ~.conf~ im Verzeichnis ~/etc/vdr/conf.d/~ ein.
+
+Die Konfigurationsdateien nutzen eine vom ~.ini~-Format gewohnte Syntax.
+ - Zeilen, die mit einer Raute (~#~) beginnen, werden vom Parser ignoriert.
+ - Jeder Abschnitt wird durch einen Begriff in eckigen Klammern eingeleitet, der angibt, wofür die Argumente in den nachfolgenden Zeilen gelten sollen. Um Startargumente für den VDR zu definieren schreibt man also ~[vdr]~ und für Plugins den Pluginnamen, z.B. ~[softhddevice]~ für das Softhddevice-Plugin.
+ - In den folgenden Zeilen können dann Start-Argumente für den VDR bzw. das jeweilige Plugin übergeben werden.
+ - Falls es mehrere Abschnitte gibt, die mit dem gleichen Begriff in eckigen Klammern eingeleitet werden, werden nur die Abschnitte für ~[vdr]~ zusammengefasst, bei Plugins wird die Konfiguration jeweils einzeln an den VDR übergeben, wodurch Plugins mehrfach mit unterschiedlichen Startargumenten geladen werden können. Plugins wie z.B. xineliboutput vertragen es nicht, wenn mehrere Instanzen geladen werden.
+
+Um ein Plugin vom VDR laden zu lassen, genügt es seinen Namen in eckigen Klammern in einer Konfigurationsdatei abzulegen. Will man den Start verhindern, muss man dafür sorgen, dass der VDR den Eintrag nicht mehr einliest. Ein bequemes Werkzeug um Plugins zu (de-)aktivieren oder die Start-Argumente zu bearbeiten ist [[vdrctl][vdrctl]].
+
+Die Datei ~/etc/vdr/conf.d/00_vdr.conf~ enthält die vom Distributor vorgegebenen Start-Argumente für den VDR. Da alle Dateien in ~/etc/~, die aus Paketen stammen, vom Paket-System als Konfigurationsdateien angesehen werden, können diese nach Wunsch verändert werden. Falls ein Paket beim Update eine davon abweichende Version mitbringt, erhält man eine Rückfrage, welche Version man übernehmen möchte.
+
+Die Plugin-Pakete werden mit vorgefertigten Konfigurationsdateien ausgeliefert, die nach ~/etc/vdr/conf.avail/<plugin_name>.conf~ installiert und (falls der Distributor vorgibt, dass das Plugin automatisch nach der Installation aktiviert werden soll, wie es bei yaVDR der Fall ist) nach ~/etc/vdr/conf.d/<priorität>-<plugin_name>.conf~ verlinkt werden. Die standardmäßig gesetzte Priorität ist 50, ein abweichender Wert kann vom Distributor vorgegeben werden.
+
+Alle Konfigurationsdateien in /etc/vdr/conf.d/ werden nach Dateinamen sortiert interpretiert und somit die Plugins in der Reihenfolge der gesetzten Priorität geladen. Das Plugin mit der niedrigsten numerischen Priorität wird zuerst geladen und das Plugin mit der höchsten numerischen Priorität als letztes.
+
+Mit dem folgenden Befehl kann man sich die vom VDR eingelesenen Startargumente anzeigen lassen:
+#+begin_example
+$ vdr --showargs
+#+end_example
+**** vdrctl
+:PROPERTIES:
+:CUSTOM_ID: vdrctl
+:END:
+vdrctl ist ein Hilfsprogramm, das die Verwaltung der Konfigurationsdateien für den VDR vereinfacht. Es kann die nötigen Symlinks anlegen bzw. entfernen und Konfigurationsdateien mit einem Editor öffnen.
+
+Hier ein paar Beispiele zur Verwendung:
+#+begin_example
+# Hilfe zu vdrctl anzeigen.
+vdrctl -h
+
+# Status aller verfügbaren Plugins und statischen Konfigurationdateien
+$ vdrctl status
+
+# Aktivierung eines Plugins.
+$ sudo vdrctl enable streamdev-client
+
+# Ein Plugin unter Angabe der Priorität aktivieren.
+$ sudo vdrctl enable dynamite -p 90
+
+# Aktivierung mehrerer Plugins.
+$ sudo vdrctl enable streamdev-client vnsiserver
+
+# Ein Plugin deaktivieren.
+$ sudo vdrctl disable iptv
+
+# Mehrerere Plugins deaktivieren.
+$ sudo vdrctl disable streamdev-client streamdev-server iptv
+
+# Bearbeiten der Konfiguration für ein Plugin.
+$ sudo vdrctl edit imonlcd
+
+# Bearbeiten der Konfiguration mit einem Wunsch-Editor (hier vim):
+$ EDITOR=vim sudo vdrctl edit imonlcd
+#+end_example
+*** Shutdown
+:PROPERTIES:
+:CUSTOM_ID: vdr-shutdown
+:END:
+**** Shutdown-Hooks
+:PROPERTIES:
+:CUSTOM_ID: vdr-shutdown-hooks
+:END:
+Zusätzlich zu den im VDR verankerten Mechanismen um einen Shutdown zu verhindern (Benutzeraktivität, anstehender Timer, Plugins verhindern den Shutdown während gewisser Operationen) gibt es die Möglichkeit den Shutdown-Versuch durch Hook-Skripte in ~/etc/vdr/shutdown-hooks/~ (bzw. von Paketen abgelegte Skripte in ~/usr/share/vdr/shutdown-hooks/~) abzubrechen, die über den ~vdr-shutdown-wrapper~ und das Skript ~/usr/lib/vdr/vdr-shutdown~ aufgerufen werden.
+***** vdr-addon-acpiwakeup
+Das Addon setzt über ~/sys/class/rtc/rtc0/wakealarm~ bzw. über einen anderen über die Umgebungsvariable ~WAKEALARM~ in ~/etc/default/vdr~ bzw. ~/etc/vdr/vdr-addon-acpiwakeup.conf~~ angegebenen RTC-kompatiblen Node die Aufweckzeit.
+Einstellungen wie das regelmäßige Aufwecken des Rechners, wenn kein Timer definiert wurde können über die Konfigurationsdatei ~/etc/vdr/vdr-addon-acpiwakeup.conf~ vorgenommen werden.
+***** vdr-addon-lifeguard-ng
+Das lifeguard-ng Addon verhindert den Shutdown für konfigurierbare Shutdown-Hindernisse wie bestehende SSH-, NFS- und Samba-Verbindungen von Clients. Darüber hinaus lassen im Netzwerk aktive Hosts bzw. pingbare IP-Addressen sowie angemeldete Nutzer und bestehende TC/IP-Verbindungen als Abbruchkriterien für den Shutdown konfigurieren. Die Konfiguration erfolgt über die ~/etc/lifeguard.conf~.
+
+**** Shutdown durch den VDR verhindern
+:PROPERTIES:
+:CUSTOM_ID: vdr-prevent-shutdown
+:END:
+***** automatischen Shutdown bei Inaktivität verhindern
+Um zu verhindern, dass der VDR bei Inaktivität den Rechner herunter fährt, kann man die Option "VDR ausschalten bei Inaktivität (min)" auf den Wert ~0~ setzen. Alternativ bei gestopptem VDR in der ~/var/lib/vdr/setup.conf~ die Variable ~MinUserInactivity = 0~ setzen.
+***** Shutdown-Befehl entfernen
+Will man den Shutdown durch den VDR generell unterbinden, kann man in der Datei ~/etc/vdr/conf.d/00-vdr.conf~ die Zeile mit dem Argument für den Shutdown-Befehl auskommentieren bzw. entfernen:
+#+begin_src conf
+#--shutdown=/usr/lib/vdr/vdr-shutdown-wrapper
+#+end_src
+*** Häufige Problemstellungen
+:PROPERTIES:
+:CUSTOM_ID: vdr-common-problems
+:END:
+**** VDR startet, bevor die DVB-Karten initialisiert wurden
+:PROPERTIES:
+:CUSTOM_ID: await-dvb
+:END:
+Es gibt mehrere Ansätze das Problem in yaVDR anzugehen:
+****** Start des VDR verzögern
+:PROPERTIES:
+:CUSTOM_ID: wait-for-dvb
+:END:
+Die mitgelieferte Systemd-Unit *wait-for-dvb@.service* erlaubt es den VDR erst starten zu lassen, wenn die vorgegeben Tuner verfügbar sind.
+Nach einem Timeout von 90 Sekunden startet der VDR trotzdem, wenn ein Tuner dann immer noch nicht aufgetaucht ist.
+
+Wichtiger Hinweis für focal: Hier wird ~wait-for-dvb@.service~ vom Playbook (über die Rolle ~vdr~) verwaltet. In der Variablen ~wait_for_dvb_devices~ kann eine Liste von Tunern angegeben werden, für die eine Instanz der Unit aktiviert werden soll. Für alle nicht in der Liste aufgeführten Adapter von 0 - ~max_num_dvb_devices~ (Vorgabewert: ~16~) werden ggf. bereits aktivierte Instanzen der Unit deaktiviert.
+
+Die Aktivierung der Unit muss für jeden gewünschten Tuner erfolgen - um z.B. auf ~/dev/dvb/adapter0~ zu warten:
+#+BEGIN_EXAMPLE
+$ sudo systemctl enable wait-for-dvb@0.service
+#+END_EXAMPLE
+Bei Systemen mit vielen Tunern kann man auch eine Shell Parameter Expansion nutzen, um die Unit für mehrere Tuner auf einmal zu aktivieren (hier z.B. für 8 Tuner):
+#+BEGIN_EXAMPLE
+$ sudo systemctl enable wait-for-dvb@{0..7}.service
+#+END_EXAMPLE
+
+Wenn Tuner ausgebaut/abgesteckt werden, sollte der dazugehörige Service wieder deaktiviert werden - hier z.B. für das Gerät ~/dev/dvb/adapter7~:
+#+BEGIN_EXAMPLE
+$ sudo systemctl disable wait-for-dvb@7.service
+#+END_EXAMPLE
+Wichtig: das funktioniert nur für Tuner, für die udev-Events ausgelöst werden, für Sundtek-Empfänger bitte das Vorgehen in [[Sundtek Treiber][Sundtek Treiber]] beachten!
+****** dynamite-Plugin
+:PROPERTIES:
+:CUSTOM_ID: vdr-plugin-dynamite
+:END:
+Das dynamite-Plugin bindet DVB-Karten nachträglich automatisch ein, sobald sie verfügbar sind (leider gibt es Inkompatibilitäten mit anderen Plugins wie z.B. pvrinput)
+**** VDR startet nicht
+:PROPERTIES:
+:CUSTOM_ID: vdr-does-not-start
+:END:
+Zu den häufigsten Problemursachen (ein Blick in die Logdateien hilft, um die Ursache zu erkennen) gehören:
+- das Aufnahmeverzeichnis existiert nicht
+- der User vdr hat keinen vollen Zugriff auf das Aufnahmeverzeichnis (Lese-, Schreib- und Ausführungsrechte nötig)
+- Es wurde ein Plugin von Hand gebaut, das nach einem Update nicht mehr zur ABI-Version des VDR passt oder dessen Symbole nicht erfolgreich gelinkt werden konnten
+* KODI
+*** Fernsehen mit VNSI
+Pakete ~vdr-plugin-vnsiserver~ und ~kodi-pvr-vdr-vnsi~ installieren, dann in KODI in den Addon-Einstellungen das PVR-Addon VNSI aktivieren.
+* vdr-epg-daemon
+:PROPERTIES:
+:CUSTOM_ID: epgd
+:END:
+** Häufige Probleme
+*** epgd startet nicht
+**** Fehlende Locale
+Die UDF (user-defined function) ~epglv~ für MariaDB benötigt die Locale ~de_DE.UTF-8~ - wenn diese fehlt, gibt es eine Fehlermeldung wie diese im Log:
+#+begin_EXAMPLE
+May  2 11:19:01 hdvdr epgd: SQL-Error in 'select epglv('123', '123')' - Can't initialize function 'epglv'; EPGLV() failed to change locale (1123)
+May  2 11:19:01 hdvdr epgd: SQL-Error in 'select epglvr('123', '123')' - Can't initialize function 'epglvr'; EPGLV() failed to change locale (1123)
+#+end_EXAMPLE
+
+Abhilfe schaft es mittels ~sudo dpkg-reconfigure locales~ dafür zu sorgen, dass die Locales für ~de_DE.UTF-8~ erzeugt werden.
+
+Nach einer "normalen" Ubuntu Server Installation mit deutscher Sprache sehen die für debconf gesetzten Einstellungen so aus:
+#+begin_EXAMPLE
+$ sudo debconf-show locales
+ * locales/locales_to_be_generated: de_DE.UTF-8 UTF-8, en_US.UTF-8 UTF-8
+ * locales/default_environment_locale: de_DE.UTF-8
+#+end_EXAMPLE
+Nach Änderungen an den Locale-Einstellungen sollte der Rechner neu gestartet werden, damit garantiert ist, dass alle Prozesse die Änderungen mitbekommen.
+* Sundtek Treiber
+:PROPERTIES:
+:CUSTOM_ID: sundtek-drivers
+:END:
+Für die Nutzung von Sundtek DVB-Tunern muss das Paket ~dvb-driver-sundtek~ installiert werden. Die Ansible-Rolle [[install-sundtek][install-sundtek]] kann einem die hier beschriebene Konfigurationsschritte abnehmen.
+
+~LD_PRELOAD=/opt/lib/libmediaclient.so~ muss für alle Programme als Umgebungsvariable gesetzt werden, die die Sundtek-Geräte nutzen sollen (wie z.B. ~w_scan~).
+
+Damit der VDR die vom Sundtek mediasrv erstellten Devices nutzen kann, muss die Unit ~vdr.service~ mit dem folgendem Snippet erweitert werden:
+#+begin_src systemd
+# /etc/systemd/system/vdr.service.d/sundtek.conf
+[Service]
+Environment=LD_PRELOAD=/opt/lib/libmediaclient.so
+#+end_src
+
+
+Prinzpiell gibt es zwei Möglichkeiten die Tuner mit dem VDR zu nutzen, die in den folgenden Abschnitten genauer erläutert werden:
+ - [[#sundtek-delay-vdr-start][Start des VDR verzögern, bis alle Tuner intialisiert wurden]]
+ - [[#sundtek-dynamic-includes][Sundtek-Tuner automatisch zur Laufzeit des VDR einbinden lassen]]
+
+** Start des VDR verzögern, bis alle Tuner initialisiert wurden
+:PROPERTIES:
+:CUSTOM_ID: sundtek-delay-vdr-start
+:END:
+# TODO: in Paket yavdr-hardware-sundtek packen!
+#+begin_src systemd
+# /etc/systemd/system/sundtek.service
+[Unit]
+Description=Sundtek mediasrv
+#After=network-online.target
+Before=vdr.service
+
+[Service]
+Type=forking
+ExecStart=/opt/bin/mediasrv -d --pluginpath=/opt/bin --wait-for-devices
+ExecStop=/opt/bin/mediaclient --shutdown
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+#+end_src
+
+Die Unit kann dann mit dem folgenden Befehl aktiviert werden, damit sie beim Systemstart automatisch ausgeführt wird:
+#+begin_EXAMPLE
+systemctl enable sundtek.service
+#+end_EXAMPLE
+
+Falls man Netzwerktuner über die ~/etc/sundtek.conf~ einbinden will, muss die Zeile ~After=network-online.service~ einkommentiert werden und außerdem muss sichergestellt sein, dass der Server dauerhaft erreichbar ist.
+
+Nachteil dieser Variante ist, dass man Sundtek-Tuner zur Laufzeit des VDR nicht hinzufügen bzw. entfernen kann, dafür funktionieren Plugins, die voraussetzen, dass bestimmte Geräteknoten für die DVB-Geräte existieren.
+
+** Sundtek-Tuner automatisch zur Laufzeit des VDR einbinden lassen
+:PROPERTIES:
+:CUSTOM_ID: sundtek-dynamic-includes
+:END:
+Um lokal angeschlossene Tuner automatisch ein- bzw. aushängen zu lassen müssen die Pakete ~vdr-plugin-dynamite~ und ~vdr-plugin-sundtek~ installiert werden.
+
+Das ~vdr-plugin-sundtek~ reagiert auf Meldungen des mediasrv für neu hinzugefügte bzw. abgesteckte Sundtek-Tuner und bindet diese über das ~vdr-plugin-dynamite~ ein bzw. hängt sie aus.
+
+Das automatische Einbinden von über Avahi angekündigten Sundtek-Tunern im Netzwerk ist aktuell noch nicht möglich, da der von früheren yaVDR-Versionen bekannte ~avahi-sundtek-mounter~ erst noch angepasst werden muss.
