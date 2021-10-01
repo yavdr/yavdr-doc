@@ -3,14 +3,14 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="de" xml:lang="de">
 <head>
-<!-- 2021-09-09 Do 11:08 -->
+<!-- 2021-10-01 Fr 18:08 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Ansible Playbooks für yaVDR</title>
-<meta name="generator" content="Org mode" />
 <meta name="author" content="Alexander Grothe (seahawk1986)" />
-<style type="text/css">
- <!--/*--><![CDATA[/*><!--*/
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
   .subtitle { text-align: center;
@@ -31,8 +31,9 @@
   #postamble p, #preamble p { font-size: 90%; margin: .2em; }
   p.verse { margin-left: 3%; }
   pre {
-    border: 1px solid #ccc;
-    box-shadow: 3px 3px 3px #eee;
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
     padding: 8pt;
     font-family: monospace;
     overflow: auto;
@@ -41,21 +42,21 @@
   pre.src {
     position: relative;
     overflow: auto;
-    padding-top: 1.2em;
   }
   pre.src:before {
     display: none;
     position: absolute;
-    background-color: white;
-    top: -10px;
-    right: 10px;
+    top: -8px;
+    right: 12px;
     padding: 3px;
-    border: 1px solid black;
+    color: #555;
+    background-color: #f2f2f299;
   }
   pre.src:hover:before { display: inline; margin-top: 14px;}
   /* Languages per Org manual */
   pre.src-asymptote:before { content: 'Asymptote'; }
   pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
   pre.src-C:before { content: 'C'; }
   /* pre.src-C++ doesn't work in CSS */
   pre.src-clojure:before { content: 'Clojure'; }
@@ -191,7 +192,6 @@
   .org-info-js_search-highlight
     { background-color: #ffff00; color: #000000; font-weight: bold; }
   .org-svg { width: 90%; }
-  /*]]>*/-->
 </style>
 <link rel="stylesheet" type="text/css" href="src/readtheorg_theme/css/htmlize.css"/>
 <link rel="stylesheet" type="text/css" href="src/readtheorg_theme/css/readtheorg.css"/>
@@ -199,35 +199,13 @@
 <script type="text/javascript" src="src/lib/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="src/lib/js/jquery.stickytableheaders.min.js"></script>
 <script type="text/javascript" src="src/readtheorg_theme/js/readtheorg.js"></script>
-<script type="text/javascript">
-// @license magnet:?xt=urn:btih:1f739d935676111cfff4b4693e3816e664797050&amp;dn=gpl-3.0.txt GPL-v3-or-Later
-<!--/*--><![CDATA[/*><!--*/
-     function CodeHighlightOn(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.add("code-highlighted");
-         target.classList.add("code-highlighted");
-       }
-     }
-     function CodeHighlightOff(elem, id)
-     {
-       var target = document.getElementById(id);
-       if(null != target) {
-         elem.classList.remove("code-highlighted");
-         target.classList.remove("code-highlighted");
-       }
-     }
-    /*]]>*///-->
-// @license-end
-</script>
 </head>
 <body>
-<div id="content">
+<div id="content" class="content">
 <h1 class="title">Ansible Playbooks für yaVDR</h1>
-<div id="table-of-contents">
+<div id="table-of-contents" role="doc-toc">
 <h2>Inhaltsverzeichnis</h2>
-<div id="text-table-of-contents">
+<div id="text-table-of-contents" role="doc-toc">
 <ul>
 <li><a href="#einleitung">Einleitung</a>
 <ul>
@@ -240,8 +218,8 @@
 <ul>
 <li><a href="#system-requirements">1.1. Systemvoraussetzungen</a>
 <ul>
-<li><a href="#org08881b3">1.1.1. für die Nutzung als HTPC</a></li>
-<li><a href="#orgac47904">1.1.2. Nutzung als Server</a></li>
+<li><a href="#org1ba245c">1.1.1. für die Nutzung als HTPC</a></li>
+<li><a href="#org55f5a14">1.1.2. Nutzung als Server</a></li>
 </ul>
 </li>
 <li><a href="#ubuntu-installation">1.2. Installation des Basissystems</a>
@@ -253,7 +231,7 @@
 <li><a href="#ansible-installation">1.3. Installation von yaVDR mit Ansible</a>
 <ul>
 <li><a href="#playbook-git">1.3.1. Herunterladen von yavdr-ansible</a></li>
-<li><a href="#org8488f3e">1.3.2. Anpassen der Vorkonfiguration</a></li>
+<li><a href="#org8858fbc">1.3.2. Anpassen der Vorkonfiguration</a></li>
 <li><a href="#install-scripts">1.3.3. Ausführen der Installationsskripte</a></li>
 </ul>
 </li>
@@ -272,7 +250,7 @@
 <li><a href="#package-management">2.4. Paketverwaltung</a>
 <ul>
 <li><a href="#apt-updates">2.4.1. Updates Einspielen</a></li>
-<li><a href="#orgbf571ea">2.4.2. Entfernen ungenutzter Pakete und alter Kernel</a></li>
+<li><a href="#orgd25d991">2.4.2. Entfernen ungenutzter Pakete und alter Kernel</a></li>
 </ul>
 </li>
 <li><a href="#systemd-services">2.5. Dienste</a>
@@ -283,7 +261,7 @@
 <li><a href="#logfiles">2.6. Logdateien</a></li>
 <li><a href="#audio-output">2.7. Audioausgabe</a>
 <ul>
-<li><a href="#org5d9c775">2.7.1. Pulseaudio vorübergehend deaktivieren</a></li>
+<li><a href="#org415ea7f">2.7.1. Pulseaudio vorübergehend deaktivieren</a></li>
 <li><a href="#pulse-disable-permanently">2.7.2. Pulseaudio komplett deaktivieren</a></li>
 <li><a href="#pulse-force-alsa">2.7.3. Pulseaudio Nutzung von Alsa-Gerät erzwingen</a></li>
 </ul>
@@ -327,7 +305,7 @@
 </li>
 <li><a href="#xorg-output">5. Ausgabe mit Xorg</a>
 <ul>
-<li><a href="#orgd24888d">5.1. Zugriff auf die Systemd User Session</a>
+<li><a href="#org436730f">5.1. Zugriff auf die Systemd User Session</a>
 <ul>
 <li><a href="#systemctl-user-session">5.1.1. Einzelne Befehl mit passenden Rechten und Umgebungsvariablen absetzen:</a></li>
 <li><a href="#tmux-user-session">5.1.2. Zugriff mit tmux</a></li>
@@ -335,12 +313,12 @@
 </li>
 <li><a href="#yavdr-frontend">5.2. yavdr-frontend</a>
 <ul>
-<li><a href="#org485bd5e">5.2.1. Verhalten beim Start</a></li>
+<li><a href="#org784507a">5.2.1. Verhalten beim Start</a></li>
 </ul>
 </li>
 <li><a href="#start-programs">5.3. Programme starten</a>
 <ul>
-<li><a href="#orgf6827be">5.3.1. desktop-Plugin</a></li>
+<li><a href="#orgfb5fd36">5.3.1. desktop-Plugin</a></li>
 <li><a href="#frontend-dbus-send">5.3.2. frontend-dbus-send</a></li>
 </ul>
 </li>
@@ -356,7 +334,7 @@
 <li><a href="#vdr-controls">6.1. Bedienung des VDR</a></li>
 <li><a href="#vdr-output-plugins">6.2. Unterstützte Ausgabeplugins</a>
 <ul>
-<li><a href="#orga166052">6.2.1. Bekannte Probleme bei den Ausgabeplugins:</a></li>
+<li><a href="#org1491957">6.2.1. Bekannte Probleme bei den Ausgabeplugins:</a></li>
 </ul>
 </li>
 <li><a href="#vdr-configuration">6.3. Konfiguration des VDR</a>
@@ -369,20 +347,20 @@
 </li>
 </ul>
 </li>
-<li><a href="#org983313c">7. KODI</a>
+<li><a href="#orgbd4f108">7. KODI</a>
 <ul>
 <li>
 <ul>
-<li><a href="#orgee63b33">7.0.1. Fernsehen mit VNSI</a></li>
+<li><a href="#orgd353696">7.0.1. Fernsehen mit VNSI</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li><a href="#epgd">8. vdr-epg-daemon</a>
 <ul>
-<li><a href="#org9b93b27">8.1. Häufige Probleme</a>
+<li><a href="#org69d52ee">8.1. Häufige Probleme</a>
 <ul>
-<li><a href="#org236143d">8.1.1. epgd startet nicht</a></li>
+<li><a href="#org087c8e5">8.1.1. epgd startet nicht</a></li>
 </ul>
 </li>
 </ul>
@@ -440,7 +418,7 @@ Wann immer die Beschreibung von Befehlen, Funktionen oder Abläufen den Rahmen d
 <p>
 Befehle, die man in der Shell ausführen kann, sehen so aus:
 </p>
-<pre class="example" id="org24427ab">
+<pre class="example" id="orgb2a2620">
 $ echo "Hallo, Welt!"
 Hallo, Welt!
 $ sudo -i  # erlange eine root-Shell
@@ -476,16 +454,16 @@ Code im Dokument wird nach Möglichkeit mit Syntax-Highlighting dargestellt, als
 <li>Der Mountpoint für <code>/srv</code> sollte eine eigene Partition bekommen. Da für Aufnahmen von SD-TV bis zu ca. 3 GB/s und für HD-TV bis zu 9 GB pro Stunde an Daten geschrieben werden können, sollte sie ausreichend dimensioniert werden. Falls Aufnahmen und andere Medien gesammelt werden, ist eine Platte mit einer Größe von mehr als einem Terabyte sinnvoll.</li>
 </ul>
 </div>
-<div id="outline-container-org08881b3" class="outline-4">
-<h4 id="org08881b3"><span class="section-number-4">1.1.1.</span> für die Nutzung als HTPC</h4>
+<div id="outline-container-org1ba245c" class="outline-4">
+<h4 id="org1ba245c"><span class="section-number-4">1.1.1.</span> für die Nutzung als HTPC</h4>
 <div class="outline-text-4" id="text-1-1-1">
 <p>
 yaVDR 0.7 ist für die Nutzung mit VDPAU-fähigen NVidia-Grafikkarten und Intel IGPs ausgelegt. Für eine experimentelle Unterstützung für Grafikkarten von AMD werden Tester mit geeigneter Hardware gesucht.
 </p>
 </div>
 </div>
-<div id="outline-container-orgac47904" class="outline-4">
-<h4 id="orgac47904"><span class="section-number-4">1.1.2.</span> Nutzung als Server</h4>
+<div id="outline-container-org55f5a14" class="outline-4">
+<h4 id="org55f5a14"><span class="section-number-4">1.1.2.</span> Nutzung als Server</h4>
 <div class="outline-text-4" id="text-1-1-2">
 <p>
 Ab yaVDR 0.7 besteht die Möglichkeit auf die Installation der GUI-Komponenten zu verzichten und es als Backend-Server zu betreiben.
@@ -559,8 +537,8 @@ Um später den aktuellsten Stand für den aktuell aktiven Branch aus den Reposit
 </p>
 </div>
 </div>
-<div id="outline-container-org8488f3e" class="outline-4">
-<h4 id="org8488f3e"><span class="section-number-4">1.3.2.</span> Anpassen der Vorkonfiguration</h4>
+<div id="outline-container-org8858fbc" class="outline-4">
+<h4 id="org8858fbc"><span class="section-number-4">1.3.2.</span> Anpassen der Vorkonfiguration</h4>
 <div class="outline-text-4" id="text-1-3-2">
 <p>
 Interessierte Nutzer haben die Möglichkeit die von yavdr-ansible umgesetzte Systemkonfiguration auf die eigenen Vorlieben und Gegebenheiten anzupassen.
@@ -576,7 +554,7 @@ Um in <code>group_vars/all</code> definierte Variablen anzupassen, sollte man ei
 </div>
 
 <ol class="org-ol">
-<li><a id="org83b8875"></a>genutzte PPAs<br />
+<li><a id="org550d0f1"></a>genutzte PPAs<br />
 <div class="outline-text-5" id="text-1-3-2-1">
 <p>
 Statt der in der <code>groups_vars/all</code> vorgegebenen PPAs können beliebige Paketquellen genutzt werden (solange diese die benötigten Pakete enthalten).
@@ -613,7 +591,7 @@ Wichtig: Das Playbook entfernt einmal hinzugefügte Paketquellen nicht automatis
 </div>
 </li>
 
-<li><a id="org3d96ada"></a>Sprache und Zeitzone<br />
+<li><a id="org1fe262f"></a>Sprache und Zeitzone<br />
 <div class="outline-text-5" id="text-1-3-2-2">
 <p>
 Da der Live-Installer für Ubuntu Server 20.04 die Locale- und Zeitzoneneinstellungen nicht mehr automatisch setzt, läuft ein frisch installiertes System in der Zeitzone UTC und mit der Locale <code>en_US.UTF-8</code>. Das Playbook setzt standardmäßig die Zeitzone <code>Europe/Berlin</code> und die Standard-Locale <code>de_DE.UTF-8</code>.
@@ -698,13 +676,13 @@ Gegenüber früheren yaVDR-Versionen kommt eine neue Template-Engine (<a href="h
 <p>
 Um yaVDR mit dem vorgegebenen Playbook einzurichten, ruft man danach folgenden Befehl auf:
 </p>
-<pre class="example" id="org494b7c9">
+<pre class="example" id="orga3a19a0">
 $ sudo -H ./install-yavdr.sh
 </pre>
 <p>
 Will man nur eine Server-Installation ohne GUI, ruft man dieses Skript auf:
 </p>
-<pre class="example" id="org33f48f5">
+<pre class="example" id="orgb16e09d">
 $ sudo -H ./install-yavdr-headless.sh
 </pre>
 </div>
@@ -725,7 +703,7 @@ Damit der VDR Sender empfangen kann, benötigt er eine <code>/var/lib/vdr/channe
 <p>
 Bevor man Änderungen an der Kanalliste vornimmt oder eine Kanalsuche mit einem Programm wie w_scan, t2scan usw. startet, muss der VDR gestoppt werden:
 </p>
-<pre class="example" id="orgf975d37">
+<pre class="example" id="org1b36855">
 systemctl stop vdr
 </pre>
 
@@ -747,7 +725,7 @@ Die <a href="https://channelpedia.yavdr.com/gen/">Channelpedia</a> bietet eine S
 <a href="https://wiki.ubuntuusers.de/w_scan/">w_scan</a> erlaubt die Kanalsuche mit Tunern für DVB-S(2), DVB-C und DVB-T. Für DVB-T2 funktioniert das nachfolgend beschriebene t2scan besser.
 </p>
 
-<pre class="example" id="org7c33166">
+<pre class="example" id="orgc70b23e">
 $ sudo w_scan -c de -f c &gt; channels.conf
 </pre>
 </div>
@@ -758,7 +736,7 @@ $ sudo w_scan -c de -f c &gt; channels.conf
 <a href="https://github.com/mighty-p/t2scan">t2scan</a> ist speziell dafür ausgelegt nach DVB-T(2) Kanälen zu suchen.
 </p>
 
-<pre class="example" id="org67305de">
+<pre class="example" id="org256731c">
 $ sudo t2scan &gt; channels.conf
 </pre>
 </div>
@@ -809,7 +787,7 @@ Ubuntu nutzt <code>apt</code> für die Paketverwaltung. Im Ubuntu Users Wiki fin
 <p>
 Die am häufigsten genutzten Befehle sind:
 </p>
-<pre class="example" id="org7008c76">
+<pre class="example" id="orge209884">
 # Paketquellen neu einlesen
 sudo apt update
 # alle Pakete aktualisieren
@@ -838,13 +816,13 @@ Gerade bevor man darüber nachdenkt eine Support-Anfrage im Forum (<a href="http
 <p>
 Man kann Updates entweder über Ansible anstoßen oder sie von Hand so einspielen:
 </p>
-<pre class="example" id="orgb76cd7e">
+<pre class="example" id="orgd93e3a3">
 $ sudo apt update &amp;&amp; sudo apt full-upgrade
 </pre>
 <p>
 Alternativ kann auch apt-get genutzt werden:
 </p>
-<pre class="example" id="org6f777e0">
+<pre class="example" id="org68d2634">
 $ sudo apt-get update &amp;&amp; sudo apt-get dist-upgrade
 </pre>
 
@@ -857,13 +835,13 @@ Wenn die Updates über Ansible erfolgen, werden die Konfigurationsdateien automa
 </p>
 </div>
 </div>
-<div id="outline-container-orgbf571ea" class="outline-4">
-<h4 id="orgbf571ea"><span class="section-number-4">2.4.2.</span> Entfernen ungenutzter Pakete und alter Kernel</h4>
+<div id="outline-container-orgd25d991" class="outline-4">
+<h4 id="orgd25d991"><span class="section-number-4">2.4.2.</span> Entfernen ungenutzter Pakete und alter Kernel</h4>
 <div class="outline-text-4" id="text-2-4-2">
 <p>
 Um nicht mehr benötigte Pakete und Kernel-Versionen zu entfernen, kann dieser Befehl genutzt werden (Ubuntu behält dabei die drei aktuellsten Kernel-Pakete):
 </p>
-<pre class="example" id="org15ae1b0">
+<pre class="example" id="org91242c7">
 $ sudo apt autoremove --purge
 </pre>
 </div>
@@ -883,7 +861,7 @@ Seit Ubuntu 16.04 setzt Ubuntu auf Systemd (<a href="https://www.freedesktop.org
 <a href="https://www.freedesktop.org/software/systemd/man/systemctl.html">systemctl</a> erlaubt es Systemd Units zu steuern. Die wichtigsten Befehle sind:
 </p>
 
-<pre class="example" id="org665600f">
+<pre class="example" id="orgb596fdf">
 # Status einer Unit anzeigen
 systemctl status vdr
 # Unit starten
@@ -961,19 +939,19 @@ Bei Bedarf kann Pulseaudio vorübergehend oder komplett deaktiviert werden, um d
 </p>
 </div>
 
-<div id="outline-container-org5d9c775" class="outline-4">
-<h4 id="org5d9c775"><span class="section-number-4">2.7.1.</span> Pulseaudio vorübergehend deaktivieren</h4>
+<div id="outline-container-org415ea7f" class="outline-4">
+<h4 id="org415ea7f"><span class="section-number-4">2.7.1.</span> Pulseaudio vorübergehend deaktivieren</h4>
 <div class="outline-text-4" id="text-2-7-1">
 <p>
 Pulseaudio kann mit Hilfe von <code>pasuspender</code> vorübergehend deaktiviert werden, solange das Zielprogramm läuft - z.B. für KODI:
 </p>
-<pre class="example" id="org28d98b0">
+<pre class="example" id="org401426d">
 pasuspender -- env AE_SINK=ALSA kodi
 </pre>
 <p>
 Da sich der VDR mit softhddevice (oder einem der davon abgeleiteten Plugins, die keine eigenständigen Programme für die Ausgabe bereitstellen) nicht sinnvoll mit dem <code>pasuspender</code> wrappen lässt, wenn man zwischendurch Pulseaudio-Programme nutzen will, kann in diesem Fall auf <code>yavdr-pasuspend</code> zurückgegriffen werden:
 </p>
-<pre class="example" id="org9300b44">
+<pre class="example" id="org9d5f0e7">
 yavdr-pasuspend -s # pausiere Pulseaudio
 yavdr-pasuspend -r # reaktiviere Pulseaudio
 </pre>
@@ -1036,14 +1014,14 @@ Da eventlircd keine Abhängigkeiten zu bereits initialisierter Hardware hat, kan
 </p>
 
 <p>
-Alle Fernbedienungen sollten das vereinheitlichte Schema für Tastennamen nutzen, damit die von ihnen gesendeten Tastendrücke zur Vorkonfiguration der Fernbedienung für den VDR, KODI und andere Programme passen, wie in der Tabelle <a href="#org34583a6">&bdquo;Vereinheitlichtes Schema für Tastennamen&ldquo;</a> gezeigt.
+Alle Fernbedienungen sollten das vereinheitlichte Schema für Tastennamen nutzen, damit die von ihnen gesendeten Tastendrücke zur Vorkonfiguration der Fernbedienung für den VDR, KODI und andere Programme passen, wie in der Tabelle <a href="#org44f9603">&bdquo;Vereinheitlichtes Schema für Tastennamen&ldquo;</a> gezeigt.
 </p>
 </div>
 
 <div id="outline-container-yavdr-namespace" class="outline-3">
 <h3 id="yavdr-namespace"><span class="section-number-3">3.1.</span> Vereinheitlichtes Schema für Tastennamen</h3>
 <div class="outline-text-3" id="text-yavdr-namespace">
-<table id="org34583a6" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+<table id="org44f9603" border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 <caption class="t-above"><span class="table-number">Tabelle 1</span> Vereinheitlichtes Schema für Tastennamen</caption>
 
 <colgroup>
@@ -1407,7 +1385,7 @@ Alle Fernbedienungen sollten das vereinheitlichte Schema für Tastennamen nutzen
 Das Programm <code>ir-keytable</code> kann genutzt werden, um rc-core Geräte zu testen und zu konfigurieren. Damit <code>ir-keytable</code> Zugriff auf die Geräte hat, muss <a href="#eventlircd-specialities">eventlircd zuvor gestoppt werden</a>.
 </p>
 
-<pre class="example" id="orgc11d372">
+<pre class="example" id="org1cc4a59">
 $ sudo ir-keytable
 /sys/class/rc/rc0/ gefunden (/dev/input/event4) mit:
     Name: Nuvoton w836x7hg Infrared Remote Transceiver
@@ -1719,7 +1697,7 @@ Alle Programme, die einen lircd-kompatiblen Sockel bereitstellen (z.B. lircd, ir
 <h3 id="eventlircd"><span class="section-number-3">3.4.</span> eventlircd</h3>
 <div class="outline-text-3" id="text-eventlircd">
 <p>
-Eventlircd liest Tastendrücke von allen Kernel Input Devices, die das Udev-Attribut <code>ENV{eventlircd_enable}="true"</code> tragen. Optional kann über das Attribut <code>ENV{eventlircd_evmap}="evmap.evmap"</code> eine im Ordner <code>/etc/eventlircd.d/</code> hinterlegte evmap genutzt werden, die dazu dient Tastendrücke bzw. Tastenkombinationen auf den in der Tabelle <a href="#org34583a6">&bdquo;Vereinheitlichtes Schema für Tastennamen&ldquo;</a> beschriebenen Namespace umzuformen. evmaps sollten genutzt werden, wenn die Anpassung der Tastennamen nicht früher wie z.B. durch Keymap für rc-core Empfänger, lircd oder andere Wege erfolgen kann.
+Eventlircd liest Tastendrücke von allen Kernel Input Devices, die das Udev-Attribut <code>ENV{eventlircd_enable}="true"</code> tragen. Optional kann über das Attribut <code>ENV{eventlircd_evmap}="evmap.evmap"</code> eine im Ordner <code>/etc/eventlircd.d/</code> hinterlegte evmap genutzt werden, die dazu dient Tastendrücke bzw. Tastenkombinationen auf den in der Tabelle <a href="#org44f9603">&bdquo;Vereinheitlichtes Schema für Tastennamen&ldquo;</a> beschriebenen Namespace umzuformen. evmaps sollten genutzt werden, wenn die Anpassung der Tastennamen nicht früher wie z.B. durch Keymap für rc-core Empfänger, lircd oder andere Wege erfolgen kann.
 </p>
 </div>
 
@@ -1729,13 +1707,13 @@ Eventlircd liest Tastendrücke von allen Kernel Input Devices, die das Udev-Attr
 <p>
 Dienste mit Socket-Activation wie eventlircd erfordern eine besondere Behandlung, wenn man sie stoppen möchte - da die <code>eventlircd.socket</code> die <code>eventlircd.service</code> beim Zugriff auf den Sockel-Pfad <code>/run/lirc/lircd</code> startet, müssen beide maskiert und gestoppt werden, wenn man z.B. mit <code>evtest</code> oder <code>ir-keytable</code> auf die von eventlircd exklusiv geöffneten Kernel Input Devices zugreifen möchte:
 </p>
-<pre class="example" id="orgf7c6d01">
+<pre class="example" id="org273e359">
 systemctl stop eventlircd.{service,socket}
 </pre>
 <p>
 Um eventlircd wieder zu aktivieren:
 </p>
-<pre class="example" id="org80ad4f0">
+<pre class="example" id="orgc611dba">
 systemctl start eventlircd.{service,socket}
 </pre>
 </div>
@@ -1948,8 +1926,8 @@ Der Start der Benutzersitzung für den User vdr ist folgendermaßen umgesetzt:
 </ul>
 </div>
 
-<div id="outline-container-orgd24888d" class="outline-3">
-<h3 id="orgd24888d"><span class="section-number-3">5.1.</span> Zugriff auf die Systemd User Session</h3>
+<div id="outline-container-org436730f" class="outline-3">
+<h3 id="org436730f"><span class="section-number-3">5.1.</span> Zugriff auf die Systemd User Session</h3>
 <div class="outline-text-3" id="text-5-1">
 <p>
 Um Dienste in der Systemd-User Session zu steuern gibt es zwei Möglichkeiten:
@@ -2013,8 +1991,8 @@ Möchte man automatisch die Umgebungsvariablen der Systemd User Session laden, k
 </p>
 </div>
 
-<div id="outline-container-org485bd5e" class="outline-4">
-<h4 id="org485bd5e"><span class="section-number-4">5.2.1.</span> Verhalten beim Start</h4>
+<div id="outline-container-org784507a" class="outline-4">
+<h4 id="org784507a"><span class="section-number-4">5.2.1.</span> Verhalten beim Start</h4>
 <div class="outline-text-4" id="text-5-2-1">
 <p>
 <code>yavdr-frontend</code> kennt ein primäres und ein sekundäres Frontend, in der Voreinstellungen sind diese mit der VDR Ausgabe und KODI vorbelegt.
@@ -2040,8 +2018,8 @@ Das Startverhalten lässt sich in der <code>/etc/yavdr-frontend/config.yml</code
 <h3 id="start-programs"><span class="section-number-3">5.3.</span> Programme starten</h3>
 <div class="outline-text-3" id="text-start-programs">
 </div>
-<div id="outline-container-orgf6827be" class="outline-4">
-<h4 id="orgf6827be"><span class="section-number-4">5.3.1.</span> desktop-Plugin</h4>
+<div id="outline-container-orgfb5fd36" class="outline-4">
+<h4 id="orgfb5fd36"><span class="section-number-4">5.3.1.</span> desktop-Plugin</h4>
 <div class="outline-text-4" id="text-5-3-1">
 <p>
 Das desktop-Plugin (Menüpunkt &bdquo;Applikationen&ldquo; bei Nutzung von menuorg) bildet die GNOME-Menüstruktur ab - wenn eine Anwendung eine <a href="https://wiki.ubuntuusers.de/.desktop-Dateien/">.desktop</a> Datei mitbringt (oder man eine <code>.desktop</code> Datei für eine Anwendung hinterlegst), kann man sie darüber &bdquo;standalone&ldquo; starten (unter der Voraussetzung, dass der Prozess nicht forkt oder sich sonst der Kontrolle durch die generische Systemd-Unit entzieht). Im Hintergrund wird dann über <code>/var/lib/vdr/plugins/desktop/starter</code> (was ein symbolischer Link auf <code>/usr/bin/start-desktop</code> ist) mit dem Pfad der <code>.desktop</code> Datei aufgerufen. Das yavdr-frontend sieht dann nach, ob es eine Systemd-Unit mit dem Namen gibt (abzüglich einer eventuell vorhandenen <code>.desktop</code> Endung - das kann man z.B. nutzen, wenn Programme mit speziellen Argumenten gestartet werden müssen oder zum Beenden besondere Befehle nötig sind - vgl. z.B. <code>/var/lib/vdr/.config/systemd/user/kodi.service</code>) , ansonsten fällt es auf <code>/usr/lib/systemd/user/app@.service</code> zurück und startet eine Instanz mit dem Namen der Anwendung.
@@ -2568,8 +2546,8 @@ HEVC sollte mit Nvidia-GPUs ab der GTX 950/GT 1030 aufwärts und mit Intel IGPs 
 Die Ausgabe mit 10 Bit pro Farbkanal scheint mit softhddrm in Verbindung mit einem gepatchten Kernel auf geeigneter Hardware grundsätzlich möglich zu sein: <a href="https://www.vdr-portal.de/forum/index.php?thread/132976-softhdcuvid-jetzt-mit-vaapi-und-hdr-support/&amp;postID=1320674#post1320674">Beschreibung von softhddrm (2019-12-10)</a> ff.
 </p>
 </div>
-<div id="outline-container-orga166052" class="outline-4">
-<h4 id="orga166052"><span class="section-number-4">6.2.1.</span> Bekannte Probleme bei den Ausgabeplugins:</h4>
+<div id="outline-container-org1491957" class="outline-4">
+<h4 id="org1491957"><span class="section-number-4">6.2.1.</span> Bekannte Probleme bei den Ausgabeplugins:</h4>
 <div class="outline-text-4" id="text-6-2-1">
 <dl class="org-dl">
 <dt>4k Auflösung</dt><dd>Darstellungsprobleme beim Skindesigner mit anderen Skins als metrix HD</dd>
@@ -2629,7 +2607,7 @@ Alle Konfigurationsdateien in <i>etc/vdr/conf.d</i> werden nach Dateinamen sorti
 <p>
 Mit dem folgenden Befehl kann man sich die vom VDR eingelesenen Startargumente anzeigen lassen:
 </p>
-<pre class="example" id="org12fa265">
+<pre class="example" id="orgab42314">
 $ vdr --showargs
 </pre>
 </div>
@@ -2643,7 +2621,7 @@ vdrctl ist ein Hilfsprogramm, das die Verwaltung der Konfigurationsdateien für 
 <p>
 Hier ein paar Beispiele zur Verwendung:
 </p>
-<pre class="example" id="orgac5151e">
+<pre class="example" id="org22d5338">
 # Hilfe zu vdrctl anzeigen.
 vdrctl -h
 
@@ -2687,7 +2665,7 @@ Zusätzlich zu den im VDR verankerten Mechanismen um einen Shutdown zu verhinder
 </p>
 </div>
 <ol class="org-ol">
-<li><a id="org8146db4"></a>vdr-addon-acpiwakeup<br />
+<li><a id="org6752622"></a>vdr-addon-acpiwakeup<br />
 <div class="outline-text-6" id="text-6-3-3-1-1">
 <p>
 Das Addon setzt über <code>/sys/class/rtc/rtc0/wakealarm</code> bzw. über einen anderen über die Umgebungsvariable <code>WAKEALARM</code> in <code>/etc/default/vdr</code> bzw. <code>/etc/vdr/vdr-addon-acpiwakeup.conf~</code> angegebenen RTC-kompatiblen Node die Aufweckzeit.
@@ -2695,7 +2673,7 @@ Einstellungen wie das regelmäßige Aufwecken des Rechners, wenn kein Timer defi
 </p>
 </div>
 </li>
-<li><a id="org14a125b"></a>vdr-addon-lifeguard-ng<br />
+<li><a id="orgf9c6b1d"></a>vdr-addon-lifeguard-ng<br />
 <div class="outline-text-6" id="text-6-3-3-1-2">
 <p>
 Das lifeguard-ng Addon verhindert den Shutdown für konfigurierbare Shutdown-Hindernisse wie bestehende SSH-, NFS- und Samba-Verbindungen von Clients. Darüber hinaus lassen im Netzwerk aktive Hosts bzw. pingbare IP-Addressen sowie angemeldete Nutzer und bestehende TC/IP-Verbindungen als Abbruchkriterien für den Shutdown konfigurieren. Die Konfiguration erfolgt über die <code>/etc/lifeguard.conf</code>.
@@ -2709,14 +2687,14 @@ Das lifeguard-ng Addon verhindert den Shutdown für konfigurierbare Shutdown-Hin
 <div class="outline-text-5" id="text-vdr-prevent-shutdown">
 </div>
 <ol class="org-ol">
-<li><a id="org0577e05"></a>automatischen Shutdown bei Inaktivität verhindern<br />
+<li><a id="org95de543"></a>automatischen Shutdown bei Inaktivität verhindern<br />
 <div class="outline-text-6" id="text-6-3-3-2-1">
 <p>
 Um zu verhindern, dass der VDR bei Inaktivität den Rechner herunter fährt, kann man die Option &bdquo;VDR ausschalten bei Inaktivität (min)&ldquo; auf den Wert <code>0</code> setzen. Alternativ bei gestopptem VDR in der <code>/var/lib/vdr/setup.conf</code> die Variable <code>MinUserInactivity = 0</code> setzen.
 </p>
 </div>
 </li>
-<li><a id="org5db6a45"></a>Shutdown-Befehl entfernen<br />
+<li><a id="org8ad4895"></a>Shutdown-Befehl entfernen<br />
 <div class="outline-text-6" id="text-6-3-3-2-2">
 <p>
 Will man den Shutdown durch den VDR generell unterbinden, kann man in der Datei <code>/etc/vdr/conf.d/00-vdr.conf</code> die Zeile mit dem Argument für den Shutdown-Befehl auskommentieren bzw. entfernen:
@@ -2757,20 +2735,20 @@ Wichtiger Hinweis für focal: Hier wird <code>wait-for-dvb@.service</code> vom P
 <p>
 Die Aktivierung der Unit muss für jeden gewünschten Tuner erfolgen - um z.B. auf <code>/dev/dvb/adapter0</code> zu warten:
 </p>
-<pre class="example" id="orgca9dbb1">
+<pre class="example" id="org0b6d8f9">
 $ sudo systemctl enable wait-for-dvb@0.service
 </pre>
 <p>
 Bei Systemen mit vielen Tunern kann man auch eine Shell Parameter Expansion nutzen, um die Unit für mehrere Tuner auf einmal zu aktivieren (hier z.B. für 8 Tuner):
 </p>
-<pre class="example" id="org76fd2b4">
+<pre class="example" id="org89bbe07">
 $ sudo systemctl enable wait-for-dvb@{0..7}.service
 </pre>
 
 <p>
 Wenn Tuner ausgebaut/abgesteckt werden, sollte der dazugehörige Service wieder deaktiviert werden - hier z.B. für das Gerät <code>/dev/dvb/adapter7</code>:
 </p>
-<pre class="example" id="orga026744">
+<pre class="example" id="orgb181b1f">
 $ sudo systemctl disable wait-for-dvb@7.service
 </pre>
 <p>
@@ -2803,12 +2781,12 @@ Zu den häufigsten Problemursachen (ein Blick in die Logdateien hilft, um die Ur
 </div>
 </div>
 </div>
-<div id="outline-container-org983313c" class="outline-2">
-<h2 id="org983313c"><span class="section-number-2">7.</span> KODI</h2>
+<div id="outline-container-orgbd4f108" class="outline-2">
+<h2 id="orgbd4f108"><span class="section-number-2">7.</span> KODI</h2>
 <div class="outline-text-2" id="text-7">
 </div>
-<div id="outline-container-orgee63b33" class="outline-4">
-<h4 id="orgee63b33"><span class="section-number-4">7.0.1.</span> Fernsehen mit VNSI</h4>
+<div id="outline-container-orgd353696" class="outline-4">
+<h4 id="orgd353696"><span class="section-number-4">7.0.1.</span> Fernsehen mit VNSI</h4>
 <div class="outline-text-4" id="text-7-0-1">
 <p>
 Pakete <code>vdr-plugin-vnsiserver</code> und <code>kodi-pvr-vdr-vnsi</code> installieren, dann in KODI in den Addon-Einstellungen das PVR-Addon VNSI aktivieren.
@@ -2820,21 +2798,21 @@ Pakete <code>vdr-plugin-vnsiserver</code> und <code>kodi-pvr-vdr-vnsi</code> ins
 <h2 id="epgd"><span class="section-number-2">8.</span> vdr-epg-daemon</h2>
 <div class="outline-text-2" id="text-epgd">
 </div>
-<div id="outline-container-org9b93b27" class="outline-3">
-<h3 id="org9b93b27"><span class="section-number-3">8.1.</span> Häufige Probleme</h3>
+<div id="outline-container-org69d52ee" class="outline-3">
+<h3 id="org69d52ee"><span class="section-number-3">8.1.</span> Häufige Probleme</h3>
 <div class="outline-text-3" id="text-8-1">
 </div>
-<div id="outline-container-org236143d" class="outline-4">
-<h4 id="org236143d"><span class="section-number-4">8.1.1.</span> epgd startet nicht</h4>
+<div id="outline-container-org087c8e5" class="outline-4">
+<h4 id="org087c8e5"><span class="section-number-4">8.1.1.</span> epgd startet nicht</h4>
 <div class="outline-text-4" id="text-8-1-1">
 </div>
 <ol class="org-ol">
-<li><a id="org5b96ee6"></a>Fehlende Locale<br />
+<li><a id="org790c38a"></a>Fehlende Locale<br />
 <div class="outline-text-5" id="text-8-1-1-1">
 <p>
 Die UDF (user-defined function) <code>epglv</code> für MariaDB benötigt die Locale <code>de_DE.UTF-8</code> - wenn diese fehlt, gibt es eine Fehlermeldung wie diese im Log:
 </p>
-<pre class="example" id="org40d9af5">
+<pre class="example" id="org52ec7aa">
 May  2 11:19:01 hdvdr epgd: SQL-Error in 'select epglv('123', '123')' - Can't initialize function 'epglv'; EPGLV() failed to change locale (1123)
 May  2 11:19:01 hdvdr epgd: SQL-Error in 'select epglvr('123', '123')' - Can't initialize function 'epglvr'; EPGLV() failed to change locale (1123)
 </pre>
@@ -2846,7 +2824,7 @@ Abhilfe schaft es mittels <code>sudo dpkg-reconfigure locales</code> dafür zu s
 <p>
 Nach einer &bdquo;normalen&ldquo; Ubuntu Server Installation mit deutscher Sprache sehen die für debconf gesetzten Einstellungen so aus:
 </p>
-<pre class="example" id="orgdd7bfb4">
+<pre class="example" id="orgdfb7e8a">
 $ sudo debconf-show locales
  * locales/locales_to_be_generated: de_DE.UTF-8 UTF-8, en_US.UTF-8 UTF-8
  * locales/default_environment_locale: de_DE.UTF-8
@@ -2915,7 +2893,7 @@ Prinzpiell gibt es zwei Möglichkeiten die Tuner mit dem VDR zu nutzen, die in d
 <p>
 Die Unit kann dann mit dem folgenden Befehl aktiviert werden, damit sie beim Systemstart automatisch ausgeführt wird:
 </p>
-<pre class="example" id="org7f137a2">
+<pre class="example" id="org950cb95">
 systemctl enable sundtek.service
 </pre>
 
@@ -2949,7 +2927,7 @@ Das automatische Einbinden von über Avahi angekündigten Sundtek-Tunern im Netz
 </div>
 <div id="postamble" class="status">
 <p class="author">Autor: Alexander Grothe (seahawk1986)</p>
-<p class="date">Created: 2021-09-09 Do 11:08</p>
+<p class="date">Created: 2021-10-01 Fr 18:08</p>
 <p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
